@@ -9,7 +9,7 @@ grouping checkbox, recuperate the actual selection,make multiple selection
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-      checkbox_grouped: ^0.1.0
+      checkbox_grouped: ^0.1.2+12
 
 ## Simple Usage
 #### Creating a basic `SimpleGroupedCheckbox`
