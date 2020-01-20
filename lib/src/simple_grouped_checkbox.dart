@@ -7,6 +7,14 @@ import './item.dart';
 enum Direction { Horizontal, Vertical }
 
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
+  final Direction direction;
+  final List<String> itemsTitle;
+  final List<String> itemsSubTitle;
+  final Color activeColor;
+  final List<T> values;
+  final bool checkFirstElement;
+  final bool multiSelection;
+
   SimpleGroupedCheckbox({
     Key key,
     this.direction = Direction.Vertical,
@@ -21,23 +29,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
         assert(itemsSubTitle != null
             ? itemsSubTitle.length == itemsTitle.length
             : true),
-        super(key: key) {
-    for (String title in itemsTitle) {
-      _items.add(Item(title: title, checked: false));
-    }
-    if (checkFirstElement) {
-      _items[0].checked = true;
-    }
-  }
-
-  final Direction direction;
-  final List<String> itemsTitle;
-  final List<String> itemsSubTitle;
-  final Color activeColor;
-  final List<T> values;
-  final bool checkFirstElement;
-  final bool multiSelection;
-  List<Item> _items = [];
+        super(key: key);
 
   static SimpleGroupedCheckboxState of<T>(BuildContext context,
       {bool nullOk = false}) {
@@ -63,19 +55,27 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   Item _previousActive;
   T _selectedValue;
-  List<T> _selectionsValue=[];
-
-
+  List<T> _selectionsValue = [];
+  List<Item> _items = [];
   @override
   void initState() {
     super.initState();
-    if(widget.multiSelection && widget.checkFirstElement){
+    if (widget.multiSelection && widget.checkFirstElement) {
       _selectionsValue.add(widget.values[0]);
+    }
+
+    for (String title in widget.itemsTitle) {
+      _items.add(Item(title: title, checked: false));
+    }
+    if (widget.checkFirstElement) {
+      _items[0].checked = true;
     }
   }
 
-  Object selection(){
-    if(widget.multiSelection){
+
+
+  Object selection() {
+    if (widget.multiSelection) {
       return _selectionsValue;
     }
     return _selectedValue;
@@ -96,7 +96,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
 
   List<Widget> checkBoxList(Axis axis) {
     return [
-      for (int i = 0; i < widget._items.length; i++) ...[
+      for (int i = 0; i < _items.length; i++) ...[
         if (axis == Axis.horizontal)
           SizedBox(
             width: 160,
@@ -114,38 +114,35 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   Widget checkBoxItem(int i) {
     return CheckboxListTile(
       onChanged: (v) {
-       setState(() {
-         if(widget.multiSelection){
-           if(!_selectionsValue.contains(widget.values[i])){
-             if(v) _selectionsValue.add(widget.values[i]);
-           }else{
-             if(!v){
-               _selectionsValue.remove(widget.values[i]);
-             }
-           }
-           widget._items[i].checked=v;
-         }else{
-           if (v) {
-
-             widget._items[i].checked = v;
-             if (_previousActive != widget._items[i]) {
-               if (_previousActive != null) {
-                 _previousActive.checked = false;
-               } else {
-                 _previousActive = widget._items[i];
-               }
-             }
-             _selectedValue = widget.values[i];
-             _previousActive = widget._items[i];
-
-           }
-         }
-       });
-
+        setState(() {
+          if (widget.multiSelection) {
+            if (!_selectionsValue.contains(widget.values[i])) {
+              if (v) _selectionsValue.add(widget.values[i]);
+            } else {
+              if (!v) {
+                _selectionsValue.remove(widget.values[i]);
+              }
+            }
+            _items[i].checked = v;
+          } else {
+            if (v) {
+              _items[i].checked = v;
+              if (_previousActive != _items[i]) {
+                if (_previousActive != null) {
+                  _previousActive.checked = false;
+                } else {
+                  _previousActive = _items[i];
+                }
+              }
+              _selectedValue = widget.values[i];
+              _previousActive = _items[i];
+            }
+          }
+        });
       },
       activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
       title: AutoSizeText(
-        "${widget._items[i].title}",
+        "${_items[i].title}",
         minFontSize: 12,
       ),
       subtitle: widget.itemsSubTitle != null
@@ -154,8 +151,8 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
               minFontSize: 11,
             )
           : null,
-      value: widget._items[i].checked,
-      selected: widget._items[i].checked,
+      value: _items[i].checked,
+      selected: _items[i].checked,
     );
   }
 }
