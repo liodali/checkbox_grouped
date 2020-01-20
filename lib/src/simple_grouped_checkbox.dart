@@ -72,8 +72,6 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     }
   }
 
-
-
   Object selection() {
     if (widget.multiSelection) {
       return _selectionsValue;
