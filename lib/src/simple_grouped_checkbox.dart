@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_checkbox/src/item.dart';
+import 'package:checkbox_grouped/src/item.dart';
 import './item.dart';
 
 enum Direction { Horizontal, Vertical }

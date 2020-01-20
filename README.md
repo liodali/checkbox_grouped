@@ -1,6 +1,6 @@
-# grouped_checkbox
+# checkbox_grouped
 
-checkbox grouped, recuperate the actual selection,make multiple selection
+grouping checkbox, recuperate the actual selection,make multiple selection
 
 ## Getting Started
 

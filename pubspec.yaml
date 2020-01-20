@@ -1,8 +1,10 @@
-name: grouped_checkbox
+name: checkbox_grouped
 description: flutter widget that grouping checkbox, recuperate the actual selection,support multiple selection
 version: 0.1.0
-author:  Mohamed ali hamza <hamza.mohamedali93@gmail.com>
-homepage:
+homepage: https://github.com/liodali/grouped_checkbox
+authors:
+  - Mohamed ali hamza <hamza.mohamedali93@gmail.com>
+
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
