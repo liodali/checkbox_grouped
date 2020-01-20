@@ -1,12 +1,13 @@
-## [0.1.0] - TODO: Add release date.
+## [0.1.0] -  INITIAL RELEASE
 
-* TODO: contain simple and basic widget to grouping checkbox.
+* contain simple and basic widget to grouping checkbox.
 
-## [0.1.1] - TODO: Add release date.
+## [0.1.1]
 
-* TODO: Add example in example/
+* Add example in example/
 
-## [0.1.2] - TODO: fix errors.
+## [0.1.2] -  fix errors.
 
-## [0.1.2+1] - TODO: fix errors.
-## [0.1.2+11] - TODO: fix errors.
+## [0.1.2+1] -  fix errors.
+## [0.1.2+11] - fix errors.
+## [0.1.2+12] - fix CHANGELOG.
