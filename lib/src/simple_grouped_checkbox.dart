@@ -69,6 +69,8 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     }
     if (widget.checkFirstElement) {
       _items[0].checked = true;
+      _previousActive=_items[0];
+      _selectionsValue=widget.values[0];
     }
   }
 

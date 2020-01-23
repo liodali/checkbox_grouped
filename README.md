@@ -9,7 +9,7 @@ grouping checkbox, recuperate the actual selection,make multiple selection
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-      checkbox_grouped: ^0.1.2+13
+      checkbox_grouped: ^0.1.2+14
 
 ## Simple Usage
 #### Creating a basic `SimpleGroupedCheckbox`
@@ -35,8 +35,9 @@ Add the following to your `pubspec.yaml` file:
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`activeColor`          |The color to use when a CheckBox is checked.  |
-|`itemsTitle`           |(required) A list of strings that describes each Radio button. Each label must be distinct.   |
-|`values`               |Values contains in each element.   |
+|`itemsTitle`           |(required) A list of strings that describes each checkbox button. Each label must be distinct.   |
+|`itemsSubTitle`        | A list of strings that describes second Text.   |
+|`values`               |(required) Values contains in each element.   |
 |`direction`            |Specifies the direction to display elements. Either `Direction.Horizontal` or `Direction.Vertical`.  |
 |`checkFirstElement`    |`make first element in list checked`.  |
 |`multiSelection`       |`enable multiple selection`.  |

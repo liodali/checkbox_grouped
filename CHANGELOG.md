@@ -12,3 +12,4 @@
 ## [0.1.2+11] - fix errors.
 ## [0.1.2+12] - fix CHANGELOG.
 ## [0.1.2+13] - fix README.
+## [0.1.2+14] - fix First Element selection.
