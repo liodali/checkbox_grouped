@@ -12,6 +12,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final List<String> itemsSubTitle;
   final Color activeColor;
   final List<T> values;
+  final List<T> preSelection;
   final bool checkFirstElement;
   final bool multiSelection;
 
@@ -23,9 +24,11 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.itemsSubTitle,
     this.activeColor,
     this.checkFirstElement = false,
+    this.preSelection ,
     this.multiSelection = false,
   })  : assert(values != null),
         assert(values.length == itemsTitle.length),
+        assert(multiSelection==false && preSelection!=null && preSelection.length > 0 ?false:true),
         assert(itemsSubTitle != null
             ? itemsSubTitle.length == itemsTitle.length
             : true),
@@ -60,13 +63,23 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   @override
   void initState() {
     super.initState();
-    if (widget.multiSelection && widget.checkFirstElement) {
-      _selectionsValue.add(widget.values[0]);
-    }
-
     for (String title in widget.itemsTitle) {
       _items.add(Item(title: title, checked: false));
     }
+
+    if (widget.multiSelection && widget.checkFirstElement) {
+      _selectionsValue.add(widget.values[0]);
+    }
+    if(widget.multiSelection && widget.preSelection.length>0){
+      for(int i=0;i<widget.values.length;i++){
+          if(widget.preSelection.contains(widget.values[i])){
+              _items[i].checked=true;
+              _selectionsValue.add(widget.values[i]);
+          }
+      }
+    }
+
+
     if (widget.checkFirstElement) {
       _items[0].checked = true;
       _previousActive=_items[0];

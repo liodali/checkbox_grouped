@@ -12,8 +12,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey =
-      GlobalKey<SimpleGroupedCheckboxState<int>>();
+  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
+  GlobalKey<SimpleGroupedCheckboxState<int>> mutlicheckboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: <Widget>[
+            Text("Basic"),
             SimpleGroupedCheckbox<int>(
               key: checkboxKey,
               itemsTitle: ["1 ", "2 ", "4 ", "5 "],
@@ -35,7 +36,18 @@ class _MyAppState extends State<MyApp> {
               direction: Direction.Horizontal,
               checkFirstElement: false,
               multiSelection: false,
-            )
+            ),
+            Text("Mutiple selection"),
+            SimpleGroupedCheckbox<int>(
+              key: mutlicheckboxKey,
+              itemsTitle: ["1 ", "2 ", "4 ", "5 "],
+              values: [1, 2, 4, 5],
+              preSelection: [2,5,4],
+              activeColor: Colors.green,
+              direction: Direction.Horizontal,
+              checkFirstElement: false,
+              multiSelection: true,
+            ),
           ],
         ),
       ),
