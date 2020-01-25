@@ -1,4 +1,5 @@
 # checkbox_grouped
+![pub](https://img.shields.io/badge/pub-0.1.2%2B17-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
 grouping checkbox, recuperate the actual selection,make multiple selection
 
