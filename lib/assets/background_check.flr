@@ -103,7 +103,7 @@
 					"opacity": 1,
 					"isCollapsed": false,
 					"clips": [],
-					"isVisible": true,
+					"isVisible": false,
 					"blendMode": 3,
 					"drawOrder": 4,
 					"transformAffectsStroke": false,
@@ -125,7 +125,7 @@
 					"isCollapsed": false,
 					"clips": [],
 					"bones": [],
-					"isVisible": true,
+					"isVisible": false,
 					"isClosed": false,
 					"points": [
 						{
@@ -358,7 +358,7 @@
 										"value": 0
 									},
 									{
-										"time": 0.8833333333333333,
+										"time": 0.31666666666666665,
 										"interpolatorType": 2,
 										"cubicX1": 0.25268817204301075,
 										"cubicY1": 0.009408602150537626,
@@ -385,7 +385,7 @@
 						}
 					],
 					"animationStart": 0,
-					"animationEnd": 0.8833333333333333,
+					"animationEnd": 0.36666666666666664,
 					"type": "animation"
 				}
 			],

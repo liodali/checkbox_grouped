@@ -1,3 +1,5 @@
+## [0.1.3] - add new feature
+  * circulaire checkbox
 ## [0.1.2+17] - fix CHANGELOG
 ## [0.1.2+16] - fix readme file
 ## [0.1.2+15] - add new feature

@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
+  GlobalKey<SimpleGroupedCheckboxState<int>> circulairekey = GlobalKey<SimpleGroupedCheckboxState<int>>();
   GlobalKey<SimpleGroupedCheckboxState<int>> mutlicheckboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
 
   @override
@@ -25,30 +26,44 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("SingleGroupedCheckbox"),
         ),
-        body: Column(
-          children: <Widget>[
-            Text("Basic"),
-            SimpleGroupedCheckbox<int>(
-              key: checkboxKey,
-              itemsTitle: ["1 ", "2 ", "4 ", "5 "],
-              values: [1, 2, 4, 5],
-              activeColor: Colors.red,
-              direction: Direction.Horizontal,
-              checkFirstElement: false,
-              multiSelection: false,
-            ),
-            Text("Mutiple selection"),
-            SimpleGroupedCheckbox<int>(
-              key: mutlicheckboxKey,
-              itemsTitle: ["1 ", "2 ", "4 ", "5 "],
-              values: [1, 2, 4, 5],
-              preSelection: [2,5,4],
-              activeColor: Colors.green,
-              direction: Direction.Horizontal,
-              checkFirstElement: false,
-              multiSelection: true,
-            ),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text("Basic"),
+              SimpleGroupedCheckbox<int>(
+                key: checkboxKey,
+                itemsTitle: ["1 ", "2 ", "4 ", "5 "],
+                values: [1, 2, 4, 5],
+                activeColor: Colors.red,
+                direction: Direction.Horizontal,
+                checkFirstElement: false,
+                multiSelection: false,
+              ),
+              Text("Circulaire Checkbox"),
+              SimpleGroupedCheckbox<int>(
+                key: circulairekey,
+                itemsTitle: ["1 ", "2 ", "4 ", "5 "],
+                values: [1, 2, 4, 5],
+                direction: Direction.Horizontal,
+                isCirculaire: true,
+                activeColor: Colors.blue,
+                isLeading: true,
+                checkFirstElement: false,
+                multiSelection: false,
+              ),
+              Text("Mutiple selection"),
+              SimpleGroupedCheckbox<int>(
+                key: mutlicheckboxKey,
+                itemsTitle: ["1 ", "2 ", "4 ", "5 "],
+                values: [1, 2, 4, 5],
+                preSelection: [2,5,4],
+                activeColor: Colors.green,
+                direction: Direction.Horizontal,
+                checkFirstElement: false,
+                multiSelection: true,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,7 +1,9 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-0.1.2%2B17-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.1.3-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
-grouping checkbox, recuperate the actual selection,make multiple selection
+    * grouping checkbox
+    * recuperate the actual selection
+    * make multiple selection
 
 ## Getting Started
 
@@ -10,7 +12,7 @@ grouping checkbox, recuperate the actual selection,make multiple selection
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-      checkbox_grouped: ^0.1.2+17
+      checkbox_grouped: ^0.1.3
 
 ## Simple Usage
 #### Creating a basic `SimpleGroupedCheckbox`
@@ -43,3 +45,4 @@ Add the following to your `pubspec.yaml` file:
 |`direction`            |Specifies the direction to display elements. Either `Direction.Horizontal` or `Direction.Vertical`.  |
 |`checkFirstElement`    |`make first element in list checked`.  |
 |`multiSelection`       |`enable multiple selection`.  |
+|`isCirculaire`         |`enable to use circulaire checkbox`.  |
