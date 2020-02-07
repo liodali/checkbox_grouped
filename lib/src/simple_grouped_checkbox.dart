@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:checkbox_grouped/src/circulaire_checkbox.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:checkbox_grouped/src/item.dart';
@@ -11,6 +10,7 @@ enum Direction { Horizontal, Vertical }
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final Direction direction;
   final List<String> itemsTitle;
+  final String textTitle;
   final List<String> itemsSubTitle;
   final Color activeColor;
   final List<T> values;
@@ -25,16 +25,21 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.direction = Direction.Vertical,
     @required this.itemsTitle,
     @required this.values,
+    this.textTitle,
     this.itemsSubTitle,
     this.activeColor,
     this.checkFirstElement = false,
-    this.preSelection ,
-    this.isCirculaire=false ,
-    this.isLeading=false ,
+    this.preSelection,
+    this.isCirculaire = false,
+    this.isLeading = false,
     this.multiSelection = false,
   })  : assert(values != null),
         assert(values.length == itemsTitle.length),
-        assert(multiSelection==false && preSelection!=null && preSelection.length > 0 ?false:true),
+        assert(multiSelection == false &&
+                preSelection != null &&
+                preSelection.length > 0
+            ? false
+            : true),
         assert(itemsSubTitle != null
             ? itemsSubTitle.length == itemsTitle.length
             : true),
@@ -66,6 +71,8 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   T _selectedValue;
   List<T> _selectionsValue = [];
   List<Item> _items = [];
+  bool valueTitle = false;
+
   @override
   void initState() {
     super.initState();
@@ -76,20 +83,22 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     if (widget.multiSelection && widget.checkFirstElement) {
       _selectionsValue.add(widget.values[0]);
     }
-    if(widget.multiSelection && widget.preSelection.length>0){
-      for(int i=0;i<widget.values.length;i++){
-          if(widget.preSelection.contains(widget.values[i])){
-              _items[i].checked=true;
-              _selectionsValue.add(widget.values[i]);
-          }
+    if (widget.multiSelection &&
+        widget.preSelection != null &&
+        widget.preSelection.length > 0) {
+      valueTitle = null;
+      for (int i = 0; i < widget.values.length; i++) {
+        if (widget.preSelection.contains(widget.values[i])) {
+          _items[i].checked = true;
+          _selectionsValue.add(widget.values[i]);
+        }
       }
     }
 
-
     if (widget.checkFirstElement) {
       _items[0].checked = true;
-      _previousActive=_items[0];
-      _selectionsValue=widget.values[0];
+      _previousActive = _items[0];
+      _selectionsValue = widget.values[0];
     }
   }
 
@@ -105,6 +114,75 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     Axis axis = widget.direction == Direction.Horizontal
         ? Axis.horizontal
         : Axis.vertical;
+    Widget titleWidget;
+    if (widget.textTitle != null)
+      titleWidget = Text(
+        "${widget.textTitle}",
+        style: TextStyle(
+            fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+      );
+
+    if (widget.multiSelection) {
+      titleWidget = ListTile(
+        title: Text(
+          "${widget.textTitle}",
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        onTap: () {
+          setState(() {
+            if (valueTitle == null) {
+              valueTitle = true;
+              _selectionsValue.addAll(widget.values
+                  .where((elem) => _selectionsValue.contains(elem) == false));
+            } else if (valueTitle) {
+              valueTitle = false;
+              _selectionsValue.clear();
+            } else if (!valueTitle) {
+              valueTitle = true;
+              _selectionsValue.addAll(widget.values as List<T>);
+            } else {
+              valueTitle = true;
+            }
+
+            _items
+                .where((elem) => elem.checked != valueTitle)
+                .forEach((i) => i.checked = valueTitle);
+          });
+        },
+        leading: AbsorbPointer(
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Checkbox(
+              tristate: true,
+              value: valueTitle,
+              activeColor: widget.activeColor,
+              onChanged: (v) {
+                //print(v);
+                setState(() {
+                  if (v != null) valueTitle = v;
+                });
+              },
+            ),
+          ),
+        ),
+      );
+    }
+    if (titleWidget != null) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          titleWidget,
+          Wrap(
+            direction: axis,
+            verticalDirection: VerticalDirection.down,
+            runSpacing: axis == Axis.horizontal ? 5.0 : 20.0,
+            children: checkBoxList(axis),
+          ),
+        ],
+      );
+    }
     return Wrap(
       direction: axis,
       verticalDirection: VerticalDirection.down,
@@ -129,14 +207,24 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       ]
     ];
   }
-  void onChanged(int i,bool v){
+
+  void onChanged(int i, bool v) {
     if (widget.multiSelection) {
       if (!_selectionsValue.contains(widget.values[i])) {
-        if (v) _selectionsValue.add(widget.values[i]);
+        if (v) {
+          _selectionsValue.add(widget.values[i]);
+        }
       } else {
         if (!v) {
           _selectionsValue.remove(widget.values[i]);
         }
+      }
+      if (_selectionsValue.length == widget.values.length) {
+        valueTitle = true;
+      } else if (_selectionsValue.length == 0) {
+        valueTitle = false;
+      } else {
+        valueTitle = null;
       }
       _items[i].checked = v;
     } else {
@@ -154,11 +242,15 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       }
     }
   }
+
   Widget checkBoxItem(int i) {
-    if(widget.isCirculaire){
-      Widget circulaireWidget=CirculaireCheckbox(isChecked: _items[i].checked,color: widget.activeColor,);
+    if (widget.isCirculaire) {
+      Widget circulaireWidget = CirculaireCheckbox(
+        isChecked: _items[i].checked,
+        color: widget.activeColor,
+      );
       return ListTile(
-        onTap: (){
+        onTap: () {
           setState(() {
             onChanged(i, !_items[i].checked);
           });
@@ -169,18 +261,18 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ),
         subtitle: widget.itemsSubTitle != null
             ? AutoSizeText(
-          "${widget.itemsSubTitle[i]}",
-          minFontSize: 11,
-        )
+                "${widget.itemsSubTitle[i]}",
+                minFontSize: 11,
+              )
             : null,
-        leading: widget.isLeading?circulaireWidget:null,
-        trailing: !widget.isLeading?circulaireWidget:null,
+        leading: widget.isLeading ? circulaireWidget : null,
+        trailing: !widget.isLeading ? circulaireWidget : null,
       );
     }
     return CheckboxListTile(
       onChanged: (v) {
         setState(() {
-          onChanged(i,v);
+          onChanged(i, v);
         });
       },
       activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
@@ -196,10 +288,11 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
           : null,
       value: _items[i].checked,
       selected: _items[i].checked,
-      dense: widget.itemsSubTitle != null?true:false,
-      isThreeLine: widget.itemsSubTitle != null?true:false,
-      controlAffinity: widget.isLeading?ListTileControlAffinity.leading:ListTileControlAffinity.trailing,
+      dense: widget.itemsSubTitle != null ? true : false,
+      isThreeLine: widget.itemsSubTitle != null ? true : false,
+      controlAffinity: widget.isLeading
+          ? ListTileControlAffinity.leading
+          : ListTileControlAffinity.trailing,
     );
   }
 }
-

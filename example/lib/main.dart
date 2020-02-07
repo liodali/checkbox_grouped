@@ -12,9 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
-  GlobalKey<SimpleGroupedCheckboxState<int>> circulairekey = GlobalKey<SimpleGroupedCheckboxState<int>>();
-  GlobalKey<SimpleGroupedCheckboxState<int>> mutlicheckboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
+  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey =
+      GlobalKey<SimpleGroupedCheckboxState<int>>();
+  GlobalKey<SimpleGroupedCheckboxState<int>> circulairekey =
+      GlobalKey<SimpleGroupedCheckboxState<int>>();
+  GlobalKey<SimpleGroupedCheckboxState<int>> mutlicheckboxKey =
+      GlobalKey<SimpleGroupedCheckboxState<int>>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Text("Basic"),
               SimpleGroupedCheckbox<int>(
@@ -51,12 +55,12 @@ class _MyAppState extends State<MyApp> {
                 checkFirstElement: false,
                 multiSelection: false,
               ),
-              Text("Mutiple selection"),
               SimpleGroupedCheckbox<int>(
                 key: mutlicheckboxKey,
                 itemsTitle: ["1 ", "2 ", "4 ", "5 "],
                 values: [1, 2, 4, 5],
-                preSelection: [2,5,4],
+                preSelection: [2, 5, 4],
+                textTitle: "Mutiple selection",
                 activeColor: Colors.green,
                 direction: Direction.Horizontal,
                 checkFirstElement: false,

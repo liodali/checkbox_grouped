@@ -1,3 +1,8 @@
+## [0.1.4] - add new feature
+
+    * add Title for each group
+    * make Title selected for multiple selection
+
 ## [0.1.3+1] - fix readme
 
 ## [0.1.3] - add new feature
