@@ -1,7 +1,6 @@
 import 'package:checkbox_grouped/src/item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' as Platform;
 
 /// @param preSelection:pre-selection values
 /// @param isMultiple
@@ -38,7 +37,7 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     this.preSelection,
     this.isScrolling = false,
     this.isMultiple = false,
-  }) : assert(isMultiple==false && preSelection.isNotEmpty),
+  })  : assert(isMultiple == false && preSelection.isNotEmpty),
         super(key: key);
 
   static SimpleGroupedChipsState of<T>(BuildContext context,
@@ -46,7 +45,7 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     assert(context != null);
     assert(nullOk != null);
     final SimpleGroupedChipsState<T> result =
-    context.findAncestorStateOfType<SimpleGroupedChipsState<T>>();
+        context.findAncestorStateOfType<SimpleGroupedChipsState<T>>();
     if (nullOk || result != null) return result;
     throw FlutterError.fromParts(<DiagnosticsNode>[
       ErrorSummary(
@@ -86,6 +85,13 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
     }
   }
 
+  selection() {
+    if (widget.isMultiple) {
+      return _selectionsValue;
+    }
+    return _selectedValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.isScrolling) {
@@ -110,11 +116,20 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
       for (int i = 0; i < _items.length; i++) ...[
         ChoiceChip(
           selected: _items[i].checked,
-          label: Text("${_items[i].title}", style: TextStyle(
-              color: _items[i].checked ? widget.selectedTextColor : widget
-                  .textColor),),
+          label: Text(
+            "${_items[i].title}",
+            style: TextStyle(
+                color: _items[i].checked
+                    ? widget.selectedTextColor
+                    : widget.textColor),
+          ),
           backgroundColor: widget.backgroundColorItem,
-          avatar: _items[i].checked?Icon(widget.selectedIcon,color: widget.selectedTextColor,):null,
+          avatar: _items[i].checked
+              ? Icon(
+                  widget.selectedIcon,
+                  color: widget.selectedTextColor,
+                )
+              : null,
           selectedColor: widget.selectedColorItem,
           onSelected: (value) {
             setState(() {
