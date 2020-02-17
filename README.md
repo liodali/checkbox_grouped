@@ -68,7 +68,7 @@ Add the following to your `pubspec.yaml` file:
 
 ### Get current selection
 
-` checkboxKey.currentState.selection() `
+` chipKey.currentState.selection() `
 
 ####  `SimpleGroupedCheckbox`
 |   Properties          |  Description |
