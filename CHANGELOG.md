@@ -1,3 +1,7 @@
+## [0.2.0] - add new feature
+
+    * add chip group
+    
 ## [0.1.4] - add new feature
 
     * add Title for each group

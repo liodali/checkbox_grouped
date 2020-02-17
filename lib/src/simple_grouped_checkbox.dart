@@ -102,7 +102,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     }
   }
 
-  Object selection() {
+   selection() {
     if (widget.multiSelection) {
       return _selectionsValue;
     }
@@ -169,6 +169,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ),
       );
     }
+
     if (titleWidget != null) {
       return Column(
         mainAxisSize: MainAxisSize.max,
@@ -183,6 +184,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ],
       );
     }
+
     return Wrap(
       direction: axis,
       verticalDirection: VerticalDirection.down,

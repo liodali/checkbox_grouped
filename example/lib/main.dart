@@ -19,6 +19,9 @@ class _MyAppState extends State<MyApp> {
   GlobalKey<SimpleGroupedCheckboxState<int>> mutlicheckboxKey =
       GlobalKey<SimpleGroupedCheckboxState<int>>();
 
+  GlobalKey<SimpleGroupedChipsState<int>> mutliChipsKey =
+  GlobalKey<SimpleGroupedChipsState<int>>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,6 +68,13 @@ class _MyAppState extends State<MyApp> {
                 direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: true,
+              ),
+              SimpleGroupedChips<int>(
+                key: mutliChipsKey,
+                values: [1,2,3,4,5,6,7],
+                itemTitle: ["text1","text2","text3","text4","text5","text6","text7"],
+                backgroundColorItem: Colors.black26,
+                isScrolling: true,
               ),
             ],
           ),
