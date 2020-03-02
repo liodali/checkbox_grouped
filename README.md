@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.2.1%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.2.2-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -49,7 +49,8 @@ Add the following to your `pubspec.yaml` file:
 |`checkFirstElement`    |`make first element in list checked`.  |
 |`multiSelection`       |`enable multiple selection`.  |
 |`isCirculaire`         |`enable to use circulaire checkbox`.  |
-|`textTitle`                |`Text title for group checkbox`.  |
+|`isExpandableTitle`    |`enable group checkbox to be expandable `.  |
+|`textTitle`            |`Text title for group checkbox`.  |
 
 ## Chip grouped Usage
 
