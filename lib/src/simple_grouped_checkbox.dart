@@ -19,6 +19,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final bool isCirculaire;
   final bool multiSelection;
   final bool isLeading;
+  final bool isExpandableTitle;
 
   SimpleGroupedCheckbox({
     Key key,
@@ -33,6 +34,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.isCirculaire = false,
     this.isLeading = false,
     this.multiSelection = false,
+    this.isExpandableTitle = false,
   })  : assert(values != null),
         assert(values.length == itemsTitle.length),
         assert(multiSelection == false &&
@@ -72,6 +74,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   List<T> _selectionsValue = [];
   List<Item> _items = [];
   bool valueTitle = false;
+  bool isExpanded = false;
 
   @override
   void initState() {
@@ -119,7 +122,10 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       titleWidget = Text(
         "${widget.textTitle}",
         style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       );
 
     if (widget.multiSelection) {
@@ -127,7 +133,10 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         title: Text(
           "${widget.textTitle}",
           style: TextStyle(
-              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         onTap: () {
           setState(() {
@@ -170,7 +179,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       );
     }
 
-    if (titleWidget != null) {
+    if (titleWidget != null && !widget.isExpandableTitle) {
       return Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -180,6 +189,29 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             verticalDirection: VerticalDirection.down,
             runSpacing: axis == Axis.horizontal ? 5.0 : 20.0,
             children: checkBoxList(axis),
+          ),
+        ],
+      );
+    } else if (titleWidget != null && widget.isExpandableTitle) {
+      return ExpansionPanelList(
+        expansionCallback: (index, value) {
+          setState(() {
+            isExpanded = !value;
+          });
+        },
+        children: [
+          ExpansionPanel(
+            canTapOnHeader: true,
+            isExpanded: isExpanded,
+            headerBuilder: (ctx, value) {
+              return titleWidget;
+            },
+            body: Wrap(
+              direction: axis,
+              verticalDirection: VerticalDirection.down,
+              runSpacing: axis == Axis.horizontal ? 5.0 : 20.0,
+              children: checkBoxList(axis),
+            ),
           ),
         ],
       );

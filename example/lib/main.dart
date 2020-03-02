@@ -68,6 +68,7 @@ class _MyAppState extends State<MyApp> {
                 direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: true,
+                isExpandableTitle: true,
               ),
               SimpleGroupedChips<int>(
                 key: mutliChipsKey,
