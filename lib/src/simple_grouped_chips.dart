@@ -34,10 +34,10 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     this.selectedTextColor = Colors.white,
     this.textColor = Colors.black,
     this.selectedIcon = Icons.done,
-    this.preSelection,
+    this.preSelection = const [],
     this.isScrolling = false,
     this.isMultiple = false,
-  })  : assert(isMultiple == false && preSelection.isNotEmpty),
+  })  : assert(isMultiple == false && preSelection.isEmpty),
         super(key: key);
 
   static SimpleGroupedChipsState of<T>(BuildContext context,
