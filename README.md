@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.2.1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.2.1%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -13,7 +13,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-      checkbox_grouped: ^0.2.1
+      checkbox_grouped: ^0.2.1+1
 
 
 
