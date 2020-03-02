@@ -1,3 +1,4 @@
+## [0.2.2+1] - fix readme
 ## [0.2.2] - new feature
     * add isExpandable to make grouped checkbox expanded from title
 ## [0.2.1+1] - fix err
