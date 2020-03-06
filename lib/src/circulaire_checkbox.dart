@@ -13,7 +13,6 @@ class CirculaireCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(isChecked);
     return SizedBox(
       width: 32,
       height: 32,

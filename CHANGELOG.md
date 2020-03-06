@@ -1,3 +1,6 @@
+## [0.2.4] - add new feature
+    *  onItemSeelected Call when users make  selection
+    *  disable item
 ## [0.2.2+1] - fix readme
 ## [0.2.2] - new feature
     * add isExpandable to make grouped checkbox expanded from title

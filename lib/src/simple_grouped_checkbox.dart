@@ -7,13 +7,17 @@ import './item.dart';
 
 enum Direction { Horizontal, Vertical }
 
+typedef onChanged = Function(dynamic selected);
+
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final Direction direction;
   final List<String> itemsTitle;
+  final onChanged onItemSeelected;
   final String textTitle;
   final List<String> itemsSubTitle;
   final Color activeColor;
   final List<T> values;
+  final List<String> disableItems;
   final List<T> preSelection;
   final bool checkFirstElement;
   final bool isCirculaire;
@@ -26,8 +30,10 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.direction = Direction.Vertical,
     @required this.itemsTitle,
     @required this.values,
+    this.onItemSeelected,
     this.textTitle,
     this.itemsSubTitle,
+    this.disableItems,
     this.activeColor,
     this.checkFirstElement = false,
     this.preSelection,
@@ -45,6 +51,12 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
         assert(itemsSubTitle != null
             ? itemsSubTitle.length == itemsTitle.length
             : true),
+        assert(
+            (textTitle == null && !isExpandableTitle) ||
+                (textTitle != null && isExpandableTitle ||
+                    textTitle != null && !isExpandableTitle),
+            "you cannot make isExpandable without textTitle"),
+        assert(disableItems == null || disableItems == [] || disableItems.takeWhile((c)=>itemsTitle.contains(c)).isNotEmpty,"you cannot disable items doesn't exist in itemsTitle"),
         super(key: key);
 
   static SimpleGroupedCheckboxState of<T>(BuildContext context,
@@ -80,7 +92,10 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   void initState() {
     super.initState();
     for (String title in widget.itemsTitle) {
-      _items.add(Item(title: title, checked: false));
+      _items.add(Item(
+          title: title,
+          checked: false,
+          isDisabled: widget.disableItems?.contains(title) ?? false));
     }
 
     if (widget.multiSelection && widget.checkFirstElement) {
@@ -128,7 +143,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ),
       );
 
-    if (widget.multiSelection) {
+    if (widget.multiSelection && widget.textTitle != null) {
       titleWidget = ListTile(
         title: Text(
           "${widget.textTitle}",
@@ -153,7 +168,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             } else {
               valueTitle = true;
             }
-
+            widget.onItemSeelected(_selectionsValue);
             _items
                 .where((elem) => elem.checked != valueTitle)
                 .forEach((i) => i.checked = valueTitle);
@@ -261,6 +276,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         valueTitle = null;
       }
       _items[i].checked = v;
+      widget.onItemSeelected(_selectionsValue);
     } else {
       if (v) {
         _items[i].checked = v;
@@ -273,6 +289,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         }
         _selectedValue = widget.values[i];
         _previousActive = _items[i];
+        widget.onItemSeelected(_selectedValue);
       }
     }
   }
@@ -284,11 +301,13 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         color: widget.activeColor,
       );
       return ListTile(
-        onTap: () {
-          setState(() {
-            onChanged(i, !_items[i].checked);
-          });
-        },
+        onTap: _items[i].isDisabled
+            ? null
+            : () {
+                setState(() {
+                  onChanged(i, !_items[i].checked);
+                });
+              },
         title: AutoSizeText(
           "${_items[i].title}",
           minFontSize: 12,
@@ -304,11 +323,13 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       );
     }
     return CheckboxListTile(
-      onChanged: (v) {
-        setState(() {
-          onChanged(i, v);
-        });
-      },
+      onChanged: _items[i].isDisabled
+          ? null
+          : (v) {
+              setState(() {
+                onChanged(i, v);
+              });
+            },
       activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
       title: AutoSizeText(
         "${_items[i].title}",
