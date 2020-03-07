@@ -49,9 +49,6 @@ class _Example1State extends State<Example1> {
               SimpleGroupedCheckbox<int>(
                 key: checkboxKey,
                 itemsTitle: ["1 ", "2 ", "4 ", "5 "],
-                onItemSeelected: (d){
-
-                },
                 values: [1, 2, 4, 5],
                 activeColor: Colors.red,
                 direction: Direction.Horizontal,

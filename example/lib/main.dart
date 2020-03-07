@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
               Text("Basic"),
               SimpleGroupedCheckbox<int>(
                 key: checkboxKey,
-                onItemSeelected: (data){
+                onItemSelected: (data){
                   print(data);
                 },
                 disableItems: ["2"],
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                 direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: true,
-                onItemSeelected: (data){
+                onItemSelected: (data){
                   print(data);
                 },
                 isExpandableTitle: true,

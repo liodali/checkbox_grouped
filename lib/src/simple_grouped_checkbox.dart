@@ -12,7 +12,7 @@ typedef onChanged = Function(dynamic selected);
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final Direction direction;
   final List<String> itemsTitle;
-  final onChanged onItemSeelected;
+  final onChanged onItemSelected;
   final String textTitle;
   final List<String> itemsSubTitle;
   final Color activeColor;
@@ -30,7 +30,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.direction = Direction.Vertical,
     @required this.itemsTitle,
     @required this.values,
-    this.onItemSeelected,
+    this.onItemSelected,
     this.textTitle,
     this.itemsSubTitle,
     this.disableItems,
@@ -175,8 +175,8 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
               valueTitle = true;
             }
             //callback
-            if (widget.onItemSeelected != null)
-              widget.onItemSeelected(_selectionsValue);
+            if (widget.onItemSelected != null)
+              widget.onItemSelected(_selectionsValue);
 
             _items
                 .where((elem) => elem.checked != valueTitle)
@@ -286,8 +286,8 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       }
       _items[i].checked = v;
 
-      if (widget.onItemSeelected != null)
-        widget.onItemSeelected(_selectionsValue);
+      if (widget.onItemSelected != null)
+        widget.onItemSelected(_selectionsValue);
     } else {
       if (v) {
         _items[i].checked = v;
@@ -301,8 +301,8 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         _selectedValue = widget.values[i];
         _previousActive = _items[i];
 
-        if (widget.onItemSeelected != null)
-          widget.onItemSeelected(_selectedValue);
+        if (widget.onItemSelected != null)
+          widget.onItemSelected(_selectedValue);
       }
     }
   }
