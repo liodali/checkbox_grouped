@@ -56,7 +56,13 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
                 (textTitle != null && isExpandableTitle ||
                     textTitle != null && !isExpandableTitle),
             "you cannot make isExpandable without textTitle"),
-        assert(disableItems == null || disableItems == [] || disableItems.takeWhile((c)=>itemsTitle.contains(c)).isNotEmpty,"you cannot disable items doesn't exist in itemsTitle"),
+        assert(
+            disableItems == null ||
+                disableItems == [] ||
+                disableItems
+                    .takeWhile((c) => itemsTitle.contains(c))
+                    .isNotEmpty,
+            "you cannot disable items doesn't exist in itemsTitle"),
         super(key: key);
 
   static SimpleGroupedCheckboxState of<T>(BuildContext context,
@@ -168,7 +174,10 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             } else {
               valueTitle = true;
             }
-            widget.onItemSeelected(_selectionsValue);
+            //callback
+            if (widget.onItemSeelected != null)
+              widget.onItemSeelected(_selectionsValue);
+
             _items
                 .where((elem) => elem.checked != valueTitle)
                 .forEach((i) => i.checked = valueTitle);
@@ -276,7 +285,9 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         valueTitle = null;
       }
       _items[i].checked = v;
-      widget.onItemSeelected(_selectionsValue);
+
+      if (widget.onItemSeelected != null)
+        widget.onItemSeelected(_selectionsValue);
     } else {
       if (v) {
         _items[i].checked = v;
@@ -289,7 +300,9 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         }
         _selectedValue = widget.values[i];
         _previousActive = _items[i];
-        widget.onItemSeelected(_selectedValue);
+
+        if (widget.onItemSeelected != null)
+          widget.onItemSeelected(_selectedValue);
       }
     }
   }
