@@ -1,3 +1,4 @@
+## [0.2.5+1] - fix error in pubspec
 ## [0.2.5] - add new feature to chip grouped 
     *  onItemSelected Call when users make  selection
  
