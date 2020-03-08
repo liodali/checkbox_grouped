@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/src/item.dart';
+import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,8 @@ import 'package:flutter/material.dart';
 /// @param values
 /// @param itemTitle
 
+
+
 class SimpleGroupedChips<T> extends StatefulWidget {
   final List<T> preSelection;
   final bool isMultiple;
@@ -24,11 +27,13 @@ class SimpleGroupedChips<T> extends StatefulWidget {
   final IconData selectedIcon;
   final List<T> values;
   final List<String> itemTitle;
+  final onChanged onItemSelected;
 
   SimpleGroupedChips({
     Key key,
     @required this.values,
     @required this.itemTitle,
+    this.onItemSelected,
     this.backgroundColorItem = Colors.grey,
     this.selectedColorItem = Colors.black,
     this.selectedTextColor = Colors.white,
@@ -146,6 +151,9 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
       if (widget.isMultiple) {
         _selectionsValue.add(widget.values[index]);
         _items[index].checked = value;
+        if(widget.onItemSelected!=null){
+          widget.onItemSelected(_selectionsValue);
+        }
       } else {
         if (_previousActive != null && _previousActive != _items[index]) {
           _previousActive.checked = false;
@@ -153,11 +161,17 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
         _items[index].checked = true;
         _selectedValue = widget.values[index];
         _previousActive = _items[index];
+        if(widget.onItemSelected!=null){
+          widget.onItemSelected(_selectedValue);
+        }
       }
     } else {
       if (widget.isMultiple) {
         _selectionsValue.remove(widget.values[index]);
         _items[index].checked = value;
+        if(widget.onItemSelected!=null){
+          widget.onItemSelected(_selectionsValue);
+        }
       }
     }
   }

@@ -1,3 +1,18 @@
+## [0.2.5] - add new feature to chip grouped 
+    *  onItemSelected Call when users make  selection
+ 
+## [0.2.5] - add new feature to chip grouped 
+    *  onItemSelected Call when users make  selection
+ 
+## [0.2.5] - add new feature to chip grouped 
+    *  onItemSelected Call when users make  selection
+ 
+## [0.2.5] - add new feature to chip grouped 
+    *  onItemSelected Call when users make  selection
+ 
+## [0.2.5] - add new feature to chip grouped 
+    *  onItemSelected Call when users make  selection
+ 
 ## [0.2.4+1] - fix error
 ## [0.2.4] - add new feature
     *  onItemSeelected Call when users make  selection
