@@ -13,28 +13,32 @@ import 'package:flutter/material.dart';
 /// @param selectedIcon
 /// @param values
 /// @param itemTitle
-
-
+/// @param onItemSelected
+/// @param disabledItems
 
 class SimpleGroupedChips<T> extends StatefulWidget {
   final List<T> preSelection;
   final bool isMultiple;
   final bool isScrolling;
   final Color backgroundColorItem;
+  final Color disabledColor;
   final Color selectedColorItem;
   final Color textColor;
   final Color selectedTextColor;
   final IconData selectedIcon;
   final List<T> values;
   final List<String> itemTitle;
+  final List<String> disabledItems;
   final onChanged onItemSelected;
 
   SimpleGroupedChips({
     Key key,
     @required this.values,
     @required this.itemTitle,
+    this.disabledItems,
     this.onItemSelected,
     this.backgroundColorItem = Colors.grey,
+    this.disabledColor = Colors.grey,
     this.selectedColorItem = Colors.black,
     this.selectedTextColor = Colors.white,
     this.textColor = Colors.black,
@@ -43,6 +47,13 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     this.isScrolling = false,
     this.isMultiple = false,
   })  : assert(isMultiple == false && preSelection.isEmpty),
+        assert(
+            disabledItems == null ||
+                disabledItems == [] ||
+                disabledItems
+                    .takeWhile((i) => itemTitle.contains(i))
+                    .isNotEmpty,
+            "you cannot disable items doesn't exist in itemTitle"),
         super(key: key);
 
   static SimpleGroupedChipsState of<T>(BuildContext context,
@@ -77,7 +88,11 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
     super.initState();
 
     _items.addAll(widget.itemTitle
-        .map((item) => Item(title: item, checked: false))
+        .map((item) => Item(
+              title: item,
+              checked: false,
+              isDisabled: widget.disabledItems?.contains(item) ?? false,
+            ))
         .toList());
 
     if (widget.isMultiple && widget.preSelection.isNotEmpty) {
@@ -129,6 +144,7 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
                     : widget.textColor),
           ),
           backgroundColor: widget.backgroundColorItem,
+          disabledColor: widget.disabledColor,
           avatar: _items[i].checked
               ? Icon(
                   widget.selectedIcon,
@@ -136,11 +152,13 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
                 )
               : null,
           selectedColor: widget.selectedColorItem,
-          onSelected: (value) {
-            setState(() {
-              _changeSelection(index: i, value: value);
-            });
-          },
+          onSelected: _items[i].isDisabled
+              ? null
+              : (value) {
+                  setState(() {
+                    _changeSelection(index: i, value: value);
+                  });
+                },
         ),
       ]
     ];
@@ -151,7 +169,7 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
       if (widget.isMultiple) {
         _selectionsValue.add(widget.values[index]);
         _items[index].checked = value;
-        if(widget.onItemSelected!=null){
+        if (widget.onItemSelected != null) {
           widget.onItemSelected(_selectionsValue);
         }
       } else {
@@ -161,7 +179,7 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
         _items[index].checked = true;
         _selectedValue = widget.values[index];
         _previousActive = _items[index];
-        if(widget.onItemSelected!=null){
+        if (widget.onItemSelected != null) {
           widget.onItemSelected(_selectedValue);
         }
       }
@@ -169,7 +187,7 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
       if (widget.isMultiple) {
         _selectionsValue.remove(widget.values[index]);
         _items[index].checked = value;
-        if(widget.onItemSelected!=null){
+        if (widget.onItemSelected != null) {
           widget.onItemSelected(_selectionsValue);
         }
       }

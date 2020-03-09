@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.2.5%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.2.6-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -13,7 +13,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.2.5+1
+		checkbox_grouped: ^0.2.6
 
 
 
@@ -43,7 +43,7 @@ Add the following to your `pubspec.yaml` file:
 |`activeColor`          |The color to use when a CheckBox is checked.  |
 |`itemsTitle`           |(required) A list of strings that describes each checkbox button. Each label must be distinct.   |
 |`itemsSubTitle`        | A list of strings that describes second Text.   |
-|`onItemSelected`      | Call when users make  selection    |
+|`onItemSelected`       | Call when users make  selection    |
 |`disableItems`         | Specifies which item should be disabled. The strings passed to this must match the Titles  |
 |`preSelection`         | A list of values that you want to be initially selected.   |
 |`values`               |(required) Values contains in each element.   |
@@ -77,8 +77,10 @@ Add the following to your `pubspec.yaml` file:
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
+|`disabledItems`        | Specifies which item should be disabled. The strings passed to this must match the Titles  |
 |`preSelection`         | A list of values that you want to be initially selected.   |
 |`values`               |(required) Values contains in each element.   |
+|`onItemSelected`       | Call when users make  selection    |
 |`backgroundColorItem`  |`the background color for each item`.  |
 |`selectedColorItem`    |`the background color to use when item is  selected`.  |
 |`textColor`            |`the color to use for each text of item `.  |
