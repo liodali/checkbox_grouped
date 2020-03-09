@@ -44,8 +44,16 @@ class _MyAppState extends State<MyApp> {
                 key: checkboxKey,
                 onItemSelected: (data){
                   print(data);
+                  if(data==1){
+                    checkboxKey.currentState.disabledItems(["5"]);
+                  }else if(data==4){
+                    checkboxKey.currentState.enabledItems(["5","2"]);
+                    checkboxKey.currentState.disabledItems(["1"]);
+                  }else if(data == 2 ){
+                    checkboxKey.currentState.enabledItems(["1"]);
+                  }
                 },
-                disableItems: ["2"],
+                disableItems: ["5"],
                 itemsTitle: ["1", "2", "4", "5"],
                 values: [1, 2, 4, 5],
                 activeColor: Colors.red,

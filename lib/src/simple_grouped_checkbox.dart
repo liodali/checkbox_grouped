@@ -132,6 +132,22 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     }
     return _selectedValue;
   }
+  disabledItems(List<String> items) {
+    assert(items.takeWhile((c)=>!widget.itemsTitle.contains(c)).isEmpty,"some of items doen't exist");
+    setState(() {
+      for(String item in items){
+        _items.firstWhere((c)=>c.title==item,orElse: ()=>null).isDisabled = true;
+      }
+
+    });
+  }
+  enabledItems(List<String> items) {
+    setState(() {
+      for(String item in items){
+        _items.firstWhere((c)=>c.title==item,orElse: ()=>null).isDisabled = false;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

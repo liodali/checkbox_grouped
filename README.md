@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.2.6-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.2.7-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -13,7 +13,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.2.6
+		checkbox_grouped: ^0.2.7
 
 
 
@@ -36,6 +36,12 @@ Add the following to your `pubspec.yaml` file:
 ### Get current selection
 
 ` checkboxKey.currentState.selection() `
+### enabled items
+
+` checkboxKey.currentState.enabledItems(List<String> items) `
+### disable item
+
+` checkboxKey.currentState.disabledItems(List<String> items) `
 
 ####  `SimpleGroupedCheckbox`
 |   Properties          |  Description |
