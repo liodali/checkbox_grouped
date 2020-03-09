@@ -1,3 +1,4 @@
+## [0.2.7+1] -  remove duplicated code, 
 ## [0.2.7] -  callback to disable/enable items in checkbox  grouped 
 ## [0.2.6] -  disabled items in grouped chip 
 ## [0.2.5+1] - fix error in pubspec

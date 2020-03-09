@@ -135,18 +135,19 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   disabledItems(List<String> items) {
     assert(items.takeWhile((c)=>!widget.itemsTitle.contains(c)).isEmpty,"some of items doen't exist");
     setState(() {
-      for(String item in items){
-        _items.firstWhere((c)=>c.title==item,orElse: ()=>null).isDisabled = true;
-      }
-
+      itemStatus(items,true);
     });
   }
   enabledItems(List<String> items) {
+    assert(items.takeWhile((c)=>!widget.itemsTitle.contains(c)).isEmpty,"some of items doen't exist");
     setState(() {
-      for(String item in items){
-        _items.firstWhere((c)=>c.title==item,orElse: ()=>null).isDisabled = false;
-      }
+      itemStatus(items,false);
     });
+  }
+  void itemStatus(List<String> items,bool isDisabled){
+    for(String item in items){
+      _items.firstWhere((c)=>c.title==item,orElse: ()=>null).isDisabled = isDisabled;
+    }
   }
 
   @override
