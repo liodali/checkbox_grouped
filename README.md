@@ -78,7 +78,7 @@ Add the following to your `pubspec.yaml` file:
 
 ` chipKey.currentState.selection() `
 
-####  `SimpleGroupedCheckbox`
+####  `SimpleGroupedChip`
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
@@ -112,7 +112,7 @@ Add the following to your `pubspec.yaml` file:
 
 ` switchKey.currentState.selection() `
 
-####  `SimpleGroupedCheckbox`
+####  `SimpleGroupedSwitch`
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
