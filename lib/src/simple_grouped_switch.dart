@@ -7,14 +7,14 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<String> preSelectionItems;
   final List<T> values;
   final bool isMutlipleSelection;
-  final onChanged onSelectedItems;
+  final onChanged onItemSelected;
   SimpleGroupedSwitch({
     Key key,
     this.itemsTitle,
     this.values,
     this.preSelectionItems = const [],
     this.isMutlipleSelection = true,
-    this.onSelectedItems,
+    this.onItemSelected,
   })  : assert(values.length == itemsTitle.length),
         assert((isMutlipleSelection &&
                 (preSelectionItems.isEmpty || preSelectionItems.isNotEmpty)) ||
@@ -83,8 +83,8 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
         _selectedValues.remove(widget.values[index]);
       }
       item.checked = value;
-      if(widget.onSelectedItems!=null)
-      widget.onSelectedItems(_selectedValues);
+      if(widget.onItemSelected!=null)
+      widget.onItemSelected(_selectedValues);
     } else {
       if (!item.checked && value) {
         item.checked = value;
@@ -96,8 +96,8 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
             _selectedValue = widget.values[index];
           }
         }
-        if(widget.onSelectedItems!=null)
-        widget.onSelectedItems(_selectedValue);
+        if(widget.onItemSelected!=null)
+        widget.onItemSelected(_selectedValue);
       }
     }
   }
