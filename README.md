@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.3.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.3.0%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -13,7 +13,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.3.0
+		checkbox_grouped: ^0.3.0+1
 
 
 
@@ -78,7 +78,7 @@ Add the following to your `pubspec.yaml` file:
 
 ` chipKey.currentState.selection() `
 
-####  `SimpleGroupedCheckbox`
+####  `SimpleGroupedChip`
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
@@ -112,12 +112,12 @@ Add the following to your `pubspec.yaml` file:
 
 ` switchKey.currentState.selection() `
 
-####  `SimpleGroupedCheckbox`
+####  `SimpleGroupedSwitch`
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
 |`preSelection`         | A list of values that you want to be initially selected.   |
 |`values`               |(required) Values contains in each element.   |
 |`onItemSelected`       | Call when users make  selection    |
-|`isMutlipleSelection`           |`enable multiple selection`.  |
+|`isMutlipleSelection`  |`enable multiple selection`.  |
 
