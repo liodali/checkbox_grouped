@@ -103,6 +103,12 @@ class _MyAppState extends State<MyApp> {
                 backgroundColorItem: Colors.black26,
                 isScrolling: true,
               ),
+              Text("grouped switch"),
+              SimpleGroupedSwitch<int>(
+                itemsTitle: ["1","2","3"],
+                values: [1,2,3],
+                isMutlipleSelection: false,
+              ),
             ],
           ),
         ),
