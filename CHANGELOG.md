@@ -1,3 +1,7 @@
+## [0.3.0] -  simple grouped switch, 
+* preselection items 
+* enable multi selection 
+* callback when user click 
 ## [0.2.7+1] -  remove duplicated code, 
 ## [0.2.7] -  callback to disable/enable items in checkbox  grouped 
 ## [0.2.6] -  disabled items in grouped chip 

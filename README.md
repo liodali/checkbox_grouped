@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.2.7%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.3.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -13,7 +13,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.2.7+1
+		checkbox_grouped: ^0.3.0
 
 
 
@@ -66,7 +66,6 @@ Add the following to your `pubspec.yaml` file:
 
     SimpleGroupedChips<int>(
                     key: chipKey,
-                    values: [1,2,4,5],
                     values: [1,2,3,4,5,6,7],
                     itemTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
                     backgroundColorItem: Colors.black26,
@@ -95,4 +94,30 @@ Add the following to your `pubspec.yaml` file:
 |`isScrolling`          |`enable horizontal scrolling`.  |
 |`isMultiple`           |`enable multiple selection`.  |
 			     
+## Switch grouped Usage
+
+#### Creating a basic `SimpleGroupedSwitch`
+
+    SimpleGroupedSwitch<int>(
+                    key: chipKey,
+                    values: [1,2,4,5],
+                    itemsTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
+                    isMutlipleSelection: false,
+                  );
+### Declare GlobalKey to get selection
+
+`  GlobalKey<SimpleGroupedSwitchState<int>> switchKey = GlobalKey<SimpleGroupedSwitchState<int>>();`
+
+### Get current selection
+
+` switchKey.currentState.selection() `
+
+####  `SimpleGroupedCheckbox`
+|   Properties          |  Description |
+|-----------------------|--------------|
+|`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
+|`preSelection`         | A list of values that you want to be initially selected.   |
+|`values`               |(required) Values contains in each element.   |
+|`onItemSelected`       | Call when users make  selection    |
+|`isMutlipleSelection`           |`enable multiple selection`.  |
 
