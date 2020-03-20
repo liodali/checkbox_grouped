@@ -12,10 +12,30 @@ void main() {
 
     SwitchListTile cb =
         tester.widget(find.byType(SwitchListTile).first) as SwitchListTile;
-    SwitchListTile cb2 =
-        tester.widget(find.byType(SwitchListTile).at(1)) as SwitchListTile;
+    SwitchListTile cb2 = tester.widget(find.byType(SwitchListTile).at(1)) as SwitchListTile;
+
     expect(cb.value, false);
     expect(cb2.value, true);
+  });
+  testWidgets("test disable selection SimpleGroupedSwitch ", (tester) async {
+    GlobalKey key = GlobalKey<SimpleGroupedSwitchState<int>>();
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SimpleGroupedSwitch<int>(
+          key: key,
+          itemsTitle: ["1", "2", "4", "5"],
+          disableItems: [2],
+          values: [1, 2, 4, 5],
+          isMutlipleSelection: false,
+          textStyle: TextStyle(color: Colors.black),
+        ),
+      ) ,
+    ));
+
+   await tester.pump();
+
+    SwitchListTile cb = tester.widget(find.byType(SwitchListTile).at(1)) as SwitchListTile;
+    expect(cb.onChanged, null);
   });
 }
 

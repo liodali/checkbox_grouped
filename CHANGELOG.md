@@ -1,3 +1,5 @@
+## [0.3.1] - initialise an disabled items, 
+you can make item disabled 
 ## [0.3.0+1] -  modify readme, 
 ## [0.3.0] -  simple grouped switch, 
 * preselection items 

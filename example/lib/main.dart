@@ -107,6 +107,9 @@ class _MyAppState extends State<MyApp> {
               SimpleGroupedSwitch<int>(
                 itemsTitle: ["1","2","3"],
                 values: [1,2,3],
+                disableItems: [2],
+                textStyle: TextStyle(fontSize: 16),
+                activeColor:Colors.red,
                 isMutlipleSelection: false,
               ),
             ],

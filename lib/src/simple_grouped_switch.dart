@@ -6,21 +6,30 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<String> itemsTitle;
   final List<String> preSelectionItems;
   final List<T> values;
+  final List<T> disableItems;
   final bool isMutlipleSelection;
   final onChanged onItemSelected;
+  final Color activeColor;
+  final TextStyle textStyle;
+
   SimpleGroupedSwitch({
     Key key,
     this.itemsTitle,
     this.values,
+    this.disableItems= const [],
     this.preSelectionItems = const [],
+    this.activeColor,
+    this.textStyle,
     this.isMutlipleSelection = true,
     this.onItemSelected,
   })  : assert(values.length == itemsTitle.length),
+        assert(disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
+            "you cannot disable item doesn't exist"),
         assert((isMutlipleSelection &&
                 (preSelectionItems.isEmpty || preSelectionItems.isNotEmpty)) ||
             (!isMutlipleSelection &&
                 (preSelectionItems.length == 1 || preSelectionItems.isEmpty))),
-  super(key:key);
+        super(key: key);
 
   static SimpleGroupedSwitchState of<T>(BuildContext context,
       {bool nullOk = false}) {
@@ -47,9 +56,8 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
   T _selectedValue;
   List<T> _selectedValues;
 
-
-  selection(){
-    if(widget.isMutlipleSelection){
+  selection() {
+    if (widget.isMutlipleSelection) {
       return _selectedValues;
     }
     return _selectedValue;
@@ -64,7 +72,7 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
       _items.add(Item(
           title: elem,
           checked: widget.preSelectionItems.contains(elem),
-          isDisabled: false));
+          isDisabled: widget.disableItems.contains(widget.values[index])));
     });
   }
 
@@ -83,21 +91,20 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
         _selectedValues.remove(widget.values[index]);
       }
       item.checked = value;
-      if(widget.onItemSelected!=null)
-      widget.onItemSelected(_selectedValues);
+      if (widget.onItemSelected != null) widget.onItemSelected(_selectedValues);
     } else {
       if (!item.checked && value) {
         item.checked = value;
         if (value) {
           if (widget.values.indexOf(_selectedValue) != index) {
             //_items[index].checked = false;
-            if(_selectedValue!=null)
-            _items[widget.values.indexOf(_selectedValue)].checked = false;
+            if (_selectedValue != null)
+              _items[widget.values.indexOf(_selectedValue)].checked = false;
             _selectedValue = widget.values[index];
           }
         }
-        if(widget.onItemSelected!=null)
-        widget.onItemSelected(_selectedValue);
+        if (widget.onItemSelected != null)
+          widget.onItemSelected(_selectedValue);
       }
     }
   }
@@ -105,13 +112,21 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
   List<Widget> itemsWidget() {
     return _items
         .map((elem) => SwitchListTile(
-              onChanged: (v) {
+              onChanged: elem.isDisabled?null:(v) {
                 setState(() {
                   onChanged(elem, v, _items.indexOf(elem));
                 });
               },
+              activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
               value: elem.checked,
-              title: Text("${elem.title}"),
+              title: Text(
+                "${elem.title}",
+                style: widget.textStyle?.copyWith(
+                  color: elem.checked
+                      ? widget.activeColor
+                      : (widget.textStyle?.color??Theme.of(context).textTheme.title.color)??Theme.of(context).textTheme.title.getTextStyle(),
+                ),
+              ),
             ))
         .toList();
   }
