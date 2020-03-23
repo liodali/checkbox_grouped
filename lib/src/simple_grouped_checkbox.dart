@@ -13,7 +13,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final Direction direction;
   final List<String> itemsTitle;
   final onChanged onItemSelected;
-  final String textTitle;
+  final String groupTitle;
   final List<String> itemsSubTitle;
   final Color activeColor;
   final List<T> values;
@@ -31,7 +31,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     @required this.itemsTitle,
     @required this.values,
     this.onItemSelected,
-    this.textTitle,
+    this.groupTitle,
     this.itemsSubTitle,
     this.disableItems,
     this.activeColor,
@@ -52,9 +52,9 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
             ? itemsSubTitle.length == itemsTitle.length
             : true),
         assert(
-            (textTitle == null && !isExpandableTitle) ||
-                (textTitle != null && isExpandableTitle ||
-                    textTitle != null && !isExpandableTitle),
+            (groupTitle == null && !isExpandableTitle) ||
+                (groupTitle != null && isExpandableTitle ||
+                    groupTitle != null && !isExpandableTitle),
             "you cannot make isExpandable without textTitle"),
         assert(
             disableItems == null ||
@@ -156,9 +156,9 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ? Axis.horizontal
         : Axis.vertical;
     Widget titleWidget;
-    if (widget.textTitle != null)
+    if (widget.groupTitle != null)
       titleWidget = Text(
-        "${widget.textTitle}",
+        "${widget.groupTitle}",
         style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,
@@ -166,10 +166,10 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ),
       );
 
-    if (widget.multiSelection && widget.textTitle != null) {
+    if (widget.multiSelection && widget.groupTitle != null) {
       titleWidget = ListTile(
         title: Text(
-          "${widget.textTitle}",
+          "${widget.groupTitle}",
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,

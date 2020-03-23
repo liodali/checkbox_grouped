@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
                 values: [1, 2, 4, 5],
                 preSelection: [2, 5, 4],
                 activeColor: Colors.green,
-                textTitle: "Mutiple selection",
+                groupTitle: "Mutiple selection",
                 direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: true,
