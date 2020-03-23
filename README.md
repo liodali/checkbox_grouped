@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.3.1%2B3-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.3.1%2B2-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * grouping chips
@@ -13,7 +13,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.3.1+3
+		checkbox_grouped: ^0.3.1+2
 
 
 
@@ -25,6 +25,7 @@ Add the following to your `pubspec.yaml` file:
                     itemsTitle: ["1 " ,"2 ","4 ","5 "],
                     values: [1,2,4,5],
                     activeColor: Colors.red,
+                    direction: Direction.Horizontal,
                     checkFirstElement: false,
                     multiSelection: false,
                   );

@@ -1,4 +1,3 @@
-## [0.3.1+3] - fix errors 
 ## [0.3.1+2] - remove direction groupedcheckbox 
 make groupedcheckbox vertical by default 
 change wrap  widget by column 
