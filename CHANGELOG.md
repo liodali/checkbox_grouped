@@ -1,3 +1,6 @@
+## [0.3.1+2] - remove direction groupedcheckbox 
+make groupedcheckbox vertical by default 
+change wrap  widget by column 
 ## [0.3.1+1] - change name textTitle to groupTitle, 
 ## [0.3.1] - initialise an disabled items, 
 you can make item disabled 
