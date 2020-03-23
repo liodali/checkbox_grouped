@@ -51,7 +51,6 @@ class _Example1State extends State<Example1> {
                 itemsTitle: ["1 ", "2 ", "4 ", "5 "],
                 values: [1, 2, 4, 5],
                 activeColor: Colors.red,
-                direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: false,
               ),

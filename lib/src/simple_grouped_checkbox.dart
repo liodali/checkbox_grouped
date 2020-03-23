@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:checkbox_grouped/src/item.dart';
 import './item.dart';
 
-enum Direction { Horizontal, Vertical }
 
 typedef onChanged = Function(dynamic selected);
 
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
-  final Direction direction;
   final List<String> itemsTitle;
   final onChanged onItemSelected;
   final String groupTitle;
@@ -27,7 +25,6 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 
   SimpleGroupedCheckbox({
     Key key,
-    this.direction = Direction.Vertical,
     @required this.itemsTitle,
     @required this.values,
     this.onItemSelected,
@@ -152,9 +149,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
 
   @override
   Widget build(BuildContext context) {
-    Axis axis = widget.direction == Direction.Horizontal
-        ? Axis.horizontal
-        : Axis.vertical;
+
     Widget titleWidget;
     if (widget.groupTitle != null)
       titleWidget = Text(
@@ -225,12 +220,11 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           titleWidget,
-          Wrap(
-            direction: axis,
-            verticalDirection: VerticalDirection.down,
-            runSpacing: axis == Axis.horizontal ? 5.0 : 20.0,
-            children: checkBoxList(axis),
-          ),
+          Expanded(
+            child: Column(
+              children: checkBoxList(),
+            ),
+          )
         ],
       );
     } else if (titleWidget != null && widget.isExpandableTitle) {
@@ -247,38 +241,26 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             headerBuilder: (ctx, value) {
               return titleWidget;
             },
-            body: Wrap(
-              direction: axis,
-              verticalDirection: VerticalDirection.down,
-              runSpacing: axis == Axis.horizontal ? 5.0 : 20.0,
-              children: checkBoxList(axis),
+            body: Column(
+              children: checkBoxList(),
             ),
           ),
         ],
       );
     }
 
-    return Wrap(
-      direction: axis,
-      verticalDirection: VerticalDirection.down,
-      runSpacing: axis == Axis.horizontal ? 5.0 : 20.0,
-      children: checkBoxList(axis),
+    return Column(
+      children: checkBoxList(),
     );
   }
 
-  List<Widget> checkBoxList(Axis axis) {
+  List<Widget> checkBoxList() {
     return [
       for (int i = 0; i < _items.length; i++) ...[
-        if (axis == Axis.horizontal)
-          SizedBox(
-            width: 160,
-            child: checkBoxItem(i),
-          ),
-        if (axis == Axis.vertical)
-          SizedBox(
-            width: 350,
-            child: checkBoxItem(i),
-          )
+        Container(
+          width: Size.infinite.width,
+          child: checkBoxItem(i),
+        )
       ]
     ];
   }

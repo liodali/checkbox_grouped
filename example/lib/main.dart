@@ -57,7 +57,6 @@ class _MyAppState extends State<MyApp> {
                 itemsTitle: ["1", "2", "4", "5"],
                 values: [1, 2, 4, 5],
                 activeColor: Colors.red,
-                direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: false,
               ),
@@ -66,7 +65,6 @@ class _MyAppState extends State<MyApp> {
                 key: circulairekey,
                 itemsTitle: ["1 ", "2 ", "4 ", "5 "],
                 values: [1, 2, 4, 5],
-                direction: Direction.Horizontal,
                 isCirculaire: true,
                 activeColor: Colors.blue,
                 isLeading: true,
@@ -80,7 +78,6 @@ class _MyAppState extends State<MyApp> {
                 preSelection: [2, 5, 4],
                 activeColor: Colors.green,
                 groupTitle: "Mutiple selection",
-                direction: Direction.Horizontal,
                 checkFirstElement: false,
                 multiSelection: true,
                 onItemSelected: (data){
