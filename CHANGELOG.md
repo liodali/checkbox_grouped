@@ -1,3 +1,4 @@
+## [0.3.1+1] - change name textTitle to groupTitle, 
 ## [0.3.1] - initialise an disabled items, 
 you can make item disabled 
 ## [0.3.0+1] -  modify readme, 
