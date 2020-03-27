@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:checkbox_grouped/src/item.dart';
 import './item.dart';
 
-
 typedef onChanged = Function(dynamic selected);
 
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
@@ -129,105 +128,33 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     }
     return _selectedValue;
   }
+
   disabledItems(List<String> items) {
-    assert(items.takeWhile((c)=>!widget.itemsTitle.contains(c)).isEmpty,"some of items doen't exist");
+    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
+        "some of items doen't exist");
     setState(() {
-      itemStatus(items,true);
+      itemStatus(items, true);
     });
   }
+
   enabledItems(List<String> items) {
-    assert(items.takeWhile((c)=>!widget.itemsTitle.contains(c)).isEmpty,"some of items doen't exist");
+    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
+        "some of items doen't exist");
     setState(() {
-      itemStatus(items,false);
+      itemStatus(items, false);
     });
   }
-  void itemStatus(List<String> items,bool isDisabled){
-    for(String item in items){
-      _items.firstWhere((c)=>c.title==item,orElse: ()=>null).isDisabled = isDisabled;
+
+  void itemStatus(List<String> items, bool isDisabled) {
+    for (String item in items) {
+      _items.firstWhere((c) => c.title == item, orElse: () => null).isDisabled =
+          isDisabled;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
-    Widget titleWidget;
-    if (widget.groupTitle != null)
-      titleWidget = Text(
-        "${widget.groupTitle}",
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      );
-
-    if (widget.multiSelection && widget.groupTitle != null) {
-      titleWidget = ListTile(
-        title: Text(
-          "${widget.groupTitle}",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        onTap: () {
-          setState(() {
-            if (valueTitle == null) {
-              valueTitle = true;
-              _selectionsValue.addAll(widget.values
-                  .where((elem) => _selectionsValue.contains(elem) == false));
-            } else if (valueTitle) {
-              valueTitle = false;
-              _selectionsValue.clear();
-            } else if (!valueTitle) {
-              valueTitle = true;
-              _selectionsValue.addAll(widget.values as List<T>);
-            } else {
-              valueTitle = true;
-            }
-            //callback
-            if (widget.onItemSelected != null)
-              widget.onItemSelected(_selectionsValue);
-
-            _items
-                .where((elem) => elem.checked != valueTitle)
-                .forEach((i) => i.checked = valueTitle);
-          });
-        },
-        leading: AbsorbPointer(
-          child: Container(
-            width: 32,
-            height: 32,
-            child: Checkbox(
-              tristate: true,
-              value: valueTitle,
-              activeColor: widget.activeColor,
-              onChanged: (v) {
-                //print(v);
-                setState(() {
-                  if (v != null) valueTitle = v;
-                });
-              },
-            ),
-          ),
-        ),
-      );
-    }
-
-    if (titleWidget != null && !widget.isExpandableTitle) {
-      return Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          titleWidget,
-          Expanded(
-            child: Column(
-              children: checkBoxList(),
-            ),
-          )
-        ],
-      );
-    } else if (titleWidget != null && widget.isExpandableTitle) {
+    if (widget.groupTitle != null && widget.isExpandableTitle) {
       return ExpansionPanelList(
         expansionCallback: (index, value) {
           setState(() {
@@ -239,7 +166,21 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             canTapOnHeader: true,
             isExpanded: isExpanded,
             headerBuilder: (ctx, value) {
-              return titleWidget;
+              return _TitleGroupedCheckbox(
+                title: widget.groupTitle,
+                isMultiSelection: widget.multiSelection,
+                checkboxTitle: Checkbox(
+                  tristate: true,
+                  value: valueTitle,
+                  activeColor: widget.activeColor,
+                  onChanged: (v) {
+                    setState(() {
+                      if (v != null) valueTitle = v;
+                    });
+                  },
+                ),
+                callback: setChangedCallback,
+              );
             },
             body: Column(
               children: checkBoxList(),
@@ -248,10 +189,58 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ],
       );
     }
-
     return Column(
-      children: checkBoxList(),
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Opacity(
+          opacity: widget.groupTitle != null ? 1 : 0,
+          child: _TitleGroupedCheckbox(
+            title: widget.groupTitle,
+            isMultiSelection: widget.multiSelection,
+            checkboxTitle: Checkbox(
+              tristate: true,
+              value: valueTitle,
+              activeColor: widget.activeColor,
+              onChanged: (v) {
+                setState(() {
+                  if (v != null) valueTitle = v;
+                });
+              },
+            ),
+            callback: setChangedCallback,
+          ),
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: checkBoxList(),
+        ),
+      ],
     );
+  }
+
+  void setChangedCallback() {
+    setState(() {
+      if (valueTitle == null) {
+        valueTitle = true;
+        _selectionsValue.addAll(widget.values
+            .where((elem) => _selectionsValue.contains(elem) == false));
+      } else if (valueTitle) {
+        valueTitle = false;
+        _selectionsValue.clear();
+      } else if (!valueTitle) {
+        valueTitle = true;
+        _selectionsValue.addAll(widget.values as List<T>);
+      } else {
+        valueTitle = true;
+      }
+      //callback
+      if (widget.onItemSelected != null)
+        widget.onItemSelected(_selectionsValue);
+
+      _items
+          .where((elem) => elem.checked != valueTitle)
+          .forEach((i) => i.checked = valueTitle);
+    });
   }
 
   List<Widget> checkBoxList() {
@@ -361,5 +350,52 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
           ? ListTileControlAffinity.leading
           : ListTileControlAffinity.trailing,
     );
+  }
+}
+
+class _TitleGroupedCheckbox extends StatelessWidget {
+  final String title;
+  final bool isMultiSelection;
+  final VoidCallback callback;
+  final Widget checkboxTitle;
+
+  _TitleGroupedCheckbox(
+      {this.title, this.isMultiSelection, this.callback, this.checkboxTitle});
+
+  @override
+  Widget build(BuildContext context) {
+    if (isMultiSelection && title != null) {
+      return ListTile(
+        title: Text(
+          "${title}",
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        onTap: () {
+          callback();
+        },
+        leading: AbsorbPointer(
+          child: Container(
+            width: 32,
+            height: 32,
+            child: checkboxTitle,
+          ),
+        ),
+      );
+    }
+    if (title != null)
+      return Text(
+        "${title}",
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      );
+
+    return Container();
   }
 }
