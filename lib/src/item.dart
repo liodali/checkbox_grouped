@@ -1,7 +1,35 @@
-class Item {
-  String title;
+abstract class BaseItem {
   bool checked;
   bool isDisabled;
 
-  Item({this.title, this.checked, this.isDisabled = false});
+  BaseItem({
+    this.checked,
+    this.isDisabled,
+  });
+}
+
+class Item extends BaseItem {
+  String title;
+
+  Item({
+    this.title,
+    checked,
+    isDisabled = false,
+  }) : super(
+          checked: checked,
+          isDisabled: isDisabled,
+        );
+}
+
+class CustomItem<T> extends BaseItem {
+  final T data;
+
+  CustomItem({
+    this.data,
+    checked,
+    isDisabled = false,
+  }) : super(
+          checked: checked,
+          isDisabled: isDisabled,
+        );
 }

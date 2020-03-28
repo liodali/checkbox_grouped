@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  ///coming soon
 
   testWidgets("test single selection SimpleGroupedSwitch ", (tester) async {
     await tester.pumpWidget(Example1());

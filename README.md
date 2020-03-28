@@ -1,8 +1,10 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.3.2-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.3.5-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
+    * customisable grouped checkbox
     * grouping chips
+    * grouping switch
     * recuperate the actual selection
     * make multiple selection
 
@@ -13,7 +15,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.3.2
+		checkbox_grouped: ^0.3.5
 
 
 
@@ -57,6 +59,43 @@ Add the following to your `pubspec.yaml` file:
 |`isCirculaire`         |`enable to use circulaire checkbox`.  |
 |`isExpandableTitle`    |`enable group checkbox to be expandable `.  |
 |`groupTitle`           |`Text title for group checkbox`.  |
+
+## Customisable Checkbox Grouped
+
+#### Creating a basic `CustomGroupedCheckbox`
+
+    CustomGroupedCheckbox<int>(
+            groupTitle: "Custom GroupedCheckbox",
+            itemBuilder: (ctx,index){
+            return Card(
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("$index"),
+                    ),
+                );
+            },
+            itemCount: 10,
+            values: List<int>.generate(10, (i)=>i),
+          ),
+
+### Declare GlobalKey to get selection
+
+`  GlobalKey<CustomGroupedCheckboxState<int>> _customCheckBoxKey = GlobalKey<CustomGroupedCheckboxState<int>>();`
+
+### Get current selection
+
+` _customCheckBoxKey.currentState.selection() `
+
+####  `CustomGroupedCheckbox`
+|   Properties          |  Description |
+|-----------------------|--------------|
+|`groupTitle`           |`Text title for group checkbox`.                |
+|`itemBuilder`          |(required) `Called to build children.`          |
+|`values`               |(required) `Values contains in each element.`   |
+|`itemCount`            |(required)` The total number of children `      |
+|`itemExtent`           |` The extent the children are forced to have in the main axis`  |
+|`isMultipleSelection`  |`enable multiple selection`.                    |
+
 
 ## Chip grouped Usage
 
