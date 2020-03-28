@@ -367,7 +367,7 @@ class _TitleGroupedCheckbox extends StatelessWidget {
     if (isMultiSelection && title != null) {
       return ListTile(
         title: Text(
-          "${title}",
+          title,
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
@@ -388,7 +388,7 @@ class _TitleGroupedCheckbox extends StatelessWidget {
     }
     if (title != null)
       return Text(
-        "${title}",
+        title,
         style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,
