@@ -16,17 +16,31 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
         title: Text("Other Example"),
       ),
       body: CustomGroupedCheckbox<int>(
-        groupTitle: "Custom GroupedCheckbox",
-        itemBuilder: (ctx,index){
+        groupTitle: Container(
+          padding: EdgeInsets.all(5.0),
+          child: Text("Custom GroupedCheckbox"),
+        ),
+        itemBuilder: (ctx, index, v) {
           return Card(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text("$index"),
+            margin: EdgeInsets.only(top: 5.0,bottom: 5.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("$index"),
+                  ),
+                ),
+                Opacity(
+                  opacity: v?1:0,
+                  child: Icon(Icons.check,color: Colors.green,size: 24,),
+                ),
+              ],
             ),
           );
         },
         itemCount: 10,
-        values: List<int>.generate(10, (i)=>i),
+        values: List<int>.generate(10, (i) => i),
       ),
     );
   }

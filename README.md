@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.3.5-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.4.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * customisable grouped checkbox
@@ -15,7 +15,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.3.5
+		checkbox_grouped: ^0.4.0
 
 
 
@@ -66,11 +66,21 @@ Add the following to your `pubspec.yaml` file:
 
     CustomGroupedCheckbox<int>(
             groupTitle: "Custom GroupedCheckbox",
-            itemBuilder: (ctx,index){
+            itemBuilder: (ctx,index,v){
             return Card(
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("$index"),
+                child: Row(
+                        children: <Widget>[
+                        Expanded(
+                              child: Align(
+                                     alignment: Alignment.centerLeft,
+                                     child: Text("$index"),
+                                  ),
+                              ),
+                        Opacity(
+                              opacity: v?1:0,
+                              child: Icon(Icons.check,color: Colors.green,size: 24,),
+                              ),
+                         ],
                     ),
                 );
             },
@@ -89,7 +99,7 @@ Add the following to your `pubspec.yaml` file:
 ####  `CustomGroupedCheckbox`
 |   Properties          |  Description |
 |-----------------------|--------------|
-|`groupTitle`           |`Text title for group checkbox`.                |
+|`groupTitle`           |`widget title for group checkbox`.                |
 |`itemBuilder`          |(required) `Called to build children.`          |
 |`values`               |(required) `Values contains in each element.`   |
 |`itemCount`            |(required)` The total number of children `      |
