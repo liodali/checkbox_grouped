@@ -11,7 +11,7 @@ void main() {
         body: Builder(
           builder: (ctx){
             return CustomGroupedCheckbox<int>(
-              itemBuilder: (ctx,index){
+              itemBuilder: (ctx,index,v){
                 return Text("$index");
               },
               itemCount: 10,

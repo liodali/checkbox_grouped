@@ -1,14 +1,18 @@
+## [0.4.0] - changing custom grouped checkbox 
+*  change CustomScrollView with simple Column
+*  create new typedef CustomIndexedWidgetBuilder
+*  change type groupTitle from String to Widget
 ## [0.3.5] - custom grouped checkbox 
-create customisable grouped checkbox 
-fix error 
+* create customisable grouped checkbox
+* fix error
 ## [0.3.2] - refactoring code 
 ## [0.3.1+3] - fix errors 
 ## [0.3.1+2] - remove direction groupedcheckbox 
-make groupedcheckbox vertical by default 
-change wrap  widget by column 
+* make groupedcheckbox vertical by default
+* change wrap  widget by column
 ## [0.3.1+1] - change name textTitle to groupTitle, 
 ## [0.3.1] - initialise an disabled items, 
-you can make item disabled 
+* you can make item disabled
 ## [0.3.0+1] -  modify readme, 
 ## [0.3.0] -  simple grouped switch, 
 * preselection items 

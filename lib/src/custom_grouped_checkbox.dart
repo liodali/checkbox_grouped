@@ -1,9 +1,11 @@
 import 'package:checkbox_grouped/src/item.dart';
 import 'package:flutter/material.dart';
 
+typedef CustomIndexedWidgetBuilder = Widget Function(BuildContext, int, bool);
+
 class CustomGroupedCheckbox<T> extends StatefulWidget {
-  final String groupTitle;
-  final IndexedWidgetBuilder itemBuilder;
+  final Widget groupTitle;
+  final CustomIndexedWidgetBuilder itemBuilder;
   final int itemCount;
   final double itemExtent;
   final List<T> values;
@@ -59,8 +61,8 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
     });
   }
 
-  selection(){
-    if(widget.isMultipleSelection){
+  selection() {
+    if (widget.isMultipleSelection) {
       return _itemSelected;
     }
     return _itemSelected;
@@ -69,33 +71,33 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Text(widget.groupTitle),
-        ),
-        SliverFixedExtentList(
-          delegate: SliverChildBuilderDelegate(
-                (ctx, index) {
-              return _ItemWidget(
-                child:  widget.itemBuilder(ctx, index),
-                value: _items[index].checked,
-                callback: (v){
-                  setState(() {
-                    onChanged(index, v);
-                  });
-                },
-              );
-            },
-            childCount: widget.itemCount,
+    return Column(
+      children: <Widget>[
+        widget.groupTitle ?? Container(),
+        Expanded(
+          child: ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: ListView(
+              children: <Widget>[
+                for (int index = 0; index < widget.itemCount; index++)
+                  _ItemWidget(
+                    child: widget.itemBuilder(
+                        context, index, _items[index].checked),
+                    value: _items[index].checked,
+                    callback: (v) {
+                      setState(() {
+                        onChanged(index, v);
+                      });
+                    },
+                  ),
+              ],
+              itemExtent: widget.itemExtent,
+            ),
           ),
-          itemExtent: widget.itemExtent,
-          //itemExtent: widget.itemExtent,
         ),
       ],
     );
@@ -129,38 +131,25 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
     }
   }
 }
-class _ItemWidget extends StatelessWidget{
 
+class _ItemWidget extends StatelessWidget {
   final Widget child;
   final Function(bool) callback;
   final bool value;
-  _ItemWidget({this.child,this.callback,this.value});
+
+  _ItemWidget({
+    this.child,
+    this.callback,
+    this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: child,
-        ),
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 15,
-          child: Checkbox(
-            value: value,
-            onChanged: (v) {
-              print(v);
-              callback(v);
-            },
-          ),
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        callback(!value);
+      },
+      child: child,
     );
   }
-
 }
