@@ -254,7 +254,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     ];
   }
 
-  void onChanged(int i, bool v) {
+  void onChanged(int i, dynamic v) {
     if (widget.multiSelection) {
       if (!_selectionsValue.contains(widget.values[i])) {
         if (v) {
@@ -277,21 +277,14 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       if (widget.onItemSelected != null)
         widget.onItemSelected(_selectionsValue);
     } else {
-      if (v) {
-        _items[i].checked = v;
-        if (_previousActive != _items[i]) {
-          if (_previousActive != null) {
-            _previousActive.checked = false;
-          } else {
-            _previousActive = _items[i];
-          }
-        }
-        _selectedValue = widget.values[i];
-        _previousActive = _items[i];
-
-        if (widget.onItemSelected != null)
-          widget.onItemSelected(_selectedValue);
+      _selectedValue=v;
+      if(_previousActive!=null){
+        _previousActive.checked = false;
       }
+      _items[i].checked=true;
+      _previousActive=_items[i];
+      if (widget.onItemSelected != null)
+        widget.onItemSelected(_selectedValue);
     }
   }
 
@@ -321,6 +314,36 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             : null,
         leading: widget.isLeading ? circulaireWidget : null,
         trailing: !widget.isLeading ? circulaireWidget : null,
+      );
+    }
+    if (!widget.multiSelection) {
+      return RadioListTile<T>(
+        groupValue: _selectedValue,
+        onChanged: _items[i].isDisabled
+            ? null
+            : (v) {
+                setState(() {
+                  onChanged(i, v);
+                });
+              },
+        activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
+        title: AutoSizeText(
+          "${_items[i].title}",
+          minFontSize: 12,
+        ),
+        subtitle: widget.itemsSubTitle != null
+            ? AutoSizeText(
+                "${widget.itemsSubTitle[i]}",
+                minFontSize: 11,
+              )
+            : null,
+        value: widget.values[i],
+        selected: _items[i].checked,
+        dense: widget.itemsSubTitle != null ? true : false,
+        isThreeLine: widget.itemsSubTitle != null ? true : false,
+        controlAffinity: widget.isLeading
+            ? ListTileControlAffinity.leading
+            : ListTileControlAffinity.trailing,
       );
     }
     return CheckboxListTile(
