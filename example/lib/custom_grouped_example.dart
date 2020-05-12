@@ -11,37 +11,32 @@ class CustomGroupedExample extends StatefulWidget {
 class _CustomGroupedExampleState extends State<CustomGroupedExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Other Example"),
+    return CustomGroupedCheckbox<int>(
+      groupTitle: Container(
+        padding: EdgeInsets.all(5.0),
+        child: Text("Custom GroupedCheckbox"),
       ),
-      body: CustomGroupedCheckbox<int>(
-        groupTitle: Container(
-          padding: EdgeInsets.all(5.0),
-          child: Text("Custom GroupedCheckbox"),
-        ),
-        itemBuilder: (ctx, index, v) {
-          return Card(
-            margin: EdgeInsets.only(top: 5.0,bottom: 5.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("$index"),
-                  ),
+      itemBuilder: (ctx, index, v) {
+        return Card(
+          margin: EdgeInsets.only(top: 5.0,bottom: 5.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("$index"),
                 ),
-                Opacity(
-                  opacity: v?1:0,
-                  child: Icon(Icons.check,color: Colors.green,size: 24,),
-                ),
-              ],
-            ),
-          );
-        },
-        itemCount: 10,
-        values: List<int>.generate(10, (i) => i),
-      ),
+              ),
+              Opacity(
+                opacity: v?1:0,
+                child: Icon(Icons.check,color: Colors.green,size: 24,),
+              ),
+            ],
+          ),
+        );
+      },
+      itemCount: 10,
+      values: List<int>.generate(10, (i) => i),
     );
   }
 }

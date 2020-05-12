@@ -25,7 +25,7 @@ void main() {
           itemsTitle: ["1", "2", "4", "5"],
           disableItems: [2],
           values: [1, 2, 4, 5],
-          isMutlipleSelection: false,
+          isMultipleSelection: false,
           textStyle: TextStyle(color: Colors.black),
         ),
       ) ,
@@ -70,7 +70,7 @@ class _Example1State extends State<Example1> {
           key: switchKey,
           itemsTitle: ["1", "2", "4", "5"],
           values: [1, 2, 4, 5],
-          isMutlipleSelection: widget.isMultiple,
+          isMultipleSelection: widget.isMultiple,
         ),
       ),
     );

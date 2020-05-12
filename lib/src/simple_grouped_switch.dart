@@ -7,7 +7,7 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<String> preSelectionItems;
   final List<T> values;
   final List<T> disableItems;
-  final bool isMutlipleSelection;
+  final bool isMultipleSelection;
   final onChanged onItemSelected;
   final Color activeColor;
   final TextStyle textStyle;
@@ -16,18 +16,18 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
     Key key,
     this.itemsTitle,
     this.values,
-    this.disableItems= const [],
+    this.disableItems = const [],
     this.preSelectionItems = const [],
     this.activeColor,
     this.textStyle,
-    this.isMutlipleSelection = true,
+    this.isMultipleSelection = true,
     this.onItemSelected,
   })  : assert(values.length == itemsTitle.length),
         assert(disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
             "you cannot disable item doesn't exist"),
-        assert((isMutlipleSelection &&
+        assert((isMultipleSelection &&
                 (preSelectionItems.isEmpty || preSelectionItems.isNotEmpty)) ||
-            (!isMutlipleSelection &&
+            (!isMultipleSelection &&
                 (preSelectionItems.length == 1 || preSelectionItems.isEmpty))),
         super(key: key);
 
@@ -57,7 +57,7 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
   List<T> _selectedValues;
 
   selection() {
-    if (widget.isMutlipleSelection) {
+    if (widget.isMultipleSelection) {
       return _selectedValues;
     }
     return _selectedValue;
@@ -86,7 +86,7 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
   }
 
   void onChanged(Item item, bool value, int index) {
-    if (widget.isMutlipleSelection) {
+    if (widget.isMultipleSelection) {
       if (!value) {
         _selectedValues.remove(widget.values[index]);
       }
@@ -112,11 +112,13 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
   List<Widget> itemsWidget() {
     return _items
         .map((elem) => SwitchListTile(
-              onChanged: elem.isDisabled?null:(v) {
-                setState(() {
-                  onChanged(elem, v, _items.indexOf(elem));
-                });
-              },
+              onChanged: elem.isDisabled
+                  ? null
+                  : (v) {
+                      setState(() {
+                        onChanged(elem, v, _items.indexOf(elem));
+                      });
+                    },
               activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
               value: elem.checked,
               title: Text(
@@ -124,7 +126,9 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
                 style: widget.textStyle?.copyWith(
                   color: elem.checked
                       ? widget.activeColor
-                      : (widget.textStyle?.color??Theme.of(context).textTheme.title.color)??Theme.of(context).textTheme.title.getTextStyle(),
+                      : (widget.textStyle?.color ??
+                              Theme.of(context).textTheme.title.color) ??
+                          Theme.of(context).textTheme.title.getTextStyle(),
                 ),
               ),
             ))
