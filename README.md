@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.4.1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.4.5-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouping checkbox
     * customisable grouped checkbox
@@ -7,6 +7,7 @@
     * grouping switch
     * recuperate the actual selection
     * make multiple selection
+    * dialogGroupedCheckbox
 
 ## Getting Started
 
@@ -15,7 +16,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.4.1
+		checkbox_grouped: ^0.4.5
 
 
 
@@ -24,7 +25,7 @@ Add the following to your `pubspec.yaml` file:
 
     SimpleGroupedCheckbox<int>(
                     key: checkboxKey,
-                    itemsTitle: ["1 " ,"2 ","4 ","5 "],
+                    itemsTitle: ["1" ,"2","4","5"],
                     values: [1,2,4,5],
                     activeColor: Colors.red,
                     checkFirstElement: false,
@@ -69,24 +70,27 @@ Add the following to your `pubspec.yaml` file:
             itemBuilder: (ctx,index,v){
             return Card(
                 child: Row(
-                        children: <Widget>[
+                    children: <Widget>[
                         Expanded(
-                              child: Align(
-                                     alignment: Alignment.centerLeft,
-                                     child: Text("$index"),
-                                  ),
-                              ),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("$index"),
+                            ),
+                        ),
                         Opacity(
                               opacity: v?1:0,
-                              child: Icon(Icons.check,color: Colors.green,size: 24,),
+                              child: Icon(Icons.check,
+                                color: Colors.green,
+                                size: 24,
                               ),
-                         ],
-                    ),
+                         ),
+                      ],
+                   ),
                 );
             },
             itemCount: 10,
             values: List<int>.generate(10, (i)=>i),
-          ),
+        ),
 
 ### Declare GlobalKey to get selection
 
@@ -99,7 +103,7 @@ Add the following to your `pubspec.yaml` file:
 ####  `CustomGroupedCheckbox`
 |   Properties          |  Description |
 |-----------------------|--------------|
-|`groupTitle`           |`widget title for group checkbox`.                |
+|`groupTitle`           |`widget title for group checkbox`.              |
 |`itemBuilder`          |(required) `Called to build children.`          |
 |`values`               |(required) `Values contains in each element.`   |
 |`itemCount`            |(required)` The total number of children `      |
@@ -114,7 +118,7 @@ Add the following to your `pubspec.yaml` file:
     SimpleGroupedChips<int>(
                     key: chipKey,
                     values: [1,2,3,4,5,6,7],
-                    itemTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
+                    itemTitle: ["1" ,"2","4","5","6","7"],
                     backgroundColorItem: Colors.black26,
                   );
 ### Declare GlobalKey to get selection
@@ -168,4 +172,36 @@ Add the following to your `pubspec.yaml` file:
 |`disableItems`         | Specifies which item should be disabled. The value passed to this must match the values list |
 |`onItemSelected`       | Call when users make  selection    |
 |`isMutlipleSelection`  |`enable multiple selection`.  |
+
+
+## showDialogGroupedCheckbox
+
+> display  groupedCheckbox inside dialog
+> return values selected
+
+#### Creating a basic `showDialogGroupedCheckbox`
+
+     showDialogGroupedCheckbox(
+                        context: context,
+                        cancelDialogText: "cancel",
+                        isMultiSelection: true,
+                        itemsTitle: List.generate(15, (index) => "$index"),
+                        submitDialogText: "select",
+                        dialogTitle:Text("example dialog") ,
+                        values: List.generate(15, (index) => index)
+                      );
+
+
+####  `showDialogGroupedCheckbox`
+|   Properties                  |  Description |
+|-------------------------------|--------------|
+|`dialogTitle`                  | `(required) Text Widget that describe Title of dialog`.  |
+|`itemsTitle`                   | `(required) Values contains in each element`.   |
+|`values`                       | `(required) list of values`. |
+|`initialSelectedValues`        | `list of initial values that you want to be selected`.    |
+|`isDismissible`                |`enable multiple selection`.  |
+|`cancelDialogText`             |`(string) label for cancelButton`.  |
+|`submitDialogText`             |`(string) label for submitButton`.  |
+|`isMultiSelection`             |`enable multiple selection`.  |
+
 

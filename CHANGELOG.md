@@ -1,3 +1,5 @@
+## [0.4.5] - make grouped checkbox dialog 
+create function to show groupedcheckbox inside dialog 
 ## [0.4.1] - changing single selection in grouped checkbox to radioButton  
 change checkbox to radiobutton for singleselection 
 create new typedef CustomIndexedWidgetBuilder 
