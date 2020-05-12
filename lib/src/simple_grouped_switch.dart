@@ -127,8 +127,8 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
                   color: elem.checked
                       ? widget.activeColor
                       : (widget.textStyle?.color ??
-                              Theme.of(context).textTheme.title.color) ??
-                          Theme.of(context).textTheme.title.getTextStyle(),
+                              Theme.of(context).textTheme.headline6.color) ??
+                          Theme.of(context).textTheme.headline6.getTextStyle(),
                 ),
               ),
             ))
