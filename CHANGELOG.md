@@ -1,9 +1,11 @@
+## [0.4.5+1] - fix issues 
+*  remove some deprecated api 
 ## [0.4.5] - make grouped checkbox dialog 
-create function to show groupedcheckbox inside dialog 
+* create function to show groupedcheckbox inside dialog
 ## [0.4.1] - changing single selection in grouped checkbox to radioButton  
-change checkbox to radiobutton for singleselection 
-create new typedef CustomIndexedWidgetBuilder 
-change type groupTitle from String to Widget 
+* change checkbox to radiobutton for singleselection
+* create new typedef CustomIndexedWidgetBuilder
+* change type groupTitle from String to Widget
 ## [0.4.0] - changing custom grouped checkbox 
 *  change CustomScrollView with simple Column
 *  create new typedef CustomIndexedWidgetBuilder
