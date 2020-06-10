@@ -299,7 +299,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             ? null
             : () {
                 setState(() {
-                  onChanged(i, !_items[i].checked);
+                  onChanged(i, widget.values[i]);
                 });
               },
         title: AutoSizeText(
