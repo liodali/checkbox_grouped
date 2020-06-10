@@ -131,7 +131,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                       onItemSelected: (data){
                         print(data);
                       },
-                      isExpandableTitle: false,
+                      isExpandableTitle: true,
                     ),
                     Divider(),
                     SimpleGroupedChips<int>(

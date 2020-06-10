@@ -88,7 +88,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   List<T> _selectionsValue = [];
   List<Item> _items = [];
   bool valueTitle = false;
-  bool isExpanded = false;
+  bool isExpanded = true;
 
   @override
   void initState() {
@@ -299,7 +299,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             ? null
             : () {
                 setState(() {
-                  onChanged(i, !_items[i].checked);
+                  onChanged(i, widget.values[i]);
                 });
               },
         title: AutoSizeText(

@@ -1,3 +1,6 @@
+## [0.4.5+2] - fix issues 
+*  when simpleGroupedCheckbox isExpandable,make isExpand = true as default behavior 
+*  fix selection in circulaire SimpleCheckbox 
 ## [0.4.5+1] - fix issues 
 *  remove some deprecated api 
 ## [0.4.5] - make grouped checkbox dialog 
