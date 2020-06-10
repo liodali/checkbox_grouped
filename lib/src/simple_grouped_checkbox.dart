@@ -88,7 +88,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   List<T> _selectionsValue = [];
   List<Item> _items = [];
   bool valueTitle = false;
-  bool isExpanded = false;
+  bool isExpanded = true;
 
   @override
   void initState() {
