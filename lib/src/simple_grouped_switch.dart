@@ -78,10 +78,13 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: itemsWidget(),
-      ),
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (ctx, index) {
+        return itemsWidget(_items[index]);
+      },
+      itemCount: _items.length,
     );
   }
 
@@ -109,29 +112,27 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
     }
   }
 
-  List<Widget> itemsWidget() {
-    return _items
-        .map((elem) => SwitchListTile(
-              onChanged: elem.isDisabled
-                  ? null
-                  : (v) {
-                      setState(() {
-                        onChanged(elem, v, _items.indexOf(elem));
-                      });
-                    },
-              activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
-              value: elem.checked,
-              title: Text(
-                "${elem.title}",
-                style: widget.textStyle?.copyWith(
-                  color: elem.checked
-                      ? widget.activeColor
-                      : (widget.textStyle?.color ??
-                              Theme.of(context).textTheme.headline6.color) ??
-                          Theme.of(context).textTheme.headline6.getTextStyle(),
-                ),
-              ),
-            ))
-        .toList();
+  Widget itemsWidget(elem) {
+    return SwitchListTile(
+      onChanged: elem.isDisabled
+          ? null
+          : (v) {
+              setState(() {
+                onChanged(elem, v, _items.indexOf(elem));
+              });
+            },
+      activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
+      value: elem.checked,
+      title: Text(
+        "${elem.title}",
+        style: widget.textStyle?.copyWith(
+          color: elem.checked
+              ? widget.activeColor
+              : (widget.textStyle?.color ??
+                      Theme.of(context).textTheme.headline6.color) ??
+                  Theme.of(context).textTheme.headline6.getTextStyle(),
+        ),
+      ),
+    );
   }
 }

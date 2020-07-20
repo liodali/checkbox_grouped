@@ -122,8 +122,8 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     ),
                     SimpleGroupedCheckbox<int>(
                       key: mutlicheckboxKey,
-                      itemsTitle: List.generate(100, (index) => "$index"),
-                      values: List.generate(100, (index) => index),
+                      itemsTitle: List.generate(10, (index) => "$index"),
+                      values: List.generate(10, (index) => index),
                       preSelection: [2, 5, 4],
                       activeColor: Colors.green,
                       groupTitle: "Mutiple selection",
@@ -144,8 +144,8 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     ),
                     Text("grouped switch"),
                     SimpleGroupedSwitch<int>(
-                      itemsTitle: ["1","2","3"],
-                      values: [1,2,3],
+                      itemsTitle: List.generate(10, (index) => "$index"),
+                      values: List.generate(10, (index) => index),
                       disableItems: [2],
                       textStyle: TextStyle(fontSize: 16),
                       activeColor:Colors.red,

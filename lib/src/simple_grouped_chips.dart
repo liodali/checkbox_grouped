@@ -3,18 +3,18 @@ import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// @param preSelection:pre-selection values
-/// @param isMultiple
-/// @param isScrolling
-/// @param backgroundColorItem
-/// @param selectedColorItem
-/// @param textColor
-/// @param selectedTextColor
-/// @param selectedIcon
-/// @param values
-/// @param itemTitle
-/// @param onItemSelected
-/// @param disabledItems
+///  [preSelection] : A list of values that you want to be initially selected.
+///  [isMultiple] : enable multiple selection
+///  [isScrolling] : enable horizontal scrolling
+///  [backgroundColorItem] : the background color for each item
+///  [selectedColorItem] : the background color to use when item is  selected
+///  [textColor] : the color to use for each text of item
+///  [selectedTextColor] :the selected color to use for each text of item
+///  [selectedIcon] :the selected icon to use for each selected  item
+///  [values] :(required) Values contains in each element.
+///  [itemTitle] :(required) A list of strings that describes each chip button
+///  [onItemSelected] : callback listner when item is selected
+///  [disabledItems] : Specifies which item should be disabled
 
 class SimpleGroupedChips<T> extends StatefulWidget {
   final List<T> preSelection;

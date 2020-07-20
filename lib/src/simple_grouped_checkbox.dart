@@ -1,13 +1,25 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:checkbox_grouped/src/circulaire_checkbox.dart';
 import 'package:checkbox_grouped/src/item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './item.dart';
 
 typedef onChanged = Function(dynamic selected);
-
+/// display  simple groupedCheckbox
+/// [groupTitle] : Text Widget that describe Title of group checkbox
+/// [itemsTitle] :  (required) A list of strings that describes each checkbox button
+/// [values] : list of values
+/// [onItemSelected] : list of initial values that you want to be selected
+/// [itemsSubTitle] : A list of strings that describes second Text
+/// [activeColor] : the color to use when this checkbox button is selected
+/// [disableItems] : pecifies which item should be disabled
+/// [preSelection] :  A list of values that you want to be initially selected
+/// [checkFirstElement] : make first element in list checked
+/// [isCirculaire] : enable to use circulaire checkbox
+/// [isLeading] : same as [itemExtent] of [ListView]
+/// [isExpandableTitle] : enable group checkbox to be expandable
+/// [multiSelection] : enable mutli selection groupedCheckbox
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final List<String> itemsTitle;
   final onChanged onItemSelected;
@@ -189,8 +201,6 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
               //itemExtent: 75,
               itemBuilder: (ctx, i) {
                 return Container(
-                  //width: Size.infinite.width,
-                  //height: 75,
                   child: checkBoxItem(i),
                 );
               },
@@ -222,10 +232,17 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             callback: setChangedCallback,
           ),
         ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: checkBoxList(),
-        ),
+        ListView.builder(
+          itemCount: _items.length,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (ctx, i) {
+            return Container(
+              child: checkBoxItem(i),
+            );
+          },
+        )
       ],
     );
   }
@@ -253,17 +270,6 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
           .where((elem) => elem.checked != valueTitle)
           .forEach((i) => i.checked = valueTitle);
     });
-  }
-
-  List<Widget> checkBoxList() {
-    return [
-      for (int i = 0; i < _items.length; i++) ...[
-        Container(
-          width: Size.infinite.width,
-          child: checkBoxItem(i),
-        )
-      ]
-    ];
   }
 
   void onChanged(int i, dynamic v) {

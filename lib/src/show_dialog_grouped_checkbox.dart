@@ -1,5 +1,6 @@
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
+
 /// display  groupedCheckbox inside dialog
 /// [context] : BuildContext to pop the dialog
 /// [dialogTitle] : Text Widget that describe Title of dialog
@@ -42,7 +43,8 @@ Future<dynamic> showDialogGroupedCheckbox({
           submitDialogText: submitDialogText,
           isMultiSelection: isMultiSelection,
         );
-      },barrierDismissible: isDismissible);
+      },
+      barrierDismissible: isDismissible);
 }
 
 class _CoreDialogGroupedCheckbox extends StatefulWidget {
