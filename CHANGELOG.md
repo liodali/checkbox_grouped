@@ -1,3 +1,5 @@
+## [0.4.5+3] - fix issues 
+*  change column in expansionPanelList to improve performance if you have long list to be checked 
 ## [0.4.5+2] - fix issues 
 *  when simpleGroupedCheckbox isExpandable,make isExpand = true as default behavior 
 *  fix selection in circulaire SimpleCheckbox 
