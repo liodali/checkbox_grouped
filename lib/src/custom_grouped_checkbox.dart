@@ -2,7 +2,13 @@ import 'package:checkbox_grouped/src/item.dart';
 import 'package:flutter/material.dart';
 
 typedef CustomIndexedWidgetBuilder = Widget Function(BuildContext, int, bool);
-
+/// display  custom groupedCheckbox with your custom check behavior and custom child widget
+/// [groupTitle] : Text Widget that describe Title of group checkbox
+/// [itemBuilder] :  builder function  takes an index and checked state of widget
+/// [values] : list of values
+/// [itemCount] : list of initial values that you want to be selected
+/// [itemExtent] : same as [itemExtent] of [ListView]
+/// [isMultipleSelection] : enable mutli selection groupedCheckbox
 class CustomGroupedCheckbox<T> extends StatefulWidget {
   final Widget groupTitle;
   final CustomIndexedWidgetBuilder itemBuilder;
@@ -81,20 +87,23 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
         Expanded(
           child: ScrollConfiguration(
             behavior: ScrollBehavior(),
-            child: ListView(
-              children: <Widget>[
-                for (int index = 0; index < widget.itemCount; index++)
-                  _ItemWidget(
-                    child: widget.itemBuilder(
-                        context, index, _items[index].checked),
-                    value: _items[index].checked,
-                    callback: (v) {
-                      setState(() {
-                        onChanged(index, v);
-                      });
-                    },
-                  ),
-              ],
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (ctx,index){
+                return _ItemWidget(
+                  child: widget.itemBuilder(
+                      context, index, _items[index].checked),
+                  value: _items[index].checked,
+                  callback: (v) {
+                    setState(() {
+                      onChanged(index, v);
+                    });
+                  },
+                );
+              },
+              itemCount: _items.length,
               itemExtent: widget.itemExtent,
             ),
           ),

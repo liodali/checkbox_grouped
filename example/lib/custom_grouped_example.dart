@@ -22,9 +22,12 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
           child: Row(
             children: <Widget>[
               Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("$index"),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("$index"),
+                  ),
                 ),
               ),
               Opacity(

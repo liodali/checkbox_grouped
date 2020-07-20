@@ -136,7 +136,7 @@ Add the following to your `pubspec.yaml` file:
 |`disabledItems`        | Specifies which item should be disabled. The strings passed to this must match the Titles  |
 |`preSelection`         | A list of values that you want to be initially selected.   |
 |`values`               |(required) Values contains in each element.   |
-|`onItemSelected`       | Call when users make  selection    |
+|`onItemSelected`       | Callback when users make  selection    |
 |`backgroundColorItem`  |`the background color for each item`.  |
 |`selectedColorItem`    |`the background color to use when item is  selected`.  |
 |`textColor`            |`the color to use for each text of item `.  |
