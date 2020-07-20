@@ -84,6 +84,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                 ];
               },
               body: SingleChildScrollView(
+                controller: ScrollController(),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
@@ -121,8 +122,8 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     ),
                     SimpleGroupedCheckbox<int>(
                       key: mutlicheckboxKey,
-                      itemsTitle: ["1 ", "2 ", "4 ", "5 "],
-                      values: [1, 2, 4, 5],
+                      itemsTitle: List.generate(100, (index) => "$index"),
+                      values: List.generate(100, (index) => index),
                       preSelection: [2, 5, 4],
                       activeColor: Colors.green,
                       groupTitle: "Mutiple selection",
@@ -136,16 +137,8 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     Divider(),
                     SimpleGroupedChips<int>(
                       key: mutliChipsKey,
-                      values: [1, 2, 3, 4, 5, 6, 7],
-                      itemTitle: [
-                        "text1",
-                        "text2",
-                        "text3",
-                        "text4",
-                        "text5",
-                        "text6",
-                        "text7"
-                      ],
+                      values: List.generate(7, (index) => index),
+                      itemTitle: List.generate(7, (index) => "text$index"),
                       backgroundColorItem: Colors.black26,
                       isScrolling: true,
                     ),

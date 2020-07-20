@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:checkbox_grouped/src/circulaire_checkbox.dart';
+import 'package:checkbox_grouped/src/item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:checkbox_grouped/src/item.dart';
+
 import './item.dart';
 
 typedef onChanged = Function(dynamic selected);
@@ -182,8 +183,19 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
                 callback: setChangedCallback,
               );
             },
-            body: Column(
-              children: checkBoxList(),
+            body: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              //itemExtent: 75,
+              itemBuilder: (ctx, i) {
+                return Container(
+                  //width: Size.infinite.width,
+                  //height: 75,
+                  child: checkBoxItem(i),
+                );
+              },
+              itemCount: _items.length,
+              addRepaintBoundaries: true,
             ),
           ),
         ],
@@ -277,14 +289,13 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       if (widget.onItemSelected != null)
         widget.onItemSelected(_selectionsValue);
     } else {
-      _selectedValue=v;
-      if(_previousActive!=null){
+      _selectedValue = v;
+      if (_previousActive != null) {
         _previousActive.checked = false;
       }
-      _items[i].checked=true;
-      _previousActive=_items[i];
-      if (widget.onItemSelected != null)
-        widget.onItemSelected(_selectedValue);
+      _items[i].checked = true;
+      _previousActive = _items[i];
+      if (widget.onItemSelected != null) widget.onItemSelected(_selectedValue);
     }
   }
 
