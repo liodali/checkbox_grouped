@@ -1,3 +1,7 @@
+## [0.4.5+7] - fix issues 
+*  update dependencies 
+*  remove scrollable listview in expanded  simple checkbox 
+*  add docs api 
 ## [0.4.5+6] - fix issues 
 *  change column in customGroupedCheckbox to improve performance if you have long list to be checked 
 *  change column in simpleGroupedswitch to improve performance if you have long list to be checked 

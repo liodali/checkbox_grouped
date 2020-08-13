@@ -2,6 +2,7 @@ import 'package:checkbox_grouped/src/item.dart';
 import 'package:flutter/material.dart';
 
 typedef CustomIndexedWidgetBuilder = Widget Function(BuildContext, int, bool);
+
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [itemBuilder] :  builder function  takes an index and checked state of widget
@@ -91,10 +92,10 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemBuilder: (ctx,index){
+              itemBuilder: (ctx, index) {
                 return _ItemWidget(
-                  child: widget.itemBuilder(
-                      context, index, _items[index].checked),
+                  child:
+                      widget.itemBuilder(context, index, _items[index].checked),
                   value: _items[index].checked,
                   callback: (v) {
                     setState(() {

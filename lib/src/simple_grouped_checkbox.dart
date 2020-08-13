@@ -198,6 +198,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             body: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               //itemExtent: 75,
               itemBuilder: (ctx, i) {
                 return Container(
@@ -211,12 +212,11 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         ],
       );
     }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Opacity(
-          opacity: widget.groupTitle != null ? 1 : 0,
-          child: _TitleGroupedCheckbox(
+    if(widget.groupTitle != null){
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _TitleGroupedCheckbox(
             title: widget.groupTitle,
             isMultiSelection: widget.multiSelection,
             checkboxTitle: Checkbox(
@@ -231,19 +231,30 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             ),
             callback: setChangedCallback,
           ),
-        ),
-        ListView.builder(
-          itemCount: _items.length,
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (ctx, i) {
-            return Container(
-              child: checkBoxItem(i),
-            );
-          },
-        )
-      ],
+          ListView.builder(
+            itemCount: _items.length,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (ctx, i) {
+              return Container(
+                child: checkBoxItem(i),
+              );
+            },
+          )
+        ],
+      );
+    }
+    return ListView.builder(
+      itemCount: _items.length,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (ctx, i) {
+        return Container(
+          child: checkBoxItem(i),
+        );
+      },
     );
   }
 
