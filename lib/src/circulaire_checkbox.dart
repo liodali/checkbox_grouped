@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
 
+/// CirculaireCheckbox is item to make checkbox circulaire
 class CirculaireCheckbox extends StatelessWidget {
   final String _circulaireCheckbox =
       "packages/checkbox_grouped/assets/check.flr";
@@ -9,6 +10,7 @@ class CirculaireCheckbox extends StatelessWidget {
       "packages/checkbox_grouped/assets/background_check.flr";
   final bool isChecked;
   final Color color;
+
   CirculaireCheckbox({this.isChecked, this.color});
 
   @override

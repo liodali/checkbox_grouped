@@ -2,6 +2,15 @@ import 'package:checkbox_grouped/src/item.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 
+///  [preSelectionItems] : A list of values that you want to be initially selected.
+///  [isMultipleSelection] : enable multiple selection
+///  [textStyle] : the style to use for each text of item
+///  [activeColor] :the selected color to use for each switch item
+///  [values] :(required) Values contains in each element.
+///  [itemsTitle] :(required) A list of strings that describes each chip button
+///  [onItemSelected] : callback listner when item is selected
+///  [disableItems] : Specifies which item should be disabled
+
 class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<String> itemsTitle;
   final List<String> preSelectionItems;
