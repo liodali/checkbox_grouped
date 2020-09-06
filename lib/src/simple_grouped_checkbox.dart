@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import './item.dart';
 
 typedef onChanged = Function(dynamic selected);
+
 /// display  simple groupedCheckbox
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [itemsTitle] :  (required) A list of strings that describes each checkbox button
@@ -96,123 +97,147 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 }
 
 class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
-  Item _previousActive;
-  T _selectedValue;
+  ValueNotifier<T> _selectedValue;
   List<T> _selectionsValue = [];
+  List<ValueNotifier<Item>> _notifierItems = [];
   List<Item> _items = [];
-  bool valueTitle = false;
-  bool isExpanded = true;
+  bool _valueTitle = false;
 
   @override
   void initState() {
     super.initState();
-    for (String title in widget.itemsTitle) {
-      _items.add(Item(
-          title: title,
-          checked: false,
-          isDisabled: widget.disableItems?.contains(title) ?? false));
-    }
+    _selectedValue = ValueNotifier(null);
 
-    if (widget.multiSelection && widget.checkFirstElement) {
-      _selectionsValue.add(widget.values[0]);
-    }
-    if (widget.multiSelection &&
-        widget.preSelection != null &&
-        widget.preSelection.length > 0) {
-      valueTitle = null;
-      for (int i = 0; i < widget.values.length; i++) {
-        if (widget.preSelection.contains(widget.values[i])) {
-          _items[i].checked = true;
-          _selectionsValue.add(widget.values[i]);
+    widget.itemsTitle.asMap().forEach((key, title) {
+      bool checked = false;
+      if (key == 0) {
+        if (widget.multiSelection && widget.checkFirstElement) {
+          _selectionsValue.add(widget.values[0]);
+          checked = true;
         }
       }
-    }
+      if (widget.multiSelection &&
+          widget.preSelection != null &&
+          widget.preSelection.length > 0) {
+        _valueTitle = null;
+        if (widget.preSelection.contains(widget.values[key])) {
+          checked = true;
+          _selectionsValue.add(widget.values[key]);
+        }
+      }
+      Item item = Item(
+          title: title,
+          checked: checked,
+          isDisabled: widget.disableItems?.contains(title) ?? false);
+      _items.add(item);
+      _notifierItems.add(ValueNotifier(item));
+    });
+
+
 
     if (widget.checkFirstElement) {
       _items[0].checked = true;
-      _previousActive = _items[0];
-      _selectionsValue = widget.values[0];
+      _notifierItems[0].value = Item(
+        isDisabled: _items[0].isDisabled,
+        checked: _items[0].checked,
+        title: _items[0].title,
+      );
+      //_previousActive = _items[0];
+      _selectedValue.value = widget.values[0];
     }
   }
-
-  selection() {
+  /// recuperate value selection if is not multi selection
+  /// recuperate list of selection value if is multi selection
+  dynamic selection() {
     if (widget.multiSelection) {
       return _selectionsValue;
     }
-    return _selectedValue;
+    return _selectedValue.value;
   }
-
+  /// [items]: A list of strings that describes titles
+  /// disable items that match with list of strings
   disabledItems(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
         "some of items doen't exist");
-    setState(() {
-      itemStatus(items, true);
-    });
+    _itemStatus(items, true);
+
   }
 
+  /// [items]: A list of strings that describes titles
+  /// enable items that match with list of strings
   enabledItems(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
         "some of items doen't exist");
-    setState(() {
-      itemStatus(items, false);
-    });
+    _itemStatus(items, false);
   }
 
-  void itemStatus(List<String> items, bool isDisabled) {
-    for (String item in items) {
-      _items.firstWhere((c) => c.title == item, orElse: () => null).isDisabled =
-          isDisabled;
-    }
+  void _itemStatus(List<String> items, bool isDisabled) {
+    _notifierItems
+        .where((element) => items.contains(element.value.title))
+        .toList()
+        .asMap()
+        .forEach((key, notifierItem) {
+      var index = _notifierItems.indexOf(notifierItem);
+      Item item = Item(isDisabled: notifierItem.value.isDisabled,checked: notifierItem.value.checked,title: notifierItem.value.title);
+      item.isDisabled = isDisabled;
+      _notifierItems[index].value = item;
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.groupTitle != null && widget.isExpandableTitle) {
-      return ExpansionPanelList(
-        expansionCallback: (index, value) {
-          setState(() {
-            isExpanded = !value;
-          });
-        },
-        children: [
-          ExpansionPanel(
-            canTapOnHeader: true,
-            isExpanded: isExpanded,
-            headerBuilder: (ctx, value) {
-              return _TitleGroupedCheckbox(
-                title: widget.groupTitle,
-                isMultiSelection: widget.multiSelection,
-                checkboxTitle: Checkbox(
-                  tristate: true,
-                  value: valueTitle,
-                  activeColor: widget.activeColor,
-                  onChanged: (v) {
-                    setState(() {
-                      if (v != null) valueTitle = v;
-                    });
-                  },
-                ),
-                callback: setChangedCallback,
-              );
-            },
-            body: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: NeverScrollableScrollPhysics(),
-              //itemExtent: 75,
-              itemBuilder: (ctx, i) {
-                return Container(
-                  child: checkBoxItem(i),
-                );
+    Widget childListChecks = ListView.builder(
+      itemCount: _notifierItems.length,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (ctx, i) {
+        return ValueListenableBuilder<Item>(
+          valueListenable: _notifierItems[i],
+          builder: (ctx, item, child) {
+            return _CheckboxItem<T>(
+              index: i,
+              item: item,
+              onChangedCheckBox: (index, v) {
+                onChanged(i, v);
               },
-              itemCount: _items.length,
-              addRepaintBoundaries: true,
-            ),
+              selectedValue: _selectedValue.value,
+              value: widget.values[i],
+              activeColor: widget.activeColor,
+              isCirculaire: widget.isCirculaire,
+              isLeading: widget.isLeading,
+              itemSubTitle: widget.itemsSubTitle != null &&
+                      widget.itemsSubTitle.isNotEmpty
+                  ? widget.itemsSubTitle[i]
+                  : null,
+              isMultpileSelection: widget.multiSelection,
+            );
+          },
+        );
+      },
+    );
+    if (widget.groupTitle != null && widget.isExpandableTitle) {
+      return _ExpansionCheckBoxList(
+        listChild: childListChecks,
+        titleWidget: _TitleGroupedCheckbox(
+          title: widget.groupTitle,
+          isMultiSelection: widget.multiSelection,
+          checkboxTitle: Checkbox(
+            tristate: true,
+            value: _valueTitle,
+            activeColor: widget.activeColor,
+            onChanged: (v) {
+              setState(() {
+                if (v != null) _valueTitle = v;
+              });
+            },
           ),
-        ],
+          callback: setChangedCallback,
+        ),
       );
     }
-    if(widget.groupTitle != null){
+    if (widget.groupTitle != null) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -221,69 +246,59 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
             isMultiSelection: widget.multiSelection,
             checkboxTitle: Checkbox(
               tristate: true,
-              value: valueTitle,
+              value: _valueTitle,
               activeColor: widget.activeColor,
               onChanged: (v) {
                 setState(() {
-                  if (v != null) valueTitle = v;
+                  if (v != null) _valueTitle = v;
                 });
               },
             ),
             callback: setChangedCallback,
           ),
-          ListView.builder(
-            itemCount: _items.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemBuilder: (ctx, i) {
-              return Container(
-                child: checkBoxItem(i),
-              );
-            },
-          )
+          childListChecks,
         ],
       );
     }
-    return ListView.builder(
-      itemCount: _items.length,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemBuilder: (ctx, i) {
-        return Container(
-          child: checkBoxItem(i),
-        );
-      },
-    );
+    return childListChecks;
   }
 
+  /// callback title grouped when clicked it disabled all selected or select all elements
   void setChangedCallback() {
     setState(() {
-      if (valueTitle == null) {
-        valueTitle = true;
+      if (_valueTitle == null) {
+        _valueTitle = true;
         _selectionsValue.addAll(widget.values
             .where((elem) => _selectionsValue.contains(elem) == false));
-      } else if (valueTitle) {
-        valueTitle = false;
+      } else if (_valueTitle) {
+        _valueTitle = false;
         _selectionsValue.clear();
-      } else if (!valueTitle) {
-        valueTitle = true;
+      } else if (!_valueTitle) {
+        _valueTitle = true;
         _selectionsValue.addAll(widget.values as List<T>);
       } else {
-        valueTitle = true;
+        _valueTitle = true;
       }
       //callback
       if (widget.onItemSelected != null)
         widget.onItemSelected(_selectionsValue);
-
-      _items
-          .where((elem) => elem.checked != valueTitle)
-          .forEach((i) => i.checked = valueTitle);
+    });
+    _notifierItems
+        .where((e) => e.value.checked != _valueTitle)
+        .toList()
+        .forEach((element) {
+      Item item = element.value;
+      item.checked = _valueTitle;
+      element.value = item;
     });
   }
 
   void onChanged(int i, dynamic v) {
+    Item item = Item(
+      title: _notifierItems[i].value.title,
+      checked: _notifierItems[i].value.checked,
+      isDisabled: _notifierItems[i].value.isDisabled,
+    );
     if (widget.multiSelection) {
       if (!_selectionsValue.contains(widget.values[i])) {
         if (v) {
@@ -295,112 +310,43 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         }
       }
       if (_selectionsValue.length == widget.values.length) {
-        valueTitle = true;
+        _valueTitle = true;
       } else if (_selectionsValue.length == 0) {
-        valueTitle = false;
+        _valueTitle = false;
       } else {
-        valueTitle = null;
+        _valueTitle = null;
       }
-      _items[i].checked = v;
+      //_items[i].checked = v;
 
       if (widget.onItemSelected != null)
         widget.onItemSelected(_selectionsValue);
+
+      item.checked = v;
     } else {
-      _selectedValue = v;
-      if (_previousActive != null) {
+      _selectedValue.value = v;
+      /*if (_previousActive != null) {
         _previousActive.checked = false;
       }
       _items[i].checked = true;
-      _previousActive = _items[i];
-      if (widget.onItemSelected != null) widget.onItemSelected(_selectedValue);
+      _previousActive = _items[i];*/
+      var notifierPrevious = _notifierItems
+          .firstWhere((element) => element.value.checked, orElse: () => null);
+      if (notifierPrevious != null) {
+        var indexPrevious = _notifierItems.indexOf(notifierPrevious);
+        var previous = Item(
+          title: notifierPrevious.value.title,
+          checked: notifierPrevious.value.checked,
+          isDisabled: notifierPrevious.value.isDisabled,
+        );
+        previous.checked = false;
+        _notifierItems[indexPrevious].value = previous;
+      }
+      item.checked = true;
+      _notifierItems[i].value = item;
+      if (widget.onItemSelected != null)
+        widget.onItemSelected(_selectedValue.value);
     }
-  }
-
-  Widget checkBoxItem(int i) {
-    if (widget.isCirculaire) {
-      Widget circulaireWidget = CirculaireCheckbox(
-        isChecked: _items[i].checked,
-        color: widget.activeColor,
-      );
-      return ListTile(
-        onTap: _items[i].isDisabled
-            ? null
-            : () {
-                setState(() {
-                  onChanged(i, widget.values[i]);
-                });
-              },
-        title: AutoSizeText(
-          "${_items[i].title}",
-          minFontSize: 12,
-        ),
-        subtitle: widget.itemsSubTitle != null
-            ? AutoSizeText(
-                "${widget.itemsSubTitle[i]}",
-                minFontSize: 11,
-              )
-            : null,
-        leading: widget.isLeading ? circulaireWidget : null,
-        trailing: !widget.isLeading ? circulaireWidget : null,
-      );
-    }
-    if (!widget.multiSelection) {
-      return RadioListTile<T>(
-        groupValue: _selectedValue,
-        onChanged: _items[i].isDisabled
-            ? null
-            : (v) {
-                setState(() {
-                  onChanged(i, v);
-                });
-              },
-        activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
-        title: AutoSizeText(
-          "${_items[i].title}",
-          minFontSize: 12,
-        ),
-        subtitle: widget.itemsSubTitle != null
-            ? AutoSizeText(
-                "${widget.itemsSubTitle[i]}",
-                minFontSize: 11,
-              )
-            : null,
-        value: widget.values[i],
-        selected: _items[i].checked,
-        dense: widget.itemsSubTitle != null ? true : false,
-        isThreeLine: widget.itemsSubTitle != null ? true : false,
-        controlAffinity: widget.isLeading
-            ? ListTileControlAffinity.leading
-            : ListTileControlAffinity.trailing,
-      );
-    }
-    return CheckboxListTile(
-      onChanged: _items[i].isDisabled
-          ? null
-          : (v) {
-              setState(() {
-                onChanged(i, v);
-              });
-            },
-      activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
-      title: AutoSizeText(
-        "${_items[i].title}",
-        minFontSize: 12,
-      ),
-      subtitle: widget.itemsSubTitle != null
-          ? AutoSizeText(
-              "${widget.itemsSubTitle[i]}",
-              minFontSize: 11,
-            )
-          : null,
-      value: _items[i].checked,
-      selected: _items[i].checked,
-      dense: widget.itemsSubTitle != null ? true : false,
-      isThreeLine: widget.itemsSubTitle != null ? true : false,
-      controlAffinity: widget.isLeading
-          ? ListTileControlAffinity.leading
-          : ListTileControlAffinity.trailing,
-    );
+    _notifierItems[i].value = item;
   }
 }
 
@@ -448,5 +394,168 @@ class _TitleGroupedCheckbox extends StatelessWidget {
       );
 
     return Container();
+  }
+}
+
+class _CheckboxItem<T> extends StatelessWidget {
+  final bool isCirculaire;
+  final bool isMultpileSelection;
+  final bool isLeading;
+  final T value;
+  final T selectedValue;
+  final Item item;
+  final String itemSubTitle;
+  final int index;
+  final Color activeColor;
+  final Function(int i, dynamic v) onChangedCheckBox;
+
+  _CheckboxItem({
+    this.isCirculaire = false,
+    this.isMultpileSelection = false,
+    this.isLeading = false,
+    this.activeColor,
+    @required this.item,
+    this.itemSubTitle,
+    @required this.value,
+    @required this.selectedValue,
+    @required this.index,
+    @required this.onChangedCheckBox,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isCirculaire) {
+      Widget circulaireWidget = CirculaireCheckbox(
+        isChecked: item.checked,
+        color: activeColor,
+      );
+      return ListTile(
+        onTap: item.isDisabled
+            ? null
+            : () {
+                onChangedCheckBox(index, value);
+                /*setState(() {
+            onChanged(i, widget.values[i]);
+          });*/
+              },
+        title: AutoSizeText(
+          "${item.title}",
+          minFontSize: 12,
+        ),
+        subtitle: itemSubTitle != null
+            ? AutoSizeText(
+                itemSubTitle,
+                minFontSize: 11,
+              )
+            : null,
+        leading: isLeading ? circulaireWidget : null,
+        trailing: !isLeading ? circulaireWidget : null,
+      );
+    }
+    if (!isMultpileSelection) {
+      return RadioListTile<T>(
+        groupValue: selectedValue,
+        onChanged: item.isDisabled
+            ? null
+            : (v) {
+                onChangedCheckBox(index, v);
+              },
+        activeColor: activeColor ?? Theme.of(context).primaryColor,
+        title: AutoSizeText(
+          "${item.title}",
+          minFontSize: 12,
+        ),
+        subtitle: itemSubTitle != null
+            ? AutoSizeText(
+                itemSubTitle,
+                minFontSize: 11,
+              )
+            : null,
+        value: value,
+        selected: item.checked,
+        dense: itemSubTitle != null ? true : false,
+        isThreeLine: itemSubTitle != null ? true : false,
+        controlAffinity: isLeading
+            ? ListTileControlAffinity.leading
+            : ListTileControlAffinity.trailing,
+      );
+    }
+    return CheckboxListTile(
+      onChanged: item.isDisabled
+          ? null
+          : (v) {
+              //setState(() {
+              onChangedCheckBox(index, v);
+              //});
+            },
+      activeColor: activeColor ?? Theme.of(context).primaryColor,
+      title: AutoSizeText(
+        item.title,
+        minFontSize: 12,
+      ),
+      subtitle: itemSubTitle != null
+          ? AutoSizeText(
+              itemSubTitle,
+              minFontSize: 11,
+            )
+          : null,
+      value: item.checked,
+      dense: itemSubTitle != null ? true : false,
+      isThreeLine: itemSubTitle != null ? true : false,
+      controlAffinity: isLeading
+          ? ListTileControlAffinity.leading
+          : ListTileControlAffinity.trailing,
+    );
+  }
+}
+
+class _ExpansionCheckBoxList extends StatefulWidget {
+  final Widget listChild;
+  final Widget titleWidget;
+
+  _ExpansionCheckBoxList({
+    this.listChild,
+    this.titleWidget,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _ExpansionCheckBoxListState();
+}
+
+class _ExpansionCheckBoxListState extends State<_ExpansionCheckBoxList> {
+  bool isExpanded;
+
+  @override
+  void initState() {
+    super.initState();
+    isExpanded = false;
+  }
+
+  @override
+  void didUpdateWidget(_ExpansionCheckBoxList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.listChild != widget.listChild) {
+      setState(() {});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionPanelList(
+      expansionCallback: (index, value) {
+        setState(() {
+          isExpanded = !value;
+        });
+      },
+      children: [
+        ExpansionPanel(
+          isExpanded: isExpanded,
+          headerBuilder: (ctx, value) {
+            return widget.titleWidget;
+          },
+          body: widget.listChild,
+        ),
+      ],
+    );
   }
 }
