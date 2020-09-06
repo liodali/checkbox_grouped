@@ -1,3 +1,6 @@
+## [0.5.0] - improve performance and create testsWidget 
+*  improve performance of simple groupedCheckbox:use valueNotifier,remove setState 
+*  fix and recreate test widget of simple groupedCheckbox 
 ## [0.4.5+7] - fix issues 
 *  update dependencies 
 *  remove scrollable listview in expanded  simple checkbox 

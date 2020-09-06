@@ -42,7 +42,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.5+6"
+    version: "0.4.5+7"
   clock:
     dependency: transitive
     description:
