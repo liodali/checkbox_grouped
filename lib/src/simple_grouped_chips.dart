@@ -46,7 +46,9 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     this.preSelection = const [],
     this.isScrolling = false,
     this.isMultiple = false,
-  })  : assert(isMultiple == false && preSelection.isEmpty),
+  })  : assert(isMultiple == true && preSelection.isNotEmpty ||
+            isMultiple == false && preSelection.isEmpty ||
+            isMultiple == true && preSelection.isEmpty),
         assert(
             disabledItems == null ||
                 disabledItems == [] ||

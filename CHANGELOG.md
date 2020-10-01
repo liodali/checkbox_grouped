@@ -1,3 +1,5 @@
+## [0.5.0+1] - fix bug in simple grouped chips 
+*  fix bug related to assert 
 ## [0.5.0] - improve performance and create testsWidget 
 *  improve performance of simple groupedCheckbox:use valueNotifier,remove setState 
 *  fix and recreate test widget of simple groupedCheckbox 
