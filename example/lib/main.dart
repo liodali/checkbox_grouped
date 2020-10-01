@@ -146,6 +146,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     itemTitle: List.generate(7, (index) => "text$index"),
                     backgroundColorItem: Colors.black26,
                     isScrolling: true,
+                    isMultiple: false,
                   ),
                   Text("grouped switch"),
                   SimpleGroupedSwitch<int>(
