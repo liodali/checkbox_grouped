@@ -24,6 +24,17 @@ class Item extends BaseItem {
           checked: checked,
           isDisabled: isDisabled,
         );
+
+  Item copy({
+    title,
+    checked,
+    isDisabled = false,
+  }) {
+    return Item(
+        title: title ?? this.title,
+        checked: checked ?? this.checked,
+        isDisabled: isDisabled ?? this.isDisabled);
+  }
 }
 
 /// custom item class use it to build items in custom groupedCheckbox

@@ -133,8 +133,6 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       _notifierItems.add(ValueNotifier(item));
     });
 
-
-
     if (widget.checkFirstElement) {
       _items[0].checked = true;
       _notifierItems[0].value = Item(
@@ -146,6 +144,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       _selectedValue.value = widget.values[0];
     }
   }
+
   /// recuperate value selection if is not multi selection
   /// recuperate list of selection value if is multi selection
   dynamic selection() {
@@ -154,13 +153,13 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     }
     return _selectedValue.value;
   }
+
   /// [items]: A list of strings that describes titles
   /// disable items that match with list of strings
   disabledItems(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
         "some of items doen't exist");
     _itemStatus(items, true);
-
   }
 
   /// [items]: A list of strings that describes titles
@@ -178,11 +177,13 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         .asMap()
         .forEach((key, notifierItem) {
       var index = _notifierItems.indexOf(notifierItem);
-      Item item = Item(isDisabled: notifierItem.value.isDisabled,checked: notifierItem.value.checked,title: notifierItem.value.title);
+      Item item = Item(
+          isDisabled: notifierItem.value.isDisabled,
+          checked: notifierItem.value.checked,
+          title: notifierItem.value.title);
       item.isDisabled = isDisabled;
       _notifierItems[index].value = item;
     });
-
   }
 
   @override
