@@ -187,7 +187,6 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
     );
   }
 
-
   void _changeSelection({int index, Item item, bool value}) {
     Item _item = item.copy();
     if (value) {
@@ -204,7 +203,7 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
           var valueListenerOldItem = _items.firstWhere(
               (element) => element.value.checked == true,
               orElse: () => null);
-          if(valueListenerOldItem!=null){
+          if (valueListenerOldItem != null) {
             Item oldItem = valueListenerOldItem.value.copy();
             int indexOldItem = _items.indexOf(valueListenerOldItem);
             oldItem.checked = false;
