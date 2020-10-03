@@ -143,10 +143,13 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                   SimpleGroupedChips<int>(
                     key: mutliChipsKey,
                     values: List.generate(7, (index) => index),
-                    itemTitle: List.generate(7, (index) => "text$index"),
+                    itemTitle: List.generate(7, (index) => "chip_text_$index"),
                     backgroundColorItem: Colors.black26,
-                    isScrolling: true,
+                    isScrolling: false,
                     isMultiple: false,
+                    onItemSelected: (values){
+                      print(values);
+                    },
                   ),
                   Text("grouped switch"),
                   SimpleGroupedSwitch<int>(

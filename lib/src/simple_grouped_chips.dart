@@ -1,6 +1,5 @@
 import 'package:checkbox_grouped/src/item.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 ///  [preSelection] : A list of values that you want to be initially selected.
@@ -82,29 +81,25 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
   Item _previousActive;
   T _selectedValue;
   List<T> _selectionsValue = [];
-  List<Item> _items = [];
+  List<ValueNotifier<Item>> _items = [];
   bool valueTitle = false;
 
   @override
   void initState() {
     super.initState();
-
-    _items.addAll(widget.itemTitle
-        .map((item) => Item(
-              title: item,
-              checked: false,
-              isDisabled: widget.disabledItems?.contains(item) ?? false,
-            ))
-        .toList());
-
     if (widget.isMultiple && widget.preSelection.isNotEmpty) {
       _selectionsValue.addAll(widget.preSelection as List<T>);
-      widget.values.asMap().forEach((index, ele) {
-        if (_selectionsValue.contains(ele)) {
-          _items[index].checked = true;
-        }
-      });
     }
+    _items.addAll(widget.itemTitle
+        .map((item) => ValueNotifier(Item(
+              title: item,
+              checked: widget.isMultiple && widget.preSelection.isNotEmpty
+                  ? _selectionsValue
+                      .contains(widget.values[widget.itemTitle.indexOf(item)])
+                  : false,
+              isDisabled: widget.disabledItems?.contains(item) ?? false,
+            )))
+        .toList());
   }
 
   selection() {
@@ -121,78 +116,157 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
         child: Wrap(
           spacing: 15.0,
           direction: Axis.horizontal,
-          children: items(),
+          children: [
+            for (int i = 0; i < _items.length; i++) ...[
+              ValueListenableBuilder(
+                valueListenable: _items[i],
+                builder: (ctx, item, child) {
+                  return _ChoiceChipsWidget(
+                    onSelection: (v) {
+                      _changeSelection(index: i, item: item, value: v);
+                    },
+                    selectedIcon: Icon(
+                      widget.selectedIcon,
+                      color: widget.selectedTextColor,
+                    ),
+                    isSelected: item.checked,
+                    label: Text(
+                      "${item.title}",
+                      style: TextStyle(
+                        color: item.checked
+                            ? widget.selectedTextColor
+                            : widget.textColor,
+                      ),
+                    ),
+                    backgroundColorItem: widget.backgroundColorItem,
+                    disabledColor: widget.disabledColor,
+                    selectedColorItem: widget.selectedColorItem,
+                  );
+                },
+              ),
+            ],
+          ],
         ),
         scrollDirection: Axis.horizontal,
       );
     }
     return Wrap(
-      spacing: 15.0,
+      spacing: 5.0,
       direction: Axis.horizontal,
-      children: items(),
+      verticalDirection: VerticalDirection.down,
+      children: [
+        for (int i = 0; i < _items.length; i++) ...[
+          ValueListenableBuilder(
+            valueListenable: _items[i],
+            builder: (ctx, item, child) {
+              return _ChoiceChipsWidget(
+                onSelection: (v) {
+                  _changeSelection(index: i, item: item, value: v);
+                },
+                selectedIcon: Icon(
+                  widget.selectedIcon,
+                  color: widget.selectedTextColor,
+                ),
+                isSelected: item.checked,
+                label: Text(
+                  "${item.title}",
+                  style: TextStyle(
+                    color: item.checked
+                        ? widget.selectedTextColor
+                        : widget.textColor,
+                  ),
+                ),
+                backgroundColorItem: widget.backgroundColorItem,
+                disabledColor: widget.disabledColor,
+                selectedColorItem: widget.selectedColorItem,
+              );
+            },
+          ),
+        ],
+      ],
     );
   }
 
-  List<Widget> items() {
-    return [
-      for (int i = 0; i < _items.length; i++) ...[
-        ChoiceChip(
-          selected: _items[i].checked,
-          label: Text(
-            "${_items[i].title}",
-            style: TextStyle(
-                color: _items[i].checked
-                    ? widget.selectedTextColor
-                    : widget.textColor),
-          ),
-          backgroundColor: widget.backgroundColorItem,
-          disabledColor: widget.disabledColor,
-          avatar: _items[i].checked
-              ? Icon(
-                  widget.selectedIcon,
-                  color: widget.selectedTextColor,
-                )
-              : null,
-          selectedColor: widget.selectedColorItem,
-          onSelected: _items[i].isDisabled
-              ? null
-              : (value) {
-                  setState(() {
-                    _changeSelection(index: i, value: value);
-                  });
-                },
-        ),
-      ]
-    ];
-  }
-
-  void _changeSelection({int index, bool value}) {
+  void _changeSelection({int index, Item item, bool value}) {
+    Item _item = item.copy();
     if (value) {
       if (widget.isMultiple) {
         _selectionsValue.add(widget.values[index]);
-        _items[index].checked = value;
+        _item.checked = value;
+        _items[index].value = _item;
         if (widget.onItemSelected != null) {
           widget.onItemSelected(_selectionsValue);
         }
       } else {
-        if (_previousActive != null && _previousActive != _items[index]) {
-          _previousActive.checked = false;
-        }
-        _items[index].checked = true;
-        _selectedValue = widget.values[index];
-        _previousActive = _items[index];
-        if (widget.onItemSelected != null) {
-          widget.onItemSelected(_selectedValue);
+        if (_selectedValue != widget.values[index]) {
+          // TODO : find old selected and deselected
+          var valueListenerOldItem = _items.firstWhere(
+              (element) => element.value.checked == true,
+              orElse: () => null);
+          if (valueListenerOldItem != null) {
+            Item oldItem = valueListenerOldItem.value.copy();
+            int indexOldItem = _items.indexOf(valueListenerOldItem);
+            oldItem.checked = false;
+            _items[indexOldItem].value = oldItem;
+          }
+
+          _item.checked = true;
+          _items[index].value = _item;
+          _selectedValue = widget.values[index];
+          if (widget.onItemSelected != null) {
+            widget.onItemSelected(widget.values[index]);
+          }
         }
       }
     } else {
       if (widget.isMultiple) {
         _selectionsValue.remove(widget.values[index]);
-        _items[index].checked = value;
+        _item.checked = value;
+        _items[index].value = _item;
         if (widget.onItemSelected != null) {
           widget.onItemSelected(_selectionsValue);
         }
       }
     }
+  }
+}
+
+class _ChoiceChipsWidget extends StatelessWidget {
+  final Color backgroundColorItem;
+  final Color disabledColor;
+  final Color selectedColorItem;
+  final Icon selectedIcon;
+  final Function(bool) onSelection;
+  final bool isSelected;
+  final Widget label;
+  final Widget avatar;
+
+  _ChoiceChipsWidget({
+    this.label,
+    this.avatar,
+    this.onSelection,
+    this.isSelected,
+    this.backgroundColorItem,
+    this.disabledColor,
+    this.selectedColorItem,
+    this.selectedIcon,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChoiceChip(
+      label: label,
+      avatar: avatar != null
+          ? avatar
+          : isSelected
+              ? selectedIcon
+              : null,
+      selectedColor: selectedColorItem,
+      backgroundColor: backgroundColorItem,
+      disabledColor: disabledColor,
+      selected: isSelected,
+      onSelected: onSelection,
+    );
   }
 }

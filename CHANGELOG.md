@@ -1,3 +1,8 @@
+## [0.5.1] - optimize simple grouped chips 
+*  use valueNotifier to manage selection in simple grouped chips 
+*  change main example  
+*  fix bug in test simple grouped chips 
+*  add test in multiple choice for simple grouped chips 
 ## [0.5.0+1] - fix bug in simple grouped chips 
 *  fix bug related to assert 
 ## [0.5.0] - improve performance and create testsWidget 
