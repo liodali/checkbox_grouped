@@ -159,6 +159,9 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     textStyle: TextStyle(fontSize: 16),
                     activeColor:Colors.red,
                     isMultipleSelection: false,
+                    onItemSelected: (values){
+                      print(values);
+                    },
                   ),
                 ],
               ),
