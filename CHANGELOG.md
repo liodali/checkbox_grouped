@@ -1,3 +1,7 @@
+## [0.5.2] - optimize simple grouped switch
+*  use valueNotifier to manage selection in simple grouped switch 
+*  make physics of ListView non Scrollable 
+*  update kotlin version in android project of the example  
 ## [0.5.1] - optimize simple grouped chips 
 *  use valueNotifier to manage selection in simple grouped chips 
 *  change main example  
