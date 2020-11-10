@@ -14,7 +14,7 @@ abstract class BaseItem {
 /// item class use it to build items in groupedCheckbox
 /// [title] : string use it to sepecifie title of checkbox item
 class Item extends BaseItem {
-  String title;
+  final String title;
 
   Item({
     this.title,

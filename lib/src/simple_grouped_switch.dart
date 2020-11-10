@@ -1,5 +1,6 @@
 import 'package:checkbox_grouped/src/item.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 ///  [preSelectionItems] : A list of values that you want to be initially selected.
@@ -61,15 +62,15 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
 }
 
 class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
-  List<Item> _items;
-  T _selectedValue;
-  List<T> _selectedValues;
+  List<ValueNotifier<Item>> _items;
+  ValueNotifier<T> _selectedValue=ValueNotifier(null);
+  List<ValueNotifier<T>> _selectedValues;
 
   selection() {
     if (widget.isMultipleSelection) {
-      return _selectedValues;
+      return _selectedValues.map((e) => e.value).toList();
     }
-    return _selectedValue;
+    return _selectedValue.value;
   }
 
   @override
@@ -78,10 +79,10 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
     _items = [];
     _selectedValues = [];
     widget.itemsTitle.asMap().forEach((index, elem) {
-      _items.add(Item(
+      _items.add(ValueNotifier(Item(
           title: elem,
           checked: widget.preSelectionItems.contains(elem),
-          isDisabled: widget.disableItems.contains(widget.values[index])));
+          isDisabled: widget.disableItems.contains(widget.values[index]))));
     });
   }
 
@@ -90,8 +91,21 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
-        return itemsWidget(_items[index]);
+        return ValueListenableBuilder<Item>(
+          valueListenable: _items[index],
+          builder: (ctx,item,_){
+            return _SwitchListItem(
+              indexItem: index,
+              onItemChanged: onChanged,
+              item: item,
+              activeColor: widget.activeColor,
+              textStyle: widget.textStyle,
+            );
+          },
+        );
+        // return itemsWidget(_items[index]);
       },
       itemCount: _items.length,
     );
@@ -102,42 +116,64 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
       if (!value) {
         _selectedValues.remove(widget.values[index]);
       }
-      item.checked = value;
-      if (widget.onItemSelected != null) widget.onItemSelected(_selectedValues);
+      _items[index].value = item.copy(checked: value);
+      if (widget.onItemSelected != null) widget.onItemSelected(_selectedValues.map((e) => e.value).toList());
     } else {
       if (!item.checked && value) {
-        item.checked = value;
+        _items[index].value = item.copy(checked: value);
         if (value) {
           if (widget.values.indexOf(_selectedValue) != index) {
             //_items[index].checked = false;
-            if (_selectedValue != null)
-              _items[widget.values.indexOf(_selectedValue)].checked = false;
-            _selectedValue = widget.values[index];
+            if (_selectedValue.value != null) {
+              final indexPreviousItem = widget.values.indexOf(_selectedValue.value);
+              final previousItem = _items[indexPreviousItem].value;
+              _items[indexPreviousItem].value =
+                  previousItem.copy(checked: false);
+            }
+            _selectedValue.value = widget.values[index];
           }
         }
         if (widget.onItemSelected != null)
-          widget.onItemSelected(_selectedValue);
+          widget.onItemSelected(_selectedValue.value);
       }
     }
   }
 
-  Widget itemsWidget(elem) {
+
+}
+
+class _SwitchListItem extends StatelessWidget {
+  final Item item;
+  final int indexItem;
+  final Function(Item, bool, int) onItemChanged;
+  final Color activeColor;
+  final TextStyle textStyle;
+
+  _SwitchListItem({
+    @required this.item,
+    @required this.onItemChanged,
+    @required this.indexItem,
+    this.activeColor,
+    this.textStyle,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return SwitchListTile(
-      onChanged: elem.isDisabled
+      onChanged: item.isDisabled
           ? null
           : (v) {
-              setState(() {
-                onChanged(elem, v, _items.indexOf(elem));
-              });
+              onItemChanged(item, v, indexItem);
             },
-      activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
-      value: elem.checked,
+      activeColor: activeColor ?? Theme.of(context).primaryColor,
+      value: item.checked,
       title: Text(
-        "${elem.title}",
-        style: widget.textStyle?.copyWith(
-          color: elem.checked
-              ? widget.activeColor
-              : (widget.textStyle?.color ??
+        "${item.title}",
+        style: textStyle?.copyWith(
+          color: item.checked
+              ? activeColor
+              : (textStyle?.color ??
                       Theme.of(context).textTheme.headline6.color) ??
                   Theme.of(context).textTheme.headline6.getTextStyle(),
         ),
