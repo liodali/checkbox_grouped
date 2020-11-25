@@ -68,7 +68,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
             "you cannot make isExpandable without textTitle"),
         assert(
             disableItems == null ||
-                disableItems.isEmpty ||
+                disableItems == [] ||
                 disableItems
                     .takeWhile((c) => itemsTitle.contains(c))
                     .isNotEmpty,
