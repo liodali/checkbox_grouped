@@ -18,14 +18,11 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
     this.isMultipleSelectionPerGroup,
     this.preSelectedValues = const [],
     this.disabledValues = const [],
-    Key key,
+    @required Key key,
   })  : assert(values.length == titles.length),
         assert(groupTitles.length == titles.length),
         assert(isMultipleSelectionPerGroup.length == titles.length),
         super(key: key);
-
-  @override
-  ListGroupedCheckboxState createState() => ListGroupedCheckboxState();
 
   static ListGroupedCheckboxState of<T>(BuildContext context,
       {bool nullOk = false}) {
@@ -42,6 +39,9 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
       context.describeElement('The context used was')
     ]);
   }
+
+  @override
+  ListGroupedCheckboxState<T> createState() => ListGroupedCheckboxState<T>();
 }
 
 class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
@@ -72,12 +72,20 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
+      addAutomaticKeepAlives: true,
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
         return SimpleGroupedCheckbox<T>(
+          key: listKeys[index],
           itemsTitle: widget.titles[index],
           values: widget.values[index],
-          preSelection: widget.preSelectedValues[index],
-          disableItems: widget.disabledValues[index],
+          preSelection: widget.preSelectedValues.isNotEmpty
+              ? widget.preSelectedValues[index]
+              : [],
+          disableItems: widget.disabledValues.isNotEmpty
+              ? widget.disabledValues[index]
+              : [],
           groupTitle: widget.groupTitles[index],
           isCirculaire: false,
           multiSelection: widget.isMultipleSelectionPerGroup[index],
