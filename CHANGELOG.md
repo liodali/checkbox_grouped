@@ -1,3 +1,7 @@
+## [0.6.0] - add new widget:ListGroupedCheckbox 
+*  ListGroupedCheckbox to manage list of groupedCheckbox,retrieve selected data in one call 
+*  add example for ListGroupedCheckbox 
+*  add test widget for ListGroupedCheckbox 
 ## [0.5.2] - optimize simple grouped switch
 *  use valueNotifier to manage selection in simple grouped switch 
 *  make physics of ListView non Scrollable 
