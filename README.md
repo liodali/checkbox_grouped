@@ -1,13 +1,14 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.5.2-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.6.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
-    * grouping checkbox
+    * grouped (checkbox/radioButton)
     * customisable grouped checkbox
-    * grouping chips
-    * grouping switch
+    * grouped chips
+    * grouped switch
     * recuperate the actual selection
     * make multiple selection
     * dialogGroupedCheckbox
+    * lit of groupedCheckbox
 
 ## Getting Started
 
@@ -16,7 +17,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.5.2
+		checkbox_grouped: ^0.6.0
 
 
 
@@ -204,4 +205,49 @@ Add the following to your `pubspec.yaml` file:
 |`submitDialogText`             |`(string) label for submitButton`.  |
 |`isMultiSelection`             |`enable multiple selection`.  |
 
+## ListGroupedCheckbox  *(experimental)
 
+> display  list of groupedCheckbox
+> return all values selected
+
+### Declare GlobalKey to get selected values
+
+`  GlobalKey<ListGroupedCheckboxState> globalKey = GlobalKey<ListGroupedCheckboxState>();`
+
+### Get all values selected
+
+` await globalKey.currentState.getAllValues() `
+
+
+#### Creating a basic `ListGroupedCheckbox`
+
+     
+            ListGroupedCheckbox(
+                        key: globalKey,
+                        groupTitles: List.generate(3, (index) => "groupe $index"),
+                        values: List.generate(
+                          3,
+                          (i) =>
+                              List.generate(5, (j) => "${(i + Random().nextInt(100)) * j}"),
+                        ),
+                        titles: List.generate(
+                          3,
+                          (i) => List.generate(5, (j) => "Title:$i-$j"),
+                        ),
+                        isMultipleSelectionPerGroup: [true, false, true],
+                      ),
+
+
+     
+
+
+####  `showDialogGroupedCheckbox`
+|   Properties                        |  Description |
+|-------------------------------------|--------------------------------------------------------------------------------------------------|
+|`groupTitles`                        | (required)Text title for group checkbox in each groupedCheckbox.  |
+|`titles`                             | (required) A list of list of strings that describes each checkbox button. Each label must be distinct in groupedCheckbox.   |
+|`values`                             | (required) Values contains in each element in each groupedCheckbox.   |
+|`subTitles`                          | A list of list strings that describes second Text in each groupedChckbox.   |
+|`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
+|`preSelectedValues`                  | A list of list values that you want to be initially selected of each groupedCheckbox.   |
+|`isMultipleSelectionPerGroup`        | A list of boolean to enable multiple selection of each groupedCheckbox.  |
