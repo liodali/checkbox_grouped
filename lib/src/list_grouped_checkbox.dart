@@ -58,7 +58,24 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
 
   Future<List<T>> getAllValues() async {
     List<T> resultList = List<T>();
-    resultList.addAll(listKeys.map((e) => e.currentState.selection()));
+    var values = listKeys.map((e) => e.currentState.selection()).where((v) {
+      if (v != null) {
+        if (v is List && v.isNotEmpty) {
+          return true;
+        }else if(v is T){
+          return true;
+        }
+      }
+      return false;
+    }).toList();
+    for (var v in values) {
+      if (v is List)
+        resultList.addAll(v.cast<T>());
+      else {
+        if (v != null) resultList.add(v);
+      }
+    }
+
     return resultList;
   }
 
