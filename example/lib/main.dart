@@ -1,5 +1,6 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:example/custom_grouped_example.dart';
+import 'list_of_grouped.dart';
+import 'custom_grouped_example.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -47,7 +48,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    tabController=TabController(initialIndex: 0,length: 3,vsync: this);
+    tabController=TabController(initialIndex: 0,length: 4,vsync: this);
     checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
     circulairekey = GlobalKey<SimpleGroupedCheckboxState<int>>();
     mutlicheckboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
@@ -68,6 +69,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
               Text("example 1"),
               Text("example 2"),
               Text("example 3"),
+              Text("example 4"),
             ],
           ),
         ),
@@ -186,7 +188,8 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                 },
                 child: Text("show dialog checkbox grouped"),
               ),
-            ],)
+            ],),
+            ListOfGrouped(),
           ],
         )
     );
