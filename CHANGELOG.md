@@ -1,3 +1,6 @@
+## [0.6.0+1] - fix bug 
+*  fix bug of unchanged state of checkbox in titleGrouped 
+*  remove widget in simpleGroupedCheckbox (example 1) 
 ## [0.6.0] - add new widget:ListGroupedCheckbox 
 *  ListGroupedCheckbox to manage list of groupedCheckbox,retrieve selected data in one call 
 *  add example for ListGroupedCheckbox 
