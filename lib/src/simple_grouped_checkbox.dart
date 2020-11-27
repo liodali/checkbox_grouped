@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:checkbox_grouped/src/circulaire_checkbox.dart';
 import 'package:checkbox_grouped/src/item.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import './item.dart';
@@ -101,7 +102,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   List<T> _selectionsValue = [];
   List<ValueNotifier<Item>> _notifierItems = [];
   List<Item> _items = [];
-  bool _valueTitle = false;
+  ValueNotifier<bool> _valueTitle = ValueNotifier(false);
 
   @override
   void initState() {
@@ -119,7 +120,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
       if (widget.multiSelection &&
           widget.preSelection != null &&
           widget.preSelection.length > 0) {
-        _valueTitle = null;
+        _valueTitle.value = null;
         if (widget.preSelection.contains(widget.values[key])) {
           checked = true;
           _selectionsValue.add(widget.values[key]);
@@ -224,14 +225,19 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         titleWidget: _TitleGroupedCheckbox(
           title: widget.groupTitle,
           isMultiSelection: widget.multiSelection,
-          checkboxTitle: Checkbox(
-            tristate: true,
-            value: _valueTitle,
-            activeColor: widget.activeColor,
-            onChanged: (v) {
-              setState(() {
-                if (v != null) _valueTitle = v;
-              });
+          checkboxTitle: ValueListenableBuilder(
+            valueListenable: _valueTitle,
+            builder: (ctx, selected, _) {
+              return Checkbox(
+                tristate: true,
+                value: selected,
+                activeColor: widget.activeColor,
+                onChanged: (v) {
+                  setState(() {
+                    if (v != null) _valueTitle.value = v;
+                  });
+                },
+              );
             },
           ),
           callback: setChangedCallback,
@@ -245,14 +251,19 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
           _TitleGroupedCheckbox(
             title: widget.groupTitle,
             isMultiSelection: widget.multiSelection,
-            checkboxTitle: Checkbox(
-              tristate: true,
-              value: _valueTitle,
-              activeColor: widget.activeColor,
-              onChanged: (v) {
-                setState(() {
-                  if (v != null) _valueTitle = v;
-                });
+            checkboxTitle: ValueListenableBuilder(
+              valueListenable: _valueTitle,
+              builder: (ctx, selected, _) {
+                return Checkbox(
+                  tristate: true,
+                  value: selected,
+                  activeColor: widget.activeColor,
+                  onChanged: (v) {
+                    setState(() {
+                      if (v != null) _valueTitle.value = v;
+                    });
+                  },
+                );
               },
             ),
             callback: setChangedCallback,
@@ -267,29 +278,29 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   /// callback title grouped when clicked it disabled all selected or select all elements
   void setChangedCallback() {
     setState(() {
-      if (_valueTitle == null) {
-        _valueTitle = true;
+      if (_valueTitle.value == null) {
+        _valueTitle.value = true;
         _selectionsValue.addAll(widget.values
             .where((elem) => _selectionsValue.contains(elem) == false));
-      } else if (_valueTitle) {
-        _valueTitle = false;
+      } else if (_valueTitle.value) {
+        _valueTitle.value = false;
         _selectionsValue.clear();
-      } else if (!_valueTitle) {
-        _valueTitle = true;
+      } else if (!_valueTitle.value) {
+        _valueTitle.value = true;
         _selectionsValue.addAll(widget.values as List<T>);
       } else {
-        _valueTitle = true;
+        _valueTitle.value = true;
       }
       //callback
       if (widget.onItemSelected != null)
         widget.onItemSelected(_selectionsValue);
     });
     _notifierItems
-        .where((e) => e.value.checked != _valueTitle)
+        .where((e) => e.value.checked != _valueTitle.value)
         .toList()
         .forEach((element) {
       Item item = element.value;
-      item.checked = _valueTitle;
+      item.checked = _valueTitle.value;
       element.value = item;
     });
   }
@@ -311,11 +322,11 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         }
       }
       if (_selectionsValue.length == widget.values.length) {
-        _valueTitle = true;
+        _valueTitle.value = true;
       } else if (_selectionsValue.length == 0) {
-        _valueTitle = false;
+        _valueTitle.value = false;
       } else {
-        _valueTitle = null;
+        _valueTitle.value = null;
       }
       //_items[i].checked = v;
 
@@ -357,8 +368,13 @@ class _TitleGroupedCheckbox extends StatelessWidget {
   final VoidCallback callback;
   final Widget checkboxTitle;
 
-  _TitleGroupedCheckbox(
-      {this.title, this.isMultiSelection, this.callback, this.checkboxTitle});
+  _TitleGroupedCheckbox({
+    this.title,
+    this.isMultiSelection,
+    this.callback,
+    this.checkboxTitle,
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -481,6 +497,7 @@ class _CheckboxItem<T> extends StatelessWidget {
             : ListTileControlAffinity.trailing,
       );
     }
+
     return CheckboxListTile(
       onChanged: item.isDisabled
           ? null
