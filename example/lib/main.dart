@@ -128,20 +128,6 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     isExpandableTitle: true,
                   ),
                   Divider(),
-                  SimpleGroupedCheckbox<int>(
-                    key: mutlipleKey,
-                    itemsTitle: List.generate(10, (index) => "$index"),
-                    values: List.generate(10, (index) => index),
-                    preSelection: [2, 5, 4],
-                    activeColor: Colors.green,
-                    checkFirstElement: false,
-                    multiSelection: true,
-                    onItemSelected: (data){
-                      print(data);
-                    },
-                    isExpandableTitle: false,
-                  ),
-                  Divider(),
                   SimpleGroupedChips<int>(
                     key: mutliChipsKey,
                     values: List.generate(7, (index) => index),
@@ -153,6 +139,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                       print(values);
                     },
                   ),
+                  Divider(),
                   Text("grouped switch"),
                   SimpleGroupedSwitch<int>(
                     itemsTitle: List.generate(10, (index) => "$index"),
