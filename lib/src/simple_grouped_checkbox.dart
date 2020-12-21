@@ -9,11 +9,12 @@ import './item.dart';
 typedef onChanged = Function(dynamic selected);
 
 /// display  simple groupedCheckbox
-/// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [itemsTitle] :  (required) A list of strings that describes each checkbox button
 /// [values] : list of values
 /// [onItemSelected] : list of initial values that you want to be selected
 /// [itemsSubTitle] : A list of strings that describes second Text
+/// [groupTitle] : Text Widget that describe Title of group checkbox
+/// [groupTitleStyle] : Text Style  that describe style of title of group checkbox
 /// [activeColor] : the color to use when this checkbox button is selected
 /// [disableItems] : pecifies which item should be disabled
 /// [preSelection] :  A list of values that you want to be initially selected
@@ -26,6 +27,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final List<String> itemsTitle;
   final onChanged onItemSelected;
   final String groupTitle;
+  final TextStyle groupTitleStyle;
   final List<String> itemsSubTitle;
   final Color activeColor;
   final List<T> values;
@@ -43,6 +45,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     @required this.values,
     this.onItemSelected,
     this.groupTitle,
+    this.groupTitleStyle,
     this.itemsSubTitle,
     this.disableItems,
     this.activeColor,
@@ -224,6 +227,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         listChild: childListChecks,
         titleWidget: _TitleGroupedCheckbox(
           title: widget.groupTitle,
+          titleStyle: widget.groupTitleStyle,
           isMultiSelection: widget.multiSelection,
           checkboxTitle: ValueListenableBuilder(
             valueListenable: _valueTitle,
@@ -250,6 +254,7 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         children: <Widget>[
           _TitleGroupedCheckbox(
             title: widget.groupTitle,
+            titleStyle: widget.groupTitleStyle,
             isMultiSelection: widget.multiSelection,
             checkboxTitle: ValueListenableBuilder(
               valueListenable: _valueTitle,
@@ -364,12 +369,14 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
 
 class _TitleGroupedCheckbox extends StatelessWidget {
   final String title;
+  final TextStyle titleStyle;
   final bool isMultiSelection;
   final VoidCallback callback;
   final Widget checkboxTitle;
 
   _TitleGroupedCheckbox({
     this.title,
+    this.titleStyle,
     this.isMultiSelection,
     this.callback,
     this.checkboxTitle,
@@ -378,16 +385,16 @@ class _TitleGroupedCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final  titleWidget=Text(
+      title,
+      style: titleStyle??TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+    );
     if (isMultiSelection && title != null) {
       return ListTile(
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
+        title:titleWidget ,
         onTap: () {
           callback();
         },
@@ -401,14 +408,7 @@ class _TitleGroupedCheckbox extends StatelessWidget {
       );
     }
     if (title != null)
-      return Text(
-        title,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      );
+      return titleWidget;
 
     return Container();
   }
