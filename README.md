@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.6.0%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.6.1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -17,7 +17,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.6.0+1
+		checkbox_grouped: ^0.6.1
 
 
 
@@ -248,6 +248,7 @@ Add the following to your `pubspec.yaml` file:
 |`titles`                             | (required) A list of list of strings that describes each checkbox button. Each label must be distinct in groupedCheckbox.   |
 |`values`                             | (required) Values contains in each element in each groupedCheckbox.   |
 |`subTitles`                          | A list of list strings that describes second Text in each groupedChckbox.   |
+|`onSelectedGroupChanged`             | CallBack to get all selected items when users  new   selection instantly  |
 |`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
 |`preSelectedValues`                  | A list of list values that you want to be initially selected of each groupedCheckbox.   |
 |`isMultipleSelectionPerGroup`        | A list of boolean to enable multiple selection of each groupedCheckbox.  |

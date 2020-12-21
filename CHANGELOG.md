@@ -1,3 +1,5 @@
+## [0.6.1] - add callback to collect data from list of grouped widget 
+*  create typedef onGroupChanged and add it to widget to collect data inside widget 
 ## [0.6.0+1] - fix bug 
 *  fix bug of unchanged state of checkbox in titleGrouped 
 *  remove widget in simpleGroupedCheckbox (example 1) 
