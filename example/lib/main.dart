@@ -120,6 +120,9 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     preSelection: [2, 5, 4],
                     activeColor: Colors.green,
                     groupTitle: "expanded multiple checkbox selection",
+                    groupTitleStyle: TextStyle(
+                      color: Colors.orange
+                    ),
                     checkFirstElement: false,
                     multiSelection: true,
                     onItemSelected: (data){
