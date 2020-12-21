@@ -1,6 +1,8 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:flutter/material.dart';
 
+typedef onGroupChanged<T> = void Function(dynamic selected);
+
 class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<List<T>> values;
   final List<List<String>> titles;
@@ -9,6 +11,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<bool> isMultipleSelectionPerGroup;
   final List<List<T>> preSelectedValues;
   final List<List<T>> disabledValues;
+  final onGroupChanged<T> onSelectedGroupChanged;
 
   ListGroupedCheckbox({
     @required this.titles,
@@ -16,6 +19,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
     @required this.values,
     this.subTitles,
     this.isMultipleSelectionPerGroup,
+    this.onSelectedGroupChanged,
     this.preSelectedValues = const [],
     this.disabledValues = const [],
     @required Key key,
@@ -62,7 +66,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
       if (v != null) {
         if (v is List && v.isNotEmpty) {
           return true;
-        }else if(v is T){
+        } else if (v is T) {
           return true;
         }
       }
@@ -104,6 +108,10 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
               ? widget.disabledValues[index]
               : [],
           groupTitle: widget.groupTitles[index],
+          onItemSelected: (selection) async {
+            final list = await getAllValues();
+            widget.onSelectedGroupChanged(list);
+          },
           isCirculaire: false,
           multiSelection: widget.isMultipleSelectionPerGroup[index],
         );
