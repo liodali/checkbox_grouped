@@ -37,6 +37,9 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
             isMultipleSelectionPerGroup: [true, false, true],
+            onSelectedGroupChanged: (list){
+              print(list);
+            },
           ),
           RaisedButton(
             onPressed: () async {
