@@ -1,3 +1,6 @@
+## [0.6.1+1] - fix color of groupTitle in dark mode 
+*  remove color in textStyle of groupTitle 
+*  add textStyle to modify Style of groupTitle 
 ## [0.6.1] - add callback to collect data from list of grouped widget 
 *  create typedef onGroupChanged and add it to widget to collect data inside widget 
 ## [0.6.0+1] - fix bug 
