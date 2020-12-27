@@ -1,3 +1,5 @@
+## [0.6.2] - add gif to readme 
+*  add new gif to show basics examples of the library 
 ## [0.6.2] - pre-selection in single choice 
 *  add possibility to pre-selection any element in single chice 
 ## [0.6.1+1] - fix color of groupTitle in dark mode 
