@@ -68,10 +68,10 @@ class _MainExampleState extends State<MainExample>
               tabController.index = index;
             },
             tabs: <Widget>[
-              Text("example 1"),
-              Text("example 2"),
-              Text("example 3"),
-              Text("example 4"),
+              Text("basics"),
+              Text("customs"),
+              Text("dialog"),
+              Text("list of grouped"),
             ],
           ),
         ),
@@ -100,7 +100,7 @@ class _MainExampleState extends State<MainExample>
                     disableItems: ["5"],
                     itemsTitle: ["1", "2", "4", "5"],
                     values: [1, 2, 4, 5],
-                    preSelection: [4],
+                    preSelection: [2],
                     activeColor: Colors.red,
                     checkFirstElement: false,
                     multiSelection: false,
