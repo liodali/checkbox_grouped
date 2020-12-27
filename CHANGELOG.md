@@ -1,3 +1,5 @@
+## [0.6.2] - pre-selection in single choice 
+*  add possibility to pre-selection any element in single chice 
 ## [0.6.1+1] - fix color of groupTitle in dark mode 
 *  remove color in textStyle of groupTitle 
 *  add textStyle to modify Style of groupTitle 

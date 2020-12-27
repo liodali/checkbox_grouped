@@ -57,11 +57,13 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.isExpandableTitle = false,
   })  : assert(values != null),
         assert(values.length == itemsTitle.length),
-        assert(multiSelection == false &&
-                preSelection != null &&
-                preSelection.length > 0
-            ? false
-            : true),
+        assert(
+            multiSelection == false &&
+                    preSelection != null &&
+                    (preSelection.length > 1 || checkFirstElement == true)
+                ? false
+                : true,
+            "you cannot make multiple selection in single selection"),
         assert(itemsSubTitle != null
             ? itemsSubTitle.length == itemsTitle.length
             : true),
@@ -111,7 +113,14 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
   void initState() {
     super.initState();
     _selectedValue = ValueNotifier(null);
-
+    if (widget.preSelection != null && widget.preSelection.isNotEmpty) {
+      final cacheSelection = widget.preSelection.toList();
+      cacheSelection.removeWhere((e) => widget.values.contains(e));
+      if (cacheSelection.isNotEmpty) {
+        assert(widget.values.contains(cacheSelection),
+            "you want to activate selection of value doesn't exist");
+      }
+    }
     widget.itemsTitle.asMap().forEach((key, title) {
       bool checked = false;
       if (key == 0) {
@@ -127,6 +136,17 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
         if (widget.preSelection.contains(widget.values[key])) {
           checked = true;
           _selectionsValue.add(widget.values[key]);
+        }
+      } else {
+        if (!widget.multiSelection &&
+            !widget.checkFirstElement &&
+            widget.preSelection != null &&
+            widget.preSelection.length == 1) {
+          _valueTitle.value = null;
+          if (widget.preSelection.contains(widget.values[key])) {
+            checked = true;
+            _selectedValue.value = widget.values[key];
+          }
         }
       }
       Item item = Item(
@@ -385,16 +405,17 @@ class _TitleGroupedCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final  titleWidget=Text(
+    final titleWidget = Text(
       title,
-      style: titleStyle??TextStyle(
-        fontSize: 15,
-        fontWeight: FontWeight.bold,
-      ),
+      style: titleStyle ??
+          TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
     );
     if (isMultiSelection && title != null) {
       return ListTile(
-        title:titleWidget ,
+        title: titleWidget,
         onTap: () {
           callback();
         },
@@ -407,8 +428,7 @@ class _TitleGroupedCheckbox extends StatelessWidget {
         ),
       );
     }
-    if (title != null)
-      return titleWidget;
+    if (title != null) return titleWidget;
 
     return Container();
   }

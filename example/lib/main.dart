@@ -1,7 +1,8 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'list_of_grouped.dart';
-import 'custom_grouped_example.dart';
 import 'package:flutter/material.dart';
+
+import 'custom_grouped_example.dart';
+import 'list_of_grouped.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,12 +14,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -27,43 +25,47 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home:MainExample(),
+      home: MainExample(),
     );
   }
 }
-class MainExample extends StatefulWidget{
+
+class MainExample extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _MainExampleState();
   }
-
 }
-class _MainExampleState extends State<MainExample> with TickerProviderStateMixin{
 
+class _MainExampleState extends State<MainExample>
+    with TickerProviderStateMixin {
   GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey,
-      circulairekey,mutlipleKey,
+      circulairekey,
+      mutlipleKey,
       mutlicheckboxKey;
   GlobalKey<SimpleGroupedChipsState<int>> mutliChipsKey;
   TabController tabController;
+
   @override
   void initState() {
     super.initState();
-    tabController=TabController(initialIndex: 0,length: 4,vsync: this);
+    tabController = TabController(initialIndex: 0, length: 4, vsync: this);
     checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
     circulairekey = GlobalKey<SimpleGroupedCheckboxState<int>>();
     mutlicheckboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
     mutliChipsKey = GlobalKey<SimpleGroupedChipsState<int>>();
     mutlipleKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("examples"),
           bottom: TabBar(
             controller: tabController,
-            onTap: (index){
-              tabController.index=index;
+            onTap: (index) {
+              tabController.index = index;
             },
             tabs: <Widget>[
               Text("example 1"),
@@ -84,22 +86,23 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                   SimpleGroupedCheckbox<int>(
                     key: checkboxKey,
                     //groupTitle:"Basic",
-                    onItemSelected: (data){
+                    onItemSelected: (data) {
                       print(data);
-                      if(data==1){
+                      if (data == 1) {
                         checkboxKey.currentState.disabledItems(["5"]);
-                      }else if(data==4){
-                        checkboxKey.currentState.enabledItems(["5","2"]);
+                      } else if (data == 4) {
+                        checkboxKey.currentState.enabledItems(["5", "2"]);
                         checkboxKey.currentState.disabledItems(["1"]);
-                      }else if(data == 2 ){
+                      } else if (data == 2) {
                         checkboxKey.currentState.enabledItems(["1"]);
                       }
                     },
                     disableItems: ["5"],
                     itemsTitle: ["1", "2", "4", "5"],
                     values: [1, 2, 4, 5],
+                    preSelection: [4],
                     activeColor: Colors.red,
-                    checkFirstElement: true,
+                    checkFirstElement: false,
                     multiSelection: false,
                   ),
                   SimpleGroupedCheckbox<int>(
@@ -120,12 +123,10 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     preSelection: [2, 5, 4],
                     activeColor: Colors.green,
                     groupTitle: "expanded multiple checkbox selection",
-                    groupTitleStyle: TextStyle(
-                      color: Colors.orange
-                    ),
+                    groupTitleStyle: TextStyle(color: Colors.orange),
                     checkFirstElement: false,
                     multiSelection: true,
-                    onItemSelected: (data){
+                    onItemSelected: (data) {
                       print(data);
                     },
                     isExpandableTitle: true,
@@ -138,7 +139,7 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     backgroundColorItem: Colors.black26,
                     isScrolling: false,
                     isMultiple: false,
-                    onItemSelected: (values){
+                    onItemSelected: (values) {
                       print(values);
                     },
                   ),
@@ -149,9 +150,9 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
                     values: List.generate(10, (index) => index),
                     disableItems: [2],
                     textStyle: TextStyle(fontSize: 16),
-                    activeColor:Colors.red,
+                    activeColor: Colors.red,
                     isMultipleSelection: false,
-                    onItemSelected: (values){
+                    onItemSelected: (values) {
                       print(values);
                     },
                   ),
@@ -159,30 +160,28 @@ class _MainExampleState extends State<MainExample> with TickerProviderStateMixin
               ),
             ),
             CustomGroupedExample(),
-            Column(children: <Widget>[
-              FlatButton(
-                onPressed: ()async {
-                 var values= await showDialogGroupedCheckbox(
-                    context: context,
-                    cancelDialogText: "cancel",
-                    isMultiSelection: true,
-                    itemsTitle: List.generate(15, (index) => "$index"),
-                    submitDialogText: "select",
-                    dialogTitle:Text("example dialog") ,
-                    values: List.generate(15, (index) => index)
-                  );
-                 if(values!=null){
-                   print(values);
-                 }
-
-                },
-                child: Text("show dialog checkbox grouped"),
-              ),
-            ],),
+            Column(
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () async {
+                    var values = await showDialogGroupedCheckbox(
+                        context: context,
+                        cancelDialogText: "cancel",
+                        isMultiSelection: true,
+                        itemsTitle: List.generate(15, (index) => "$index"),
+                        submitDialogText: "select",
+                        dialogTitle: Text("example dialog"),
+                        values: List.generate(15, (index) => index));
+                    if (values != null) {
+                      print(values);
+                    }
+                  },
+                  child: Text("show dialog checkbox grouped"),
+                ),
+              ],
+            ),
             ListOfGrouped(),
           ],
-        )
-    );
+        ));
   }
-
 }

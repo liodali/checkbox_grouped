@@ -68,4 +68,32 @@ void main() {
     expect(cb2.value, true);
     expect((globalKey.currentState.selection() as List), [0, 1]);
   });
+
+
+  testWidgets("test pre-selection for single selection",
+          (tester) async {
+        GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey =
+        GlobalKey<SimpleGroupedCheckboxState<int>>();
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: SimpleGroupedCheckbox<int>(
+              key: checkboxKey,
+              itemsTitle: List.generate(10, (index) => "${index+1}"),
+              values: List.generate(10, (index) => index+1),
+              preSelection: [2],
+              activeColor: Colors.red,
+              checkFirstElement: false,
+              multiSelection: false,
+              isLeading: true,
+            ),
+          ),
+        ));
+        await tester.pump();
+
+        expect(checkboxKey.currentState.selection(), 2);
+        await tester.pump();
+        var finder=find.text("3");
+        await tester.tap(finder);
+        expect(checkboxKey.currentState.selection(), 3);
+      });
 }
