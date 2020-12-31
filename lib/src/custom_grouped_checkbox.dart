@@ -67,10 +67,10 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
       _items.add(CustomItem(data: v, checked: false, isDisabled: false));
     });
   }
-
-  selection() {
+    /// function to recuperate selection or list of selected Items
+   selection() {
     if (widget.isMultipleSelection) {
-      return _itemSelected;
+      return _itemsSelections;
     }
     return _itemSelected;
   }

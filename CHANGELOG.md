@@ -1,3 +1,6 @@
+## [0.6.3] - fix null exception 
+*  fix selection method in custom_grouped_checkbox
+* fix url gif in readme
 ## [0.6.2] - add gif to readme 
 *  add new gif to show basics examples of the library 
 ## [0.6.2] - pre-selection in single choice 

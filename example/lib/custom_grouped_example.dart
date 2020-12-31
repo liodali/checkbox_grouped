@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:flutter/material.dart';
 
 class CustomGroupedExample extends StatefulWidget {
   CustomGroupedExample({Key key}) : super(key: key);
@@ -9,37 +9,61 @@ class CustomGroupedExample extends StatefulWidget {
 }
 
 class _CustomGroupedExampleState extends State<CustomGroupedExample> {
+  GlobalKey<CustomGroupedCheckboxState> _customCheckBoxKey =
+      GlobalKey<CustomGroupedCheckboxState>();
+
   @override
   Widget build(BuildContext context) {
-    return CustomGroupedCheckbox<int>(
-      groupTitle: Container(
-        padding: EdgeInsets.all(5.0),
-        child: Text("Custom GroupedCheckbox"),
-      ),
-      itemBuilder: (ctx, index, v) {
-        return Card(
-          margin: EdgeInsets.only(top: 5.0,bottom: 5.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("$index"),
-                  ),
+    return  Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          fit: FlexFit.loose,
+          child: CustomGroupedCheckbox<int>(
+            key: _customCheckBoxKey,
+            isMultipleSelection: true,
+            groupTitle: Container(
+              padding: EdgeInsets.all(5.0),
+              child: Text("Custom GroupedCheckbox"),
+            ),
+            itemBuilder: (ctx, index, v) {
+              return Card(
+                margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("$index"),
+                        ),
+                      ),
+                    ),
+                    Opacity(
+                      opacity: v ? 1 : 0,
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.green,
+                        size: 24,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Opacity(
-                opacity: v?1:0,
-                child: Icon(Icons.check,color: Colors.green,size: 24,),
-              ),
-            ],
+              );
+            },
+            itemExtent: 50,
+            itemCount: 10,
+            values: List<int>.generate(10, (i) => i),
           ),
-        );
-      },
-      itemCount: 10,
-      values: List<int>.generate(10, (i) => i),
+        ),
+        RaisedButton(
+          onPressed: () {
+            print(_customCheckBoxKey.currentState.selection());
+          },
+          child: Text("selection"),
+        )
+      ],
     );
   }
 }
