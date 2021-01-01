@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.6.3-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.7.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -8,16 +8,16 @@
     * recuperate the actual selection
     * make multiple selection
     * dialogGroupedCheckbox
-    * lit of groupedCheckbox
+    * list of groupedCheckbox
 
 ## Getting Started
-<img src="https://github.com/liodali/checkbox_grouped/blob/master/CheckboxGroupExamples.gif" alt="checkboxGrouped examples">
+<img src="https://github.com/liodali/checkbox_grouped/blob/master/CheckboxGroupExamples.gif?raw=true" alt="checkboxGrouped examples">
 ## Installing
 
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.6.3
+		checkbox_grouped: ^0.7.0
 
 
 
@@ -41,10 +41,19 @@ Add the following to your `pubspec.yaml` file:
 ` checkboxKey.currentState.selection() `
 ### enabled items
 
-` checkboxKey.currentState.enabledItems(List<String> items) `
+` checkboxKey.currentState.enabledItemsByValues(List<T> values) `
+
+` checkboxKey.currentState.enabledItemsByTitles(List<String> itemsTitles) `
 ### disable item
 
-` checkboxKey.currentState.disabledItems(List<String> items) `
+` checkboxKey.currentState.disabledItemsByValues(List<T> values) `
+
+` checkboxKey.currentState.disabledItemsByTitles(List<String> items) `
+
+#### NOTICE
+
+* deprecation of 2 method `disabledItems` and `enabledItems`
+* if you are using complex object in values , you need to implement operator == and hashcode
 
 ####  `SimpleGroupedCheckbox`
 |   Properties          |  Description |
@@ -253,3 +262,4 @@ Add the following to your `pubspec.yaml` file:
 |`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
 |`preSelectedValues`                  | A list of list values that you want to be initially selected of each groupedCheckbox.   |
 |`isMultipleSelectionPerGroup`        | A list of boolean to enable multiple selection of each groupedCheckbox.  |
+
