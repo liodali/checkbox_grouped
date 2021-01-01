@@ -16,7 +16,7 @@ typedef onChanged = Function(dynamic selected);
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [groupTitleStyle] : Text Style  that describe style of title of group checkbox
 /// [activeColor] : the color to use when this checkbox button is selected
-/// [disableItems] : pecifies which item should be disabled
+/// [disableItems] : specifies which item should be disabled
 /// [preSelection] :  A list of values that you want to be initially selected
 /// [checkFirstElement] : make first element in list checked
 /// [isCirculaire] : enable to use circulaire checkbox
@@ -178,22 +178,66 @@ class SimpleGroupedCheckboxState<T> extends State<SimpleGroupedCheckbox> {
     return _selectedValue.value;
   }
 
+
+
+  /// [items]: A list of values that you want to be disabled
+  /// disable items that match with list of strings
+  void disabledItemsByValues(List<T> itemsValues) {
+    assert(itemsValues.takeWhile((c) => !widget.values.contains(c)).isEmpty,
+        "some of items doesn't exist");
+    var items = _recuperateTitleFromValues(itemsValues);
+    _itemStatus(items, true);
+  }
+
+
+
   /// [items]: A list of strings that describes titles
   /// disable items that match with list of strings
+  disabledItemsByTitles(List<String> items) {
+    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
+        "some of items doesn't exist");
+    _itemStatus(items, true);
+  }
+  /// [items]: A list of strings that describes titles
+  /// disable items that match with list of strings
+  @Deprecated("use disabledItemsByTitles,will be remove in future version")
   disabledItems(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
-        "some of items doen't exist");
+    "some of items doesn't exist");
     _itemStatus(items, true);
   }
 
   /// [items]: A list of strings that describes titles
   /// enable items that match with list of strings
-  enabledItems(List<String> items) {
+  @Deprecated("use enabledItemsByTitles,will be removed in future version")
+  void enabledItems(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
-        "some of items doen't exist");
+        "some of items doesn't exist");
     _itemStatus(items, false);
   }
 
+  /// [items]: A list of values
+  /// enable items that match with list of dynamics
+  void enabledItemsByValues(List<T> itemsValues) {
+    assert(itemsValues.takeWhile((c) => !widget.values.contains(c)).isEmpty,
+        "some of items doesn't exist");
+    var items = _recuperateTitleFromValues(itemsValues);
+    _itemStatus(items, false);
+  }
+
+  /// [items]: A list of strings that describes titles
+  /// enable items that match with list of strings
+  void enabledItemsByTitles(List<String> items) {
+    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
+        "some of items doesn't exist");
+    _itemStatus(items, false);
+  }
+  List<String> _recuperateTitleFromValues(List<T> itemsValues) {
+    return itemsValues.map((e) {
+      var indexOfItem = widget.values.indexOf(e);
+      return widget.itemsTitle[indexOfItem];
+    }).toList();
+  }
   void _itemStatus(List<String> items, bool isDisabled) {
     _notifierItems
         .where((element) => items.contains(element.value.title))
