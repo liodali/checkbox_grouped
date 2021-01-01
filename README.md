@@ -8,7 +8,7 @@
     * recuperate the actual selection
     * make multiple selection
     * dialogGroupedCheckbox
-    * lit of groupedCheckbox
+    * list of groupedCheckbox
 
 ## Getting Started
 <img src="https://github.com/liodali/checkbox_grouped/blob/master/CheckboxGroupExamples.gif?raw=true" alt="checkboxGrouped examples">
