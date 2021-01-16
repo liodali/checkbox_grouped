@@ -60,128 +60,130 @@ class _MainExampleState extends State<MainExample>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("examples"),
-          bottom: TabBar(
-            controller: tabController,
-            onTap: (index) {
-              tabController.index = index;
-            },
-            tabs: <Widget>[
-              Text("basics"),
-              Text("customs"),
-              Text("dialog"),
-              Text("list of grouped"),
-            ],
-          ),
-        ),
-        body: TabBarView(
+      appBar: AppBar(
+        title: Text("examples"),
+        bottom: TabBar(
           controller: tabController,
-          children: <Widget>[
-            SingleChildScrollView(
-              controller: ScrollController(),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SimpleGroupedCheckbox<int>(
-                    key: checkboxKey,
-                    //groupTitle:"Basic",
-                    onItemSelected: (data) {
-                      print(data);
-                      if (data == 1) {
-                        checkboxKey.currentState.disabledItems(["5"]);
-                      } else if (data == 4) {
-                        checkboxKey.currentState.enabledItems(["5", "2"]);
-                        checkboxKey.currentState.disabledItems(["1"]);
-                      } else if (data == 2) {
-                        checkboxKey.currentState.enabledItems(["1"]);
-                      }
-                    },
-                    disableItems: ["5"],
-                    itemsTitle: ["1", "2", "4", "5"],
-                    values: [1, 2, 4, 5],
-                    preSelection: [2],
-                    activeColor: Colors.red,
-                    checkFirstElement: false,
-                    multiSelection: false,
-                  ),
-                  SimpleGroupedCheckbox<int>(
-                    key: circulairekey,
-                    groupTitle: "Circulaire Checkbox",
-                    itemsTitle: ["1 ", "2 ", "4 ", "5 "],
-                    values: [1, 2, 4, 5],
-                    isCirculaire: true,
-                    activeColor: Colors.blue,
-                    isLeading: true,
-                    checkFirstElement: false,
-                    multiSelection: false,
-                  ),
-                  SimpleGroupedCheckbox<int>(
-                    key: mutlicheckboxKey,
-                    itemsTitle: List.generate(10, (index) => "$index"),
-                    values: List.generate(10, (index) => index),
-                    preSelection: [2, 5, 4],
-                    activeColor: Colors.green,
-                    groupTitle: "expanded multiple checkbox selection",
-                    groupTitleStyle: TextStyle(color: Colors.orange),
-                    checkFirstElement: false,
-                    multiSelection: true,
-                    onItemSelected: (data) {
-                      print(data);
-                    },
-                    isExpandableTitle: true,
-                  ),
-                  Divider(),
-                  SimpleGroupedChips<int>(
-                    key: mutliChipsKey,
-                    values: List.generate(7, (index) => index),
-                    itemTitle: List.generate(7, (index) => "chip_text_$index"),
-                    backgroundColorItem: Colors.black26,
-                    isScrolling: false,
-                    isMultiple: false,
-                    onItemSelected: (values) {
-                      print(values);
-                    },
-                  ),
-                  Divider(),
-                  Text("grouped switch"),
-                  SimpleGroupedSwitch<int>(
-                    itemsTitle: List.generate(10, (index) => "$index"),
-                    values: List.generate(10, (index) => index),
-                    disableItems: [2],
-                    textStyle: TextStyle(fontSize: 16),
-                    activeColor: Colors.red,
-                    isMultipleSelection: false,
-                    onItemSelected: (values) {
-                      print(values);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            CustomGroupedExample(),
-            Column(
+          onTap: (index) {
+            tabController.index = index;
+          },
+          tabs: <Widget>[
+            Text("basics"),
+            Text("customs"),
+            Text("dialog"),
+            Text("list of grouped"),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: tabController,
+        children: <Widget>[
+          SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                FlatButton(
-                  onPressed: () async {
-                    var values = await showDialogGroupedCheckbox(
-                        context: context,
-                        cancelDialogText: "cancel",
-                        isMultiSelection: true,
-                        itemsTitle: List.generate(15, (index) => "$index"),
-                        submitDialogText: "select",
-                        dialogTitle: Text("example dialog"),
-                        values: List.generate(15, (index) => index));
-                    if (values != null) {
-                      print(values);
+                SimpleGroupedCheckbox<int>(
+                  key: checkboxKey,
+                  //groupTitle:"Basic",
+                  onItemSelected: (data) {
+                    print(data);
+                    if (data == 1) {
+                      checkboxKey.currentState.disabledItems(["5"]);
+                    } else if (data == 4) {
+                      checkboxKey.currentState.enabledItems(["5", "2"]);
+                      checkboxKey.currentState.disabledItems(["1"]);
+                    } else if (data == 2) {
+                      checkboxKey.currentState.enabledItems(["1"]);
                     }
                   },
-                  child: Text("show dialog checkbox grouped"),
+                  disableItems: ["5"],
+                  itemsTitle: ["1", "2", "4", "5"],
+                  values: [1, 2, 4, 5],
+                  preSelection: [2],
+                  activeColor: Colors.red,
+                  checkFirstElement: false,
+                  multiSelection: false,
+                ),
+                SimpleGroupedCheckbox<int>(
+                  key: circulairekey,
+                  groupTitle: "Circulaire Checkbox",
+                  itemsTitle: ["1 ", "2 ", "4 ", "5 "],
+                  values: [1, 2, 4, 5],
+                  isCirculaire: true,
+                  activeColor: Colors.blue,
+                  isLeading: true,
+                  checkFirstElement: false,
+                  multiSelection: false,
+                ),
+                SimpleGroupedCheckbox<int>(
+                  key: mutlicheckboxKey,
+                  itemsTitle: List.generate(10, (index) => "$index"),
+                  values: List.generate(10, (index) => index),
+                  preSelection: [2, 5, 4],
+                  activeColor: Colors.green,
+                  groupTitle: "expanded multiple checkbox selection",
+                  groupTitleStyle: TextStyle(color: Colors.orange),
+                  checkFirstElement: false,
+                  multiSelection: true,
+                  helperGroupTitle: false,
+                  onItemSelected: (data) {
+                    print(data);
+                  },
+                  isExpandableTitle: true,
+                ),
+                Divider(),
+                SimpleGroupedChips<int>(
+                  key: mutliChipsKey,
+                  values: List.generate(7, (index) => index),
+                  itemTitle: List.generate(7, (index) => "chip_text_$index"),
+                  backgroundColorItem: Colors.black26,
+                  isScrolling: false,
+                  isMultiple: false,
+                  onItemSelected: (values) {
+                    print(values);
+                  },
+                ),
+                Divider(),
+                Text("grouped switch"),
+                SimpleGroupedSwitch<int>(
+                  itemsTitle: List.generate(10, (index) => "$index"),
+                  values: List.generate(10, (index) => index),
+                  disableItems: [2],
+                  textStyle: TextStyle(fontSize: 16),
+                  activeColor: Colors.red,
+                  isMultipleSelection: false,
+                  onItemSelected: (values) {
+                    print(values);
+                  },
                 ),
               ],
             ),
-            ListOfGrouped(),
-          ],
-        ));
+          ),
+          CustomGroupedExample(),
+          Column(
+            children: <Widget>[
+              FlatButton(
+                onPressed: () async {
+                  var values = await showDialogGroupedCheckbox(
+                      context: context,
+                      cancelDialogText: "cancel",
+                      isMultiSelection: true,
+                      itemsTitle: List.generate(15, (index) => "$index"),
+                      submitDialogText: "select",
+                      dialogTitle: Text("example dialog"),
+                      values: List.generate(15, (index) => index));
+                  if (values != null) {
+                    print(values);
+                  }
+                },
+                child: Text("show dialog checkbox grouped"),
+              ),
+            ],
+          ),
+          ListOfGrouped(),
+        ],
+      ),
+    );
   }
 }

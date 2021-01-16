@@ -121,6 +121,69 @@ void main() {
     checkboxKey.currentState.enabledItemsByValues([3]);
     await tester.pump();
     await tester.tap(find.byType(typeOf<RadioListTile<int>>()).at(2));
-    expect( checkboxKey.currentState.selection(), 3);
+    expect(checkboxKey.currentState.selection(), 3);
+  });
+  testWidgets("test helperGroupTitle : false  simple SimpleGroupedCheckbox",
+      (tester) async {
+    GlobalKey<SimpleGroupedCheckboxState<int>> globalKey =
+        GlobalKey<SimpleGroupedCheckboxState<int>>();
+    var listValues = List.generate(5, (index) => index);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SimpleGroupedCheckbox<int>(
+            key: globalKey,
+            itemsTitle: List.generate(5, (index) => "$index"),
+            values: listValues,
+            preSelection: [],
+            groupTitle: "group test",
+            activeColor: Colors.green,
+            checkFirstElement: false,
+            multiSelection: true,
+            helperGroupTitle: false,
+            isExpandableTitle: false,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    final listTiles = tester.elementList(find.byType(ListTile));
+
+    expect(listTiles.length, listValues.length);
+    await tester.tap(find.byType(ListTile).first);
+    await tester.pump();
+    expect(globalKey.currentState.selection(), [listValues.first]);
+  });
+  testWidgets("test helperGroupTitle : true simple SimpleGroupedCheckbox",
+      (tester) async {
+    GlobalKey<SimpleGroupedCheckboxState<int>> globalKey =
+        GlobalKey<SimpleGroupedCheckboxState<int>>();
+    var listValues = List.generate(5, (index) => index);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SimpleGroupedCheckbox<int>(
+            key: globalKey,
+            itemsTitle: List.generate(5, (index) => "$index"),
+            values: listValues,
+            preSelection: [],
+            groupTitle: "group test",
+            activeColor: Colors.green,
+            checkFirstElement: false,
+            multiSelection: true,
+            helperGroupTitle: true,
+            isExpandableTitle: false,
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    //tester.allElements;
+    final listTiles = tester.elementList(find.byType(ListTile));
+
+    expect(listTiles.length, listValues.length + 1);
+    await tester.tap(find.byType(ListTile).first);
+    await tester.pump();
+    expect(globalKey.currentState.selection(), listValues);
   });
 }

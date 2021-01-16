@@ -1,3 +1,6 @@
+## [0.7.0+1] - add groupTitleAlignment,helperGroupTitle checkbox 
+*  add helperGroupTitle to show or hid checkbox in groupTile 
+*  add groupTitleAlignment to change alignment of groupTitle  of 2 new method disableItemsByTitles 
 ## [0.7.0] - add new method to disable and enabled checkbox 
 *  deprecation of the method disabledItems and enabledItems
 *  creation  of 2 new method disabledItemsByTitles and disabledItemsByValues to disable checkbox items

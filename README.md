@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.7.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.7.0%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -11,19 +11,22 @@
     * list of groupedCheckbox
 
 ## Getting Started
-<img src="https://github.com/liodali/checkbox_grouped/blob/master/CheckboxGroupExamples.gif?raw=true" alt="checkboxGrouped examples">
+<img src="https://github.com/liodali/checkbox_grouped/blob/master/CheckboxGroupExamples.gif?raw=true" alt="checkboxGrouped examples"><br>
+
+
 ## Installing
 
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.7.0
+		checkbox_grouped: ^0.7.0+1
 
 
 
 ## Simple Usage
 #### Creating a basic `SimpleGroupedCheckbox`
 
+```dart
     SimpleGroupedCheckbox<int>(
                     key: checkboxKey,
                     itemsTitle: ["1" ,"2","4","5"],
@@ -31,7 +34,8 @@ Add the following to your `pubspec.yaml` file:
                     activeColor: Colors.red,
                     checkFirstElement: false,
                     multiSelection: false,
-                  );
+                  )
+```
 ### Declare GlobalKey to get selection
 
 `  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();`
@@ -71,11 +75,14 @@ Add the following to your `pubspec.yaml` file:
 |`isExpandableTitle`    |`enable group checkbox to be expandable `.  |
 |`groupTitle`           |`Text title for group checkbox`.  |
 |`groupTitleStyle`      |`TextStyle of title for group checkbox`.  |
+|`helperGroupTitle`     |`(bool) hide/show checkbox in title to help all selection or de-selection,use it when you want to disable checkbox in groupTitle default:true `.  |
+|`groupTitleAlignment`  |`(Alignment) alignment of group title in group checkbox`.  |
 
 ## Customisable Checkbox Grouped
 
 #### Creating a basic `CustomGroupedCheckbox`
 
+```dart
     CustomGroupedCheckbox<int>(
             groupTitle: "Custom GroupedCheckbox",
             itemBuilder: (ctx,index,v){
@@ -101,7 +108,8 @@ Add the following to your `pubspec.yaml` file:
             },
             itemCount: 10,
             values: List<int>.generate(10, (i)=>i),
-        ),
+        )
+```
 
 ### Declare GlobalKey to get selection
 
@@ -126,12 +134,14 @@ Add the following to your `pubspec.yaml` file:
 
 #### Creating a basic `SimpleGroupedChips`
 
-    SimpleGroupedChips<int>(
+```dart
+SimpleGroupedChips<int>(
                     key: chipKey,
                     values: [1,2,3,4,5,6,7],
                     itemTitle: ["1" ,"2","4","5","6","7"],
                     backgroundColorItem: Colors.black26,
-                  );
+                  )
+```
 ### Declare GlobalKey to get selection
 
 `  GlobalKey<SimpleGroupedChipsState<int>> chipKey = GlobalKey<SimpleGroupedChipsState<int>>();`
@@ -160,12 +170,14 @@ Add the following to your `pubspec.yaml` file:
 
 #### Creating a basic `SimpleGroupedSwitch`
 
-    SimpleGroupedSwitch<int>(
+```dart
+SimpleGroupedSwitch<int>(
                     key: chipKey,
                     values: [1,2,4,5],
                     itemsTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
                     isMutlipleSelection: false,
-                  );
+                  )
+```
 ### Declare GlobalKey to get selection
 
 `  GlobalKey<SimpleGroupedSwitchState<int>> switchKey = GlobalKey<SimpleGroupedSwitchState<int>>();`
@@ -192,7 +204,8 @@ Add the following to your `pubspec.yaml` file:
 
 #### Creating a basic `showDialogGroupedCheckbox`
 
-     showDialogGroupedCheckbox(
+```dart
+showDialogGroupedCheckbox(
                         context: context,
                         cancelDialogText: "cancel",
                         isMultiSelection: true,
@@ -200,7 +213,8 @@ Add the following to your `pubspec.yaml` file:
                         submitDialogText: "select",
                         dialogTitle:Text("example dialog") ,
                         values: List.generate(15, (index) => index)
-                      );
+                      )
+```
 
 
 ####  `showDialogGroupedCheckbox`
@@ -232,7 +246,8 @@ Add the following to your `pubspec.yaml` file:
 #### Creating a basic `ListGroupedCheckbox`
 
      
-            ListGroupedCheckbox(
+```dart
+                ListGroupedCheckbox(
                         key: globalKey,
                         groupTitles: List.generate(3, (index) => "groupe $index"),
                         values: List.generate(
@@ -245,7 +260,8 @@ Add the following to your `pubspec.yaml` file:
                           (i) => List.generate(5, (j) => "Title:$i-$j"),
                         ),
                         isMultipleSelectionPerGroup: [true, false, true],
-                      ),
+                      )
+```
 
 
      
