@@ -23,7 +23,7 @@ typedef onChanged = Function(dynamic selected);
 /// [isLeading] : same as [itemExtent] of [ListView]
 /// [isExpandableTitle] : enable group checkbox to be expandable
 /// [helperGroupTitle] : (bool) enable checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
-/// [helperGroupTitle] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
+/// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
 /// [multiSelection] : enable multiple selection groupedCheckbox
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final List<String> itemsTitle;
