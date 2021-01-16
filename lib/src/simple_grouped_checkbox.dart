@@ -22,7 +22,7 @@ typedef onChanged = Function(dynamic selected);
 /// [isCirculaire] : enable to use circulaire checkbox
 /// [isLeading] : same as [itemExtent] of [ListView]
 /// [isExpandableTitle] : enable group checkbox to be expandable
-/// [helperGroupTitle] : (bool) enable checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
+/// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
 /// [multiSelection] : enable multiple selection groupedCheckbox
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
