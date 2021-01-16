@@ -1,3 +1,10 @@
+## [0.7.0+1] - add groupTitleAlignment,helperGroupTitle checkbox 
+*  add helperGroupTitle to show or hid checkbox in groupTile 
+*  add groupTitleAlignment to change alignment of groupTitle  of 2 new method disableItemsByTitles 
+## [0.7.0] - add new method to disable and enabled checkbox 
+*  deprecation of the method disabledItems and enabledItems
+*  creation  of 2 new method disabledItemsByTitles and disabledItemsByValues to disable checkbox items
+*  creation  of 2 new method enabledItemsByTitles and enabledItemsByValues to enable checkbox items
 ## [0.6.3] - fix null exception 
 *  fix selection method in custom_grouped_checkbox
 * fix url gif in readme
