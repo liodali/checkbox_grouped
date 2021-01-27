@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
 
 typedef onGroupChanged<T> = void Function(dynamic selected);
@@ -50,19 +51,24 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
 
 class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   int len = 0;
-  List<GlobalKey<SimpleGroupedCheckboxState>> listKeys = [];
+  List<GroupController> listControllers = [];
 
   @override
   void initState() {
     super.initState();
     len = widget.values.length;
-    listKeys.addAll(List.generate(widget.values.length,
-        (index) => GlobalKey<SimpleGroupedCheckboxState>()));
+    listControllers.addAll(List.generate(
+        widget.values.length,
+        (index) => GroupController(
+            initSelectedItem: widget.preSelectedValues.isNotEmpty
+                ? widget.preSelectedValues[index]
+                : null,
+            isMultipleSelection: widget.isMultipleSelectionPerGroup[index])));
   }
 
   Future<List<T>> getAllValues() async {
     List<T> resultList = List<T>();
-    var values = listKeys.map((e) => e.currentState.selection()).where((v) {
+    var values = listControllers.map((e) => e.selectedItem).where((v) {
       if (v != null) {
         if (v is List && v.isNotEmpty) {
           return true;
@@ -86,7 +92,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   Future<List<T>> getValuesByIndex(int index) async {
     assert(index < len);
     List<T> resultList = List<T>();
-    resultList.addAll(listKeys[index].currentState.selection());
+    resultList.addAll(listControllers[index].selectedItem);
     return resultList;
   }
 
@@ -98,12 +104,9 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
         return SimpleGroupedCheckbox<T>(
-          key: listKeys[index],
+          controller: listControllers[index],
           itemsTitle: widget.titles[index],
           values: widget.values[index],
-          preSelection: widget.preSelectedValues.isNotEmpty
-              ? widget.preSelectedValues[index]
-              : [],
           disableItems: widget.disabledValues.isNotEmpty
               ? widget.disabledValues[index]
               : [],
@@ -113,7 +116,6 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
             widget.onSelectedGroupChanged(list);
           },
           isCirculaire: false,
-          multiSelection: widget.isMultipleSelectionPerGroup[index],
         );
       },
       itemCount: len,

@@ -2,25 +2,29 @@ import 'package:flutter/material.dart';
 
 import 'item.dart';
 
-abstract class StateGroup<K, T extends StatefulWidget> extends State<T> {
-  ValueNotifier<K> selectedValue;
-  List<K> selectionsValue = [];
-  List<ValueNotifier<Item>> notifierItems = [];
-  List<Item> items = [];
-  ValueNotifier<bool> valueTitle = ValueNotifier(false);
-
-  void enabledItemsByValues(List<K> itemsValues);
+abstract class GroupInterface {
+  void enabledItemsByValues(List<dynamic> itemsValues);
 
   void enabledItemsByTitles(List<String> items);
 
   void disabledItemsByTitles(List<String> items);
 
-  void disabledItemsByValues(List<K> itemsValues);
+  void disabledItemsByValues(List<dynamic> itemsValues);
 
   /// recuperate value selection if is not multi selection
   /// recuperate list of selection value if is multi selection
   dynamic selection();
+}
 
+abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
+    with GroupInterface {
+  ValueNotifier<K> selectedValue;
+  ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
+  List<ValueNotifier<Item>> notifierItems = [];
+  List<Item> items = [];
+  ValueNotifier<bool> valueTitle = ValueNotifier(false);
+
+  @protected
   void init({
     List<K> values,
     checkFirstElement,
@@ -42,17 +46,17 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T> {
       bool checked = false;
       if (key == 0) {
         if (multiSelection && checkFirstElement) {
-          selectionsValue.add(values[0]);
+          selectionsValue.value = List.from(selectionsValue.value)
+            ..add(values[0]);
           checked = true;
         }
       }
-      if (multiSelection &&
-          preSelection != null &&
-          preSelection.length > 0) {
+      if (multiSelection && preSelection != null && preSelection.length > 0) {
         valueTitle.value = null;
         if (preSelection.contains(values[key])) {
           checked = true;
-          selectionsValue.add(values[key]);
+          selectionsValue.value = List.from(selectionsValue.value)
+            ..add(values[key]);
         }
       } else {
         if (!multiSelection &&

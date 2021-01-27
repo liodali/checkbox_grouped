@@ -39,10 +39,8 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final Color activeColor;
   final List<T> values;
   final List<String> disableItems;
-  final List<T> preSelection;
   final bool checkFirstElement;
   final bool isCirculaire;
-  final bool multiSelection;
   final bool isLeading;
   final bool isExpandableTitle;
   final bool helperGroupTitle;
@@ -60,21 +58,20 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.disableItems,
     this.activeColor,
     this.checkFirstElement = false,
-    this.preSelection,
     this.isCirculaire = false,
     this.isLeading = false,
-    this.multiSelection = false,
     this.isExpandableTitle = false,
     this.helperGroupTitle = true,
   })  : assert(values != null),
         assert(values.length == itemsTitle.length),
-        assert(
+      /*  assert(
             multiSelection == false &&
                     preSelection != null &&
                     (preSelection.length > 1 || checkFirstElement == true)
                 ? false
                 : true,
             "you cannot make multiple selection in single selection"),
+        */
         assert(itemsSubTitle != null
             ? itemsSubTitle.length == itemsTitle.length
             : true),
@@ -124,7 +121,7 @@ class SimpleGroupedCheckboxState<T>
       disableItems: widget.disableItems,
       itemsTitle: widget.itemsTitle,
       multiSelection: widget.controller.isMultipleSelection,
-      preSelection: widget.controller.initSelectedItem,
+      preSelection: widget.controller.initSelectedItem?.cast<T>(),
     );
     widget.controller.init(this);
   }
@@ -132,10 +129,10 @@ class SimpleGroupedCheckboxState<T>
   /// [items]: A list of values that you want to be disabled
   /// disable items that match with list of strings
   @override
-  void disabledItemsByValues(List<T> itemsValues) {
-    assert(itemsValues.takeWhile((c) => !widget.values.contains(c)).isEmpty,
+  void disabledItemsByValues(List<dynamic> itemsValues) {
+    assert((itemsValues.cast<T>() ).takeWhile((c) => !widget.values.contains(c)).isEmpty,
         "some of items doesn't exist");
-    var items = _recuperateTitleFromValues(itemsValues);
+    var items = _recuperateTitleFromValues(itemsValues.cast<T>());
     _itemStatus(items, true);
   }
 
@@ -148,31 +145,13 @@ class SimpleGroupedCheckboxState<T>
     _itemStatus(items, true);
   }
 
-  /// [items]: A list of strings that describes titles
-  /// disable items that match with list of strings
-  @Deprecated("use disabledItemsByTitles,will be remove in future version")
-  disabledItems(List<String> items) {
-    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
-        "some of items doesn't exist");
-    _itemStatus(items, true);
-  }
-
-  /// [items]: A list of strings that describes titles
-  /// enable items that match with list of strings
-  @Deprecated("use enabledItemsByTitles,will be removed in future version")
-  void enabledItems(List<String> items) {
-    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
-        "some of items doesn't exist");
-    _itemStatus(items, false);
-  }
-
   /// [items]: A list of values
   /// enable items that match with list of dynamics
   @override
-  void enabledItemsByValues(List<T> itemsValues) {
-    assert(itemsValues.takeWhile((c) => !widget.values.contains(c)).isEmpty,
+  void enabledItemsByValues(List<dynamic> itemsValues) {
+    assert((itemsValues.cast<T>()).takeWhile((c) => !widget.values.contains(c)).isEmpty,
         "some of items doesn't exist");
-    var items = _recuperateTitleFromValues(itemsValues);
+    var items = _recuperateTitleFromValues(itemsValues.cast<T>());
     _itemStatus(items, false);
   }
 
@@ -234,7 +213,7 @@ class SimpleGroupedCheckboxState<T>
                       widget.itemsSubTitle.isNotEmpty
                   ? widget.itemsSubTitle[i]
                   : null,
-              isMultpileSelection: widget.multiSelection,
+              isMultpileSelection: widget.controller.isMultipleSelection,
             );
           },
         );
@@ -246,7 +225,7 @@ class SimpleGroupedCheckboxState<T>
         titleWidget: _TitleGroupedCheckbox(
           title: widget.groupTitle,
           titleStyle: widget.groupTitleStyle,
-          isMultiSelection: widget.multiSelection,
+          isMultiSelection: widget.controller.isMultipleSelection,
           alignment: widget.groupTitleAlignment,
           checkboxTitle: widget.helperGroupTitle
               ? ValueListenableBuilder(
@@ -265,7 +244,7 @@ class SimpleGroupedCheckboxState<T>
                   },
                 )
               : null,
-          callback: setChangedCallback,
+          callback: setChangedAllItemsCallback,
         ),
       );
     }
@@ -276,7 +255,7 @@ class SimpleGroupedCheckboxState<T>
           _TitleGroupedCheckbox(
             title: widget.groupTitle,
             titleStyle: widget.groupTitleStyle,
-            isMultiSelection: widget.multiSelection,
+            isMultiSelection: widget.controller.isMultipleSelection,
             checkboxTitle: widget.helperGroupTitle
                 ? ValueListenableBuilder(
                     valueListenable: valueTitle,
@@ -296,7 +275,7 @@ class SimpleGroupedCheckboxState<T>
                     },
                   )
                 : null,
-            callback: setChangedCallback,
+            callback: setChangedAllItemsCallback,
           ),
           childListChecks,
         ],
@@ -306,24 +285,24 @@ class SimpleGroupedCheckboxState<T>
   }
 
   /// callback title grouped when clicked it disabled all selected or select all elements
-  void setChangedCallback() {
-    setState(() {
-      if (valueTitle.value == null) {
-        valueTitle.value = true;
-        selectionsValue.addAll(widget.values
-            .where((elem) => selectionsValue.contains(elem) == false));
-      } else if (valueTitle.value) {
-        valueTitle.value = false;
-        selectionsValue.clear();
-      } else if (!valueTitle.value) {
-        valueTitle.value = true;
-        selectionsValue.addAll(widget.values as List<T>);
-      } else {
-        valueTitle.value = true;
-      }
-      //callback
-      if (widget.onItemSelected != null) widget.onItemSelected(selectionsValue);
-    });
+  void setChangedAllItemsCallback() {
+    if (valueTitle.value == null) {
+      valueTitle.value = true;
+      selectionsValue.value = List.from(selectionsValue.value)
+        ..addAll(widget.values
+            .where((elem) => selectionsValue.value.contains(elem) == false));
+    } else if (valueTitle.value) {
+      valueTitle.value = false;
+      selectionsValue.value = [];
+    } else if (!valueTitle.value) {
+      valueTitle.value = true;
+      selectionsValue.value = List.from(selectionsValue.value)
+        ..addAll(widget.values as List<T>);
+    } else {
+      valueTitle.value = true;
+    }
+    //callback
+    if (widget.onItemSelected != null) widget.onItemSelected(selectionsValue);
     notifierItems
         .where((e) => e.value.checked != valueTitle.value)
         .toList()
@@ -340,19 +319,21 @@ class SimpleGroupedCheckboxState<T>
       checked: notifierItems[i].value.checked,
       isDisabled: notifierItems[i].value.isDisabled,
     );
-    if (widget.multiSelection) {
-      if (!selectionsValue.contains(widget.values[i])) {
+    if (widget.controller.isMultipleSelection) {
+      if (!selectionsValue.value.contains(widget.values[i])) {
         if (v) {
-          selectionsValue.add(widget.values[i]);
+          selectionsValue.value = List.from(selectionsValue.value)
+            ..add(widget.values[i]);
         }
       } else {
         if (!v) {
-          selectionsValue.remove(widget.values[i]);
+          selectionsValue.value = List.from(selectionsValue.value)
+            ..remove(widget.values[i]);
         }
       }
-      if (selectionsValue.length == widget.values.length) {
+      if (selectionsValue.value.length == widget.values.length) {
         valueTitle.value = true;
-      } else if (selectionsValue.length == 0) {
+      } else if (selectionsValue.value.length == 0) {
         valueTitle.value = false;
       } else {
         valueTitle.value = null;
@@ -391,8 +372,8 @@ class SimpleGroupedCheckboxState<T>
 
   @override
   selection() {
-    if (widget.multiSelection) {
-      return selectionsValue;
+    if (widget.controller.isMultipleSelection) {
+      return selectionsValue.value;
     }
     return selectedValue.value;
   }
@@ -494,9 +475,6 @@ class _CheckboxItem<T> extends StatelessWidget {
             ? null
             : () {
                 onChangedCheckBox(index, value);
-                /*setState(() {
-            onChanged(i, widget.values[i]);
-          });*/
               },
         title: AutoSizeText(
           "${item.title}",
