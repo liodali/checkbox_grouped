@@ -62,7 +62,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
         (index) => GroupController(
             initSelectedItem: widget.preSelectedValues.isNotEmpty
                 ? widget.preSelectedValues[index]
-                : null,
+                : [],
             isMultipleSelection: widget.isMultipleSelectionPerGroup[index])));
   }
 

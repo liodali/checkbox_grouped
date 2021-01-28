@@ -64,7 +64,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.helperGroupTitle = true,
   })  : assert(values != null),
         assert(values.length == itemsTitle.length),
-      /*  assert(
+        /*  assert(
             multiSelection == false &&
                     preSelection != null &&
                     (preSelection.length > 1 || checkFirstElement == true)
@@ -130,10 +130,12 @@ class SimpleGroupedCheckboxState<T>
   /// disable items that match with list of strings
   @override
   void disabledItemsByValues(List<dynamic> itemsValues) {
-    assert((itemsValues.cast<T>() ).takeWhile((c) => !widget.values.contains(c)).isEmpty,
+    assert(
+        (itemsValues.cast<T>())
+            .takeWhile((c) => !widget.values.contains(c))
+            .isEmpty,
         "some of items doesn't exist");
-    var items = _recuperateTitleFromValues(itemsValues.cast<T>());
-    _itemStatus(items, true);
+    super.disabledItemsByValues(itemsValues.cast<T>());
   }
 
   /// [items]: A list of strings that describes titles
@@ -142,17 +144,19 @@ class SimpleGroupedCheckboxState<T>
   void disabledItemsByTitles(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
         "some of items doesn't exist");
-    _itemStatus(items, true);
+    super.disabledItemsByTitles(items);
   }
 
   /// [items]: A list of values
   /// enable items that match with list of dynamics
   @override
   void enabledItemsByValues(List<dynamic> itemsValues) {
-    assert((itemsValues.cast<T>()).takeWhile((c) => !widget.values.contains(c)).isEmpty,
+    assert(
+        (itemsValues.cast<T>())
+            .takeWhile((c) => !widget.values.contains(c))
+            .isEmpty,
         "some of items doesn't exist");
-    var items = _recuperateTitleFromValues(itemsValues.cast<T>());
-    _itemStatus(items, false);
+    super.enabledItemsByValues(itemsValues);
   }
 
   /// [items]: A list of strings that describes titles
@@ -161,30 +165,7 @@ class SimpleGroupedCheckboxState<T>
   void enabledItemsByTitles(List<String> items) {
     assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
         "some of items doesn't exist");
-    _itemStatus(items, false);
-  }
-
-  List<String> _recuperateTitleFromValues(List<T> itemsValues) {
-    return itemsValues.map((e) {
-      var indexOfItem = widget.values.indexOf(e);
-      return widget.itemsTitle[indexOfItem];
-    }).toList();
-  }
-
-  void _itemStatus(List<String> items, bool isDisabled) {
-    notifierItems
-        .where((element) => items.contains(element.value.title))
-        .toList()
-        .asMap()
-        .forEach((key, notifierItem) {
-      var index = notifierItems.indexOf(notifierItem);
-      Item item = Item(
-          isDisabled: notifierItem.value.isDisabled,
-          checked: notifierItem.value.checked,
-          title: notifierItem.value.title);
-      item.isDisabled = isDisabled;
-      notifierItems[index].value = item;
-    });
+    super.enabledItemsByTitles(items);
   }
 
   @override
@@ -302,7 +283,7 @@ class SimpleGroupedCheckboxState<T>
       valueTitle.value = true;
     }
     //callback
-    if (widget.onItemSelected != null) widget.onItemSelected(selectionsValue);
+    if (widget.onItemSelected != null) widget.onItemSelected(selection());
     notifierItems
         .where((e) => e.value.checked != valueTitle.value)
         .toList()
@@ -312,8 +293,6 @@ class SimpleGroupedCheckboxState<T>
       element.value = item;
     });
   }
-
-
 
   @override
   selection() {
@@ -351,8 +330,6 @@ class SimpleGroupedCheckboxState<T>
       }
       //_items[index].checked = v;
 
-      if (widget.onItemSelected != null) widget.onItemSelected(selectionsValue);
-
       item.checked = value;
     } else {
       selectedValue.value = value;
@@ -375,10 +352,9 @@ class SimpleGroupedCheckboxState<T>
       }
       item.checked = true;
       notifierItems[index].value = item;
-      if (widget.onItemSelected != null)
-        widget.onItemSelected(selectedValue.value);
     }
     notifierItems[index].value = item;
+    if (widget.onItemSelected != null) widget.onItemSelected(selection());
   }
 }
 

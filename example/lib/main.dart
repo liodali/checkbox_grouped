@@ -39,22 +39,27 @@ class MainExample extends StatefulWidget {
 
 class _MainExampleState extends State<MainExample>
     with TickerProviderStateMixin {
-  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey,
-      circulairekey,
-      mutlipleKey,
-      mutlicheckboxKey;
-  GlobalKey<SimpleGroupedChipsState<int>> mutliChipsKey;
+  GroupController controller,
+      circularController,
+      chipsController,
+      multipleController,
+      multipleCheckController;
   TabController tabController;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(initialIndex: 0, length: 4, vsync: this);
-    checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
-    circulairekey = GlobalKey<SimpleGroupedCheckboxState<int>>();
-    mutlicheckboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
-    mutliChipsKey = GlobalKey<SimpleGroupedChipsState<int>>();
-    mutlipleKey = GlobalKey<SimpleGroupedCheckboxState<int>>();
+    controller = GroupController(initSelectedItem: [2]);
+    circularController = GroupController();
+    chipsController = GroupController(
+      isMultipleSelection: true
+    );
+    multipleController = GroupController(isMultipleSelection: true);
+    multipleCheckController = GroupController(
+      isMultipleSelection: true,
+      initSelectedItem: [2, 5, 4],
+    );
   }
 
   @override
@@ -84,29 +89,27 @@ class _MainExampleState extends State<MainExample>
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 SimpleGroupedCheckbox<int>(
-                  key: checkboxKey,
+                  controller: controller,
                   //groupTitle:"Basic",
                   onItemSelected: (data) {
                     print(data);
                     if (data == 1) {
-                      checkboxKey.currentState.disabledItems(["5"]);
+                      controller.disabledItemsByTitles(["5"]);
                     } else if (data == 4) {
-                      checkboxKey.currentState.enabledItems(["5", "2"]);
-                      checkboxKey.currentState.disabledItems(["1"]);
+                      controller.enabledItemsByTitles(["5", "2"]);
+                      controller.disabledItemsByTitles(["1"]);
                     } else if (data == 2) {
-                      checkboxKey.currentState.enabledItems(["1"]);
+                      controller.enabledItemsByTitles(["1"]);
                     }
                   },
                   disableItems: ["5"],
                   itemsTitle: ["1", "2", "4", "5"],
                   values: [1, 2, 4, 5],
-                  preSelection: [2],
                   activeColor: Colors.red,
                   checkFirstElement: false,
-                  multiSelection: false,
                 ),
                 SimpleGroupedCheckbox<int>(
-                  key: circulairekey,
+                  controller: circularController,
                   groupTitle: "Circulaire Checkbox",
                   itemsTitle: ["1 ", "2 ", "4 ", "5 "],
                   values: [1, 2, 4, 5],
@@ -114,18 +117,15 @@ class _MainExampleState extends State<MainExample>
                   activeColor: Colors.blue,
                   isLeading: true,
                   checkFirstElement: false,
-                  multiSelection: false,
                 ),
                 SimpleGroupedCheckbox<int>(
-                  key: mutlicheckboxKey,
+                  controller: multipleCheckController,
                   itemsTitle: List.generate(10, (index) => "$index"),
                   values: List.generate(10, (index) => index),
-                  preSelection: [2, 5, 4],
                   activeColor: Colors.green,
                   groupTitle: "expanded multiple checkbox selection",
                   groupTitleStyle: TextStyle(color: Colors.orange),
                   checkFirstElement: false,
-                  multiSelection: true,
                   helperGroupTitle: false,
                   onItemSelected: (data) {
                     print(data);
@@ -134,12 +134,11 @@ class _MainExampleState extends State<MainExample>
                 ),
                 Divider(),
                 SimpleGroupedChips<int>(
-                  key: mutliChipsKey,
+                  controller: chipsController,
                   values: List.generate(7, (index) => index),
                   itemTitle: List.generate(7, (index) => "chip_text_$index"),
                   backgroundColorItem: Colors.black26,
                   isScrolling: false,
-                  isMultiple: false,
                   onItemSelected: (values) {
                     print(values);
                   },

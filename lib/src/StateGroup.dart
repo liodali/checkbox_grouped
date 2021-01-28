@@ -25,9 +25,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   List<ValueNotifier<Item>> notifierItems = [];
   List<Item> items = [];
   ValueNotifier<bool> valueTitle = ValueNotifier(false);
-
-
-
+  List<K> values = [];
 
   @protected
   void init({
@@ -38,6 +36,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     @required List<String> itemsTitle,
     List<String> disableItems,
   }) {
+    this.values = values;
     selectedValue = ValueNotifier(null);
     if (preSelection != null && preSelection.isNotEmpty) {
       final cacheSelection = preSelection.toList();
@@ -93,5 +92,58 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
       //_previousActive = _items[0];
       selectedValue.value = values[0];
     }
+  }
+
+  /// [items]: A list of values that you want to be disabled
+  /// disable items that match with list of strings
+  @override
+  void disabledItemsByValues(List<dynamic> itemsValues) {
+    var items = _recuperateTitleFromValues(itemsValues.cast<K>());
+    _itemStatus(items, true);
+  }
+
+  /// [items]: A list of strings that describes titles
+  /// disable items that match with list of strings
+  @override
+  void disabledItemsByTitles(List<String> items) {
+    _itemStatus(items, true);
+  }
+
+  /// [items]: A list of values
+  /// enable items that match with list of dynamics
+  @override
+  void enabledItemsByValues(List<dynamic> itemsValues) {
+    var items = _recuperateTitleFromValues(itemsValues.cast<K>());
+    _itemStatus(items, false);
+  }
+
+  /// [items]: A list of strings that describes titles
+  /// enable items that match with list of strings
+  @override
+  void enabledItemsByTitles(List<String> items) {
+    _itemStatus(items, false);
+  }
+
+  List<String> _recuperateTitleFromValues(List<K> itemsValues) {
+    return itemsValues.map((e) {
+      var indexOfItem = values.indexOf(e);
+      return items[indexOfItem].title;
+    }).toList();
+  }
+
+  void _itemStatus(List<String> items, bool isDisabled) {
+    notifierItems
+        .where((element) => items.contains(element.value.title))
+        .toList()
+        .asMap()
+        .forEach((key, notifierItem) {
+      var index = notifierItems.indexOf(notifierItem);
+      Item item = Item(
+          isDisabled: notifierItem.value.isDisabled,
+          checked: notifierItem.value.checked,
+          title: notifierItem.value.title);
+      item.isDisabled = isDisabled;
+      notifierItems[index].value = item;
+    });
   }
 }
