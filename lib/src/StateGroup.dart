@@ -14,6 +14,8 @@ abstract class GroupInterface {
   /// recuperate value selection if is not multi selection
   /// recuperate list of selection value if is multi selection
   dynamic selection();
+
+  void changeSelection(int index, dynamic value);
 }
 
 abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
@@ -24,13 +26,16 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   List<Item> items = [];
   ValueNotifier<bool> valueTitle = ValueNotifier(false);
 
+
+
+
   @protected
   void init({
-    List<K> values,
-    checkFirstElement,
+    @required List<K> values,
+    bool checkFirstElement = false,
     List<K> preSelection,
-    bool multiSelection,
-    List<String> itemsTitle,
+    bool multiSelection = false,
+    @required List<String> itemsTitle,
     List<String> disableItems,
   }) {
     selectedValue = ValueNotifier(null);

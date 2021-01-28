@@ -202,7 +202,7 @@ class SimpleGroupedCheckboxState<T>
               index: i,
               item: item,
               onChangedCheckBox: (index, v) {
-                onChanged(i, v);
+                changeSelection(i, v);
               },
               selectedValue: selectedValue.value,
               value: widget.values[i],
@@ -313,22 +313,33 @@ class SimpleGroupedCheckboxState<T>
     });
   }
 
-  void onChanged(int i, dynamic v) {
+
+
+  @override
+  selection() {
+    if (widget.controller.isMultipleSelection) {
+      return selectionsValue.value;
+    }
+    return selectedValue.value;
+  }
+
+  @override
+  void changeSelection(int index, value) {
     Item item = Item(
-      title: notifierItems[i].value.title,
-      checked: notifierItems[i].value.checked,
-      isDisabled: notifierItems[i].value.isDisabled,
+      title: notifierItems[index].value.title,
+      checked: notifierItems[index].value.checked,
+      isDisabled: notifierItems[index].value.isDisabled,
     );
     if (widget.controller.isMultipleSelection) {
-      if (!selectionsValue.value.contains(widget.values[i])) {
-        if (v) {
+      if (!selectionsValue.value.contains(widget.values[index])) {
+        if (value) {
           selectionsValue.value = List.from(selectionsValue.value)
-            ..add(widget.values[i]);
+            ..add(widget.values[index]);
         }
       } else {
-        if (!v) {
+        if (!value) {
           selectionsValue.value = List.from(selectionsValue.value)
-            ..remove(widget.values[i]);
+            ..remove(widget.values[index]);
         }
       }
       if (selectionsValue.value.length == widget.values.length) {
@@ -338,18 +349,18 @@ class SimpleGroupedCheckboxState<T>
       } else {
         valueTitle.value = null;
       }
-      //_items[i].checked = v;
+      //_items[index].checked = v;
 
       if (widget.onItemSelected != null) widget.onItemSelected(selectionsValue);
 
-      item.checked = v;
+      item.checked = value;
     } else {
-      selectedValue.value = v;
+      selectedValue.value = value;
       /*if (_previousActive != null) {
         _previousActive.checked = false;
       }
-      _items[i].checked = true;
-      _previousActive = _items[i];*/
+      _items[index].checked = true;
+      _previousActive = _items[index];*/
       var notifierPrevious = notifierItems
           .firstWhere((element) => element.value.checked, orElse: () => null);
       if (notifierPrevious != null) {
@@ -363,19 +374,11 @@ class SimpleGroupedCheckboxState<T>
         notifierItems[indexPrevious].value = previous;
       }
       item.checked = true;
-      notifierItems[i].value = item;
+      notifierItems[index].value = item;
       if (widget.onItemSelected != null)
         widget.onItemSelected(selectedValue.value);
     }
-    notifierItems[i].value = item;
-  }
-
-  @override
-  selection() {
-    if (widget.controller.isMultipleSelection) {
-      return selectionsValue.value;
-    }
-    return selectedValue.value;
+    notifierItems[index].value = item;
   }
 }
 

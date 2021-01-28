@@ -10,9 +10,10 @@ class GroupController {
   StateGroup _widgetState;
 
   GroupController({
-    this.initSelectedItem,
+    this.initSelectedItem = const [],
     this.isMultipleSelection = false,
-  });
+  }) : assert(!(isMultipleSelection == false && initSelectedItem.length > 1),
+            "you cannot select multiple item when multipleSelection is false");
 
   void enabledItemsByValues(List<dynamic> itemsValues) =>
       _widgetState.enabledItemsByValues(itemsValues);
