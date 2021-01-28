@@ -246,11 +246,7 @@ class SimpleGroupedCheckboxState<T>
                         value: selected,
                         activeColor: widget.activeColor,
                         onChanged: (v) {
-                          setState(
-                            () {
-                              if (v != null) valueTitle.value = v;
-                            },
-                          );
+                          if (v != null) valueTitle.value = v;
                         },
                       );
                     },
@@ -288,9 +284,10 @@ class SimpleGroupedCheckboxState<T>
         .where((e) => e.value.checked != valueTitle.value)
         .toList()
         .forEach((element) {
+      int index = widget.itemsTitle.indexOf(element.value.title);
       Item item = element.value;
       item.checked = valueTitle.value;
-      element.value = item;
+      notifierItems[index].value = item.copy();
     });
   }
 
