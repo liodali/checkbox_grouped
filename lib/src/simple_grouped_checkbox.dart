@@ -126,48 +126,6 @@ class SimpleGroupedCheckboxState<T>
     widget.controller.init(this);
   }
 
-  /// [items]: A list of values that you want to be disabled
-  /// disable items that match with list of strings
-  @override
-  void disabledItemsByValues(List<dynamic> itemsValues) {
-    assert(
-        (itemsValues.cast<T>())
-            .takeWhile((c) => !widget.values.contains(c))
-            .isEmpty,
-        "some of items doesn't exist");
-    super.disabledItemsByValues(itemsValues.cast<T>());
-  }
-
-  /// [items]: A list of strings that describes titles
-  /// disable items that match with list of strings
-  @override
-  void disabledItemsByTitles(List<String> items) {
-    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
-        "some of items doesn't exist");
-    super.disabledItemsByTitles(items);
-  }
-
-  /// [items]: A list of values
-  /// enable items that match with list of dynamics
-  @override
-  void enabledItemsByValues(List<dynamic> itemsValues) {
-    assert(
-        (itemsValues.cast<T>())
-            .takeWhile((c) => !widget.values.contains(c))
-            .isEmpty,
-        "some of items doesn't exist");
-    super.enabledItemsByValues(itemsValues);
-  }
-
-  /// [items]: A list of strings that describes titles
-  /// enable items that match with list of strings
-  @override
-  void enabledItemsByTitles(List<String> items) {
-    assert(items.takeWhile((c) => !widget.itemsTitle.contains(c)).isEmpty,
-        "some of items doesn't exist");
-    super.enabledItemsByTitles(items);
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget childListChecks = ListView.builder(

@@ -32,7 +32,10 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
     this.textStyle,
     this.onItemSelected,
   })  : assert(values.length == itemsTitle.length),
-        assert(disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
+        assert(
+            disableItems == null ||
+                disableItems.isEmpty ||
+                disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
             "you cannot disable item doesn't exist"),
         super(key: key);
 
@@ -104,17 +107,20 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
     Item item = notifierItems[index].value.copy();
     if (widget.controller.isMultipleSelection) {
       if (!value) {
+        notifierItems[index].value = item.copy(checked: false);
         selectionsValue.value = List.from(selectionsValue.value)
           ..remove(widget.values[index]);
+      }else{
+        notifierItems[index].value = item.copy(checked: value);
+        selectionsValue.value = List.from(selectionsValue.value)
+          ..add(widget.values[index]);
       }
-      notifierItems[index].value = item.copy(checked: value);
-      selectionsValue.value = List.from(selectionsValue.value)
-        ..add(widget.values[index]);
+
     } else {
       if (!item.checked && value) {
         notifierItems[index].value = item.copy(checked: value);
         if (value) {
-          if (widget.values.indexOf(selectedValue) != index) {
+          if (widget.values.indexOf(selectedValue.value) != index) {
             //_items[index].checked = false;
             if (selectedValue.value != null) {
               final indexPreviousItem =

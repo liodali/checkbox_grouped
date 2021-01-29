@@ -94,33 +94,51 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     }
   }
 
-  /// [items]: A list of values that you want to be disabled
   /// disable items that match with list of strings
+  /// [itemsValues] : A list of values that you want to be disabled
   @override
   void disabledItemsByValues(List<dynamic> itemsValues) {
+    assert(
+        (itemsValues.cast<K>()).takeWhile((c) => !values.contains(c)).isEmpty,
+        "you cannot enable  items that doesn't exist");
     var items = _recuperateTitleFromValues(itemsValues.cast<K>());
     _itemStatus(items, true);
   }
 
-  /// [items]: A list of strings that describes titles
   /// disable items that match with list of strings
+  /// [items] : A list of strings that describes titles
   @override
   void disabledItemsByTitles(List<String> items) {
+    assert(
+        items
+            .takeWhile((c) =>
+                !notifierItems.map((e) => e.value.title).toList().contains(c))
+            .isEmpty,
+        "you want to disable items where they don't exist");
     _itemStatus(items, true);
   }
 
-  /// [items]: A list of values
   /// enable items that match with list of dynamics
+  /// [itemsValues] : A list of values
   @override
   void enabledItemsByValues(List<dynamic> itemsValues) {
+    assert(
+        (itemsValues.cast<K>()).takeWhile((c) => !values.contains(c)).isEmpty,
+        "you cannot enable  items that doesn't exist");
     var items = _recuperateTitleFromValues(itemsValues.cast<K>());
     _itemStatus(items, false);
   }
 
-  /// [items]: A list of strings that describes titles
   /// enable items that match with list of strings
+  /// [items] : A list of strings that describes titles
   @override
   void enabledItemsByTitles(List<String> items) {
+    assert(
+        items
+            .takeWhile((c) =>
+                !notifierItems.map((e) => e.value.title).toList().contains(c))
+            .isEmpty,
+        "some of items doesn't exist");
     _itemStatus(items, false);
   }
 
