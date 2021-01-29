@@ -5,7 +5,6 @@ import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-///  [preSelectionItems] : A list of values that you want to be initially selected.
 ///  [textStyle] : the style to use for each text of item
 ///  [activeColor] :the selected color to use for each switch item
 ///  [controller] :(required) GroupController to recuperate selectedItems.
@@ -16,7 +15,6 @@ import 'package:flutter/material.dart';
 
 class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<String> itemsTitle;
-  final List<String> preSelectionItems;
   final List<T> values;
   final GroupController controller;
   final List<T> disableItems;
@@ -30,7 +28,6 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
     @required this.values,
     @required this.controller,
     this.disableItems = const [],
-    this.preSelectionItems = const [],
     this.activeColor,
     this.textStyle,
     this.onItemSelected,
@@ -68,6 +65,11 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
       itemsTitle: widget.itemsTitle,
       preSelection: widget.controller.initSelectedItem.cast<T>(),
       multiSelection: widget.controller.isMultipleSelection,
+      disableItems: widget.itemsTitle
+          .where((element) => widget.disableItems
+              .contains(widget.values[widget.itemsTitle.indexOf(element)]))
+          .toList(),
+      checkFirstElement: false,
     );
     widget.controller.init(this);
   }
@@ -106,6 +108,8 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
           ..remove(widget.values[index]);
       }
       notifierItems[index].value = item.copy(checked: value);
+      selectionsValue.value = List.from(selectionsValue.value)
+        ..add(widget.values[index]);
     } else {
       if (!item.checked && value) {
         notifierItems[index].value = item.copy(checked: value);
