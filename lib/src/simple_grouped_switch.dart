@@ -1,12 +1,14 @@
+import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:checkbox_grouped/src/StateGroup.dart';
 import 'package:checkbox_grouped/src/item.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 ///  [preSelectionItems] : A list of values that you want to be initially selected.
-///  [isMultipleSelection] : enable multiple selection
 ///  [textStyle] : the style to use for each text of item
 ///  [activeColor] :the selected color to use for each switch item
+///  [controller] :(required) GroupController to recuperate selectedItems.
 ///  [values] :(required) Values contains in each element.
 ///  [itemsTitle] :(required) A list of strings that describes each chip button
 ///  [onItemSelected] : callback listner when item is selected
@@ -16,29 +18,25 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<String> itemsTitle;
   final List<String> preSelectionItems;
   final List<T> values;
+  final GroupController controller;
   final List<T> disableItems;
-  final bool isMultipleSelection;
   final onChanged onItemSelected;
   final Color activeColor;
   final TextStyle textStyle;
 
   SimpleGroupedSwitch({
     Key key,
-    this.itemsTitle,
-    this.values,
+    @required this.itemsTitle,
+    @required this.values,
+    @required this.controller,
     this.disableItems = const [],
     this.preSelectionItems = const [],
     this.activeColor,
     this.textStyle,
-    this.isMultipleSelection = true,
     this.onItemSelected,
   })  : assert(values.length == itemsTitle.length),
         assert(disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
             "you cannot disable item doesn't exist"),
-        assert((isMultipleSelection &&
-                (preSelectionItems.isEmpty || preSelectionItems.isNotEmpty)) ||
-            (!isMultipleSelection &&
-                (preSelectionItems.length == 1 || preSelectionItems.isEmpty))),
         super(key: key);
 
   static SimpleGroupedSwitchState of<T>(BuildContext context,
@@ -61,29 +59,17 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   State<StatefulWidget> createState() => SimpleGroupedSwitchState<T>();
 }
 
-class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
-  List<ValueNotifier<Item>> _items;
-  ValueNotifier<T> _selectedValue=ValueNotifier(null);
-  List<ValueNotifier<T>> _selectedValues;
-
-  selection() {
-    if (widget.isMultipleSelection) {
-      return _selectedValues.map((e) => e.value).toList();
-    }
-    return _selectedValue.value;
-  }
-
+class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
   @override
   void initState() {
     super.initState();
-    _items = [];
-    _selectedValues = [];
-    widget.itemsTitle.asMap().forEach((index, elem) {
-      _items.add(ValueNotifier(Item(
-          title: elem,
-          checked: widget.preSelectionItems.contains(elem),
-          isDisabled: widget.disableItems.contains(widget.values[index]))));
-    });
+    init(
+      values: widget.values.cast<T>(),
+      itemsTitle: widget.itemsTitle,
+      preSelection: widget.controller.initSelectedItem.cast<T>(),
+      multiSelection: widget.controller.isMultipleSelection,
+    );
+    widget.controller.init(this);
   }
 
   @override
@@ -94,11 +80,11 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
         return ValueListenableBuilder<Item>(
-          valueListenable: _items[index],
-          builder: (ctx,item,_){
+          valueListenable: notifierItems[index],
+          builder: (ctx, item, _) {
             return _SwitchListItem(
               indexItem: index,
-              onItemChanged: onChanged,
+              onItemChanged: changeSelection,
               item: item,
               activeColor: widget.activeColor,
               textStyle: widget.textStyle,
@@ -107,45 +93,53 @@ class SimpleGroupedSwitchState<T> extends State<SimpleGroupedSwitch> {
         );
         // return itemsWidget(_items[index]);
       },
-      itemCount: _items.length,
+      itemCount: notifierItems.length,
     );
   }
 
-  void onChanged(Item item, bool value, int index) {
-    if (widget.isMultipleSelection) {
+  @override
+  void changeSelection(int index, value) {
+    Item item = notifierItems[index].value.copy();
+    if (widget.controller.isMultipleSelection) {
       if (!value) {
-        _selectedValues.remove(widget.values[index]);
+        selectionsValue.value = List.from(selectionsValue.value)
+          ..remove(widget.values[index]);
       }
-      _items[index].value = item.copy(checked: value);
-      if (widget.onItemSelected != null) widget.onItemSelected(_selectedValues.map((e) => e.value).toList());
+      notifierItems[index].value = item.copy(checked: value);
     } else {
       if (!item.checked && value) {
-        _items[index].value = item.copy(checked: value);
+        notifierItems[index].value = item.copy(checked: value);
         if (value) {
-          if (widget.values.indexOf(_selectedValue) != index) {
+          if (widget.values.indexOf(selectedValue) != index) {
             //_items[index].checked = false;
-            if (_selectedValue.value != null) {
-              final indexPreviousItem = widget.values.indexOf(_selectedValue.value);
-              final previousItem = _items[indexPreviousItem].value;
-              _items[indexPreviousItem].value =
+            if (selectedValue.value != null) {
+              final indexPreviousItem =
+                  widget.values.indexOf(selectedValue.value);
+              final previousItem = notifierItems[indexPreviousItem].value;
+              notifierItems[indexPreviousItem].value =
                   previousItem.copy(checked: false);
             }
-            _selectedValue.value = widget.values[index];
+            selectedValue.value = widget.values[index];
           }
         }
-        if (widget.onItemSelected != null)
-          widget.onItemSelected(_selectedValue.value);
       }
+      if (widget.onItemSelected != null) widget.onItemSelected(selection());
     }
   }
 
-
+  @override
+  dynamic selection() {
+    if (widget.controller.isMultipleSelection) {
+      return selectionsValue.value;
+    }
+    return selectedValue.value;
+  }
 }
 
 class _SwitchListItem extends StatelessWidget {
   final Item item;
   final int indexItem;
-  final Function(Item, bool, int) onItemChanged;
+  final Function(int, bool) onItemChanged;
   final Color activeColor;
   final TextStyle textStyle;
 
@@ -164,7 +158,7 @@ class _SwitchListItem extends StatelessWidget {
       onChanged: item.isDisabled
           ? null
           : (v) {
-              onItemChanged(item, v, indexItem);
+              onItemChanged(indexItem, v);
             },
       activeColor: activeColor ?? Theme.of(context).primaryColor,
       value: item.checked,
