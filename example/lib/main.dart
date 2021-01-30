@@ -43,7 +43,8 @@ class _MainExampleState extends State<MainExample>
       circularController,
       chipsController,
       multipleController,
-      multipleCheckController;
+      multipleCheckController,
+      switchController;
   TabController tabController;
 
   @override
@@ -52,6 +53,7 @@ class _MainExampleState extends State<MainExample>
     tabController = TabController(initialIndex: 0, length: 4, vsync: this);
     controller = GroupController(initSelectedItem: [2]);
     circularController = GroupController();
+    switchController = GroupController();
     chipsController = GroupController(
       isMultipleSelection: true
     );
@@ -146,12 +148,12 @@ class _MainExampleState extends State<MainExample>
                 Divider(),
                 Text("grouped switch"),
                 SimpleGroupedSwitch<int>(
+                  controller: switchController,
                   itemsTitle: List.generate(10, (index) => "$index"),
                   values: List.generate(10, (index) => index),
                   disableItems: [2],
                   textStyle: TextStyle(fontSize: 16),
                   activeColor: Colors.red,
-                  isMultipleSelection: false,
                   onItemSelected: (values) {
                     print(values);
                   },
