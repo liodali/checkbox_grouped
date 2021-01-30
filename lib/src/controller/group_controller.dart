@@ -1,4 +1,4 @@
-import '../StateGroup.dart';
+import '../common/state_group.dart';
 
 class GroupController {
   dynamic initSelectedItem;

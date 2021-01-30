@@ -1,6 +1,6 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/StateGroup.dart';
-import 'package:checkbox_grouped/src/item.dart';
+import 'package:checkbox_grouped/src/common/state_group.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

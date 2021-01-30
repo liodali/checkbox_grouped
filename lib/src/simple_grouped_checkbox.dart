@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import './circulaire_checkbox.dart';
-import './item.dart';
-import 'StateGroup.dart';
+import 'common/item.dart';
+import 'common/state_group.dart';
 
 typedef onChanged = Function(dynamic selected);
 
