@@ -111,10 +111,12 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
               ? widget.disabledValues[index]
               : [],
           groupTitle: widget.groupTitles[index],
-          onItemSelected: (selection) async {
-            final list = await getAllValues();
-            widget.onSelectedGroupChanged(list);
-          },
+          onItemSelected: widget.onSelectedGroupChanged != null
+              ? (selection) async {
+                  final list = await getAllValues();
+                  widget.onSelectedGroupChanged(list);
+                }
+              : null,
           isCirculaire: false,
         );
       },
