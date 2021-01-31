@@ -25,7 +25,7 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
               padding: EdgeInsets.all(5.0),
               child: Text("Custom GroupedCheckbox"),
             ),
-            itemBuilder: (ctx, index, v) {
+            itemBuilder: (ctx, index, v,isDisabled) {
               return Card(
                 margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                 child: Row(
