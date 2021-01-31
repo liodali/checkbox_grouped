@@ -24,8 +24,15 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
 
   @override
   void enabledItemsByValues(List<K> itemsValues) {
-    assert(items.map((e) => e.value.data).contains(itemsValues),
-        "you cannot enable items where they values doesn't exist");
+    assert(
+    itemsValues
+        .takeWhile((e) => !items
+        .map((e) => e.value)
+        .map((e) => e.data)
+        .toList()
+        .contains(e))
+        .isEmpty,
+    "you cannot enable items where they values doesn't exist");
     _itemEnableDisable(false, itemsValues);
   }
 
@@ -39,7 +46,7 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
                 .toList()
                 .contains(e))
             .isEmpty,
-        "you cannot enable items where they values doesn't exist");
+        "you cannot disable items where they values doesn't exist");
     _itemEnableDisable(true, itemsValues);
   }
 
