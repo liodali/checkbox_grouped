@@ -16,4 +16,9 @@ class CustomGroupController {
   void init(CustomStateGroup stateGroup) {
     this._customStateGroup = stateGroup;
   }
+  void enabledItems(List<dynamic> items) =>
+      _customStateGroup.enabledItemsByValues(items);
+
+  void disabledItems(List<dynamic> items) =>
+      _customStateGroup.disabledItemsByValues(items);
 }

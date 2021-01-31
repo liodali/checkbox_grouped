@@ -22,11 +22,40 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
 
   List<ValueNotifier<CustomItem<K>>> items;
 
-
+  @override
+  void enabledItemsByValues(List<K> itemsValues) {
+    assert(items.map((e) => e.value.data).contains(itemsValues),
+        "you cannot enable items where they values doesn't exist");
+    _itemEnableDisable(false, itemsValues);
+  }
 
   @override
-  void enabledItemsByValues(List<K> itemsValues) {}
+  void disabledItemsByValues(List<K> itemsValues) {
+    assert(
+        itemsValues
+            .takeWhile((e) => !items
+                .map((e) => e.value)
+                .map((e) => e.data)
+                .toList()
+                .contains(e))
+            .isEmpty,
+        "you cannot enable items where they values doesn't exist");
+    _itemEnableDisable(true, itemsValues);
+  }
 
-  @override
-  void disabledItemsByValues(List<K> itemsValues) {}
+  void _itemEnableDisable(bool enable, List<K> values) {
+    items
+        .where((element) => values.contains(element.value.data))
+        .toList()
+        .asMap()
+        .forEach((key, notifierItem) {
+      var index = items.indexOf(notifierItem);
+      CustomItem item = CustomItem(
+          isDisabled: notifierItem.value.isDisabled,
+          checked: notifierItem.value.checked,
+          data: notifierItem.value.data);
+      item.isDisabled = enable;
+      items[index].value = item;
+    });
+  }
 }

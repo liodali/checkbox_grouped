@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 
 import 'common/custom_state_group.dart';
 
-typedef CustomIndexedWidgetBuilder = Widget Function(BuildContext, int, bool);
+/// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
+/// list.
+typedef CustomIndexedWidgetBuilder = Widget Function(
+  BuildContext builder,
+  int index,
+  bool checked,
+  bool isDisabled,
+);
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
 /// [controller] : Text Widget that describe Title of group checkbox
@@ -94,10 +101,12 @@ class CustomGroupedCheckboxState<T>
                         context,
                         index,
                         items[index].value.checked,
+                        items[index].value.isDisabled,
                       ),
                       value: items[index].value.checked,
                       callback: (v) {
-                        changeSelection(index, v);
+                        if (!items[index].value.isDisabled)
+                          changeSelection(index, v);
                       },
                     );
                   },
@@ -129,10 +138,11 @@ class CustomGroupedCheckboxState<T>
       items[index].value = items[index].value.copy(checked: value);
     } else {
       if (value) {
-        if(itemSelected.value!=null){
+        if (itemSelected.value != null) {
           if (itemSelected.value != items[index].value.data) {
             int indexPrevious = widget.values.indexOf(itemSelected.value);
-            items[indexPrevious].value =  items[indexPrevious].value.copy(checked: false);
+            items[indexPrevious].value =
+                items[indexPrevious].value.copy(checked: false);
           }
         }
         itemSelected.value = widget.values[index];
