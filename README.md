@@ -318,7 +318,7 @@ showDialogGroupedCheckbox(
 ListGroupController controller = ListGroupController();
 ```
 
-####  `GroupController`
+####  `ListGroupController`
 |   Properties                  |  Description |
 |------------------------------ |--------------|
 |`isMultipleSelectionPerGroup`  | (List<bool>)  enable multiple selection  in each grouped checkbox. |
