@@ -1,4 +1,7 @@
 import '../list_grouped_checkbox.dart';
+/// ListGroupController to manage list of  grouped checkbox/chips/switch
+/// [isMultipleSelectionPerGroup] : (List<bool>) enable multiple selection  in each grouped checkbox.
+/// [initSelectedValues] : (List) A Initialize list of values on each group of checkbox that will be selected in group.
 
 class ListGroupController {
   final List<bool> isMultipleSelectionPerGroup;

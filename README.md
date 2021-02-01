@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.7.0%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.8.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.7.0+1
+		checkbox_grouped: ^0.8.0
 
 
 
@@ -28,7 +28,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```dart
     SimpleGroupedCheckbox<int>(
-                    key: checkboxKey,
+                    controller: controller,
                     itemsTitle: ["1" ,"2","4","5"],
                     values: [1,2,4,5],
                     activeColor: Colors.red,
@@ -36,47 +36,65 @@ Add the following to your `pubspec.yaml` file:
                     multiSelection: false,
                   )
 ```
-### Declare GlobalKey to get selection
+### Declare GroupController to get selection and enabled/disabled Items
 
-`  GlobalKey<SimpleGroupedCheckboxState<int>> checkboxKey = GlobalKey<SimpleGroupedCheckboxState<int>>();`
+```dart
+GroupController controller = GroupController();
+```
+
+####  `GroupController`
+|   Properties          |  Description |
+|-----------------------|--------------|
+|`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
+|`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
+
 
 ### Get current selection
 
-` checkboxKey.currentState.selection() `
+```dart
+final selectedItems = controller.selectedItem;
+```
 ### enabled items
 
-` checkboxKey.currentState.enabledItemsByValues(List<T> values) `
+```dart
+controller.enabledItemsByValues(List<T> values); 
+```
+----------
+```dart
+controller.enabledItemsByTitles(List<String> itemsTitles); 
+```
 
-` checkboxKey.currentState.enabledItemsByTitles(List<String> itemsTitles) `
 ### disable item
 
-` checkboxKey.currentState.disabledItemsByValues(List<T> values) `
+```dart
+controller.disabledItemsByValues(List<T> values);
+```
 
-` checkboxKey.currentState.disabledItemsByTitles(List<String> items) `
+```dart
+controller.disabledItemsByTitles(List<String> items)
+```
 
 #### NOTICE
 
-* deprecation of 2 method `disabledItems` and `enabledItems`
+* those method `disabledItems` and `enabledItems` has been removed
 * if you are using complex object in values , you need to implement operator == and hashcode
 
 ####  `SimpleGroupedCheckbox`
 |   Properties          |  Description |
 |-----------------------|--------------|
-|`activeColor`          |The color to use when a CheckBox is checked.  |
-|`itemsTitle`           |(required) A list of strings that describes each checkbox button. Each label must be distinct.   |
+|`activeColor`          | The color to use when a CheckBox is checked.  |
+|`itemsTitle`           | (required) A list of strings that describes each checkbox button. Each label must be distinct.   |
 |`itemsSubTitle`        | A list of strings that describes second Text.   |
 |`onItemSelected`       | Call when users make  selection    |
 |`disableItems`         | Specifies which item should be disabled. The strings passed to this must match the Titles  |
-|`preSelection`         | A list of values that you want to be initially selected.   |
-|`values`               |(required) Values contains in each element.   |
-|`checkFirstElement`    |`make first element in list checked`.  |
-|`multiSelection`       |`enable multiple selection`.  |
-|`isCirculaire`         |`enable to use circulaire checkbox`.  |
-|`isExpandableTitle`    |`enable group checkbox to be expandable `.  |
-|`groupTitle`           |`Text title for group checkbox`.  |
-|`groupTitleStyle`      |`TextStyle of title for group checkbox`.  |
-|`helperGroupTitle`     |`(bool) hide/show checkbox in title to help all selection or de-selection,use it when you want to disable checkbox in groupTitle default:true `.  |
-|`groupTitleAlignment`  |`(Alignment) alignment of group title in group checkbox`.  |
+|`values`               | (required) Values contains in each element.   |
+|`checkFirstElement`    | `make first element in list checked`.  |
+|`isCirculaire`         | `enable to use circulaire checkbox`.  |
+|`isExpandableTitle`    | `enable group checkbox to be expandable `.  |
+|`groupTitle`           | `Text title for group checkbox`.  |
+|`groupTitleStyle`      | `TextStyle of title for group checkbox`.  |
+|`helperGroupTitle`     | `(bool) hide/show checkbox in title to help all selection or de-selection,use it when you want to disable checkbox in groupTitle default:true `.  |
+|`groupTitleAlignment`  | `(Alignment) alignment of group title in group checkbox`.  |
 
 ## Customisable Checkbox Grouped
 
@@ -84,6 +102,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```dart
     CustomGroupedCheckbox<int>(
+            controller:customController,
             groupTitle: "Custom GroupedCheckbox",
             itemBuilder: (ctx,index,v){
             return Card(
@@ -111,13 +130,17 @@ Add the following to your `pubspec.yaml` file:
         )
 ```
 
-### Declare GlobalKey to get selection
+### Declare CustomGroupController to get selection ,enabled/disable items
 
-`  GlobalKey<CustomGroupedCheckboxState<int>> _customCheckBoxKey = GlobalKey<CustomGroupedCheckboxState<int>>();`
+```dart
+ CustomGroupController controller =CustomGroupController();
+```
 
 ### Get current selection
 
-` _customCheckBoxKey.currentState.selection() `
+```dart
+final selectedItem = CustomGroupController.selectedItem;
+```
 
 ####  `CustomGroupedCheckbox`
 |   Properties          |  Description |
@@ -127,7 +150,6 @@ Add the following to your `pubspec.yaml` file:
 |`values`               |(required) `Values contains in each element.`   |
 |`itemCount`            |(required)` The total number of children `      |
 |`itemExtent`           |` The extent the children are forced to have in the main axis`  |
-|`isMultipleSelection`  |`enable multiple selection`.                    |
 
 
 ## Chip grouped Usage
@@ -136,26 +158,55 @@ Add the following to your `pubspec.yaml` file:
 
 ```dart
 SimpleGroupedChips<int>(
-                    key: chipKey,
+                    controller: controller,
                     values: [1,2,3,4,5,6,7],
                     itemTitle: ["1" ,"2","4","5","6","7"],
                     backgroundColorItem: Colors.black26,
                   )
 ```
-### Declare GlobalKey to get selection
+### Declare GroupController to get selection and enabled/disabled Items
 
-`  GlobalKey<SimpleGroupedChipsState<int>> chipKey = GlobalKey<SimpleGroupedChipsState<int>>();`
+```dart
+GroupController controller = GroupController();
+```
+
+####  `GroupController`
+|   Properties          |  Description |
+|-----------------------|--------------|
+|`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
+|`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
+
 
 ### Get current selection
 
-` chipKey.currentState.selection() `
+```dart
+final selectedItems = controller.selectedItem;
+```
+### enabled items
+
+```dart
+controller.enabledItemsByValues(List<T> values); 
+```
+----------
+```dart
+controller.enabledItemsByTitles(List<String> itemsTitles); 
+```
+
+### disable item
+
+```dart
+controller.disabledItemsByValues(List<T> values);
+```
+
+```dart
+controller.disabledItemsByTitles(List<String> items)
+```
 
 ####  `SimpleGroupedChip`
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
 |`disabledItems`        | Specifies which item should be disabled. The strings passed to this must match the Titles  |
-|`preSelection`         | A list of values that you want to be initially selected.   |
 |`values`               |(required) Values contains in each element.   |
 |`onItemSelected`       | Callback when users make  selection    |
 |`backgroundColorItem`  |`the background color for each item`.  |
@@ -164,7 +215,6 @@ SimpleGroupedChips<int>(
 |`selectedTextColor`    |`the color to use for the selected text of item`.  |
 |`selectedIcon`         |`the icon to use when item is selected`.  |
 |`isScrolling`          |`enable horizontal scrolling`.  |
-|`isMultiple`           |`enable multiple selection`.  |
 			     
 ## Switch grouped Usage
 
@@ -172,29 +222,57 @@ SimpleGroupedChips<int>(
 
 ```dart
 SimpleGroupedSwitch<int>(
-                    key: chipKey,
+                    controller: controller,
                     values: [1,2,4,5],
                     itemsTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
                     isMutlipleSelection: false,
                   )
 ```
-### Declare GlobalKey to get selection
+### Declare GroupController to get selection and enabled/disabled Items
 
-`  GlobalKey<SimpleGroupedSwitchState<int>> switchKey = GlobalKey<SimpleGroupedSwitchState<int>>();`
+```dart
+GroupController controller = GroupController();
+```
+
+####  `GroupController`
+|   Properties          |  Description |
+|-----------------------|--------------|
+|`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
+|`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
+
 
 ### Get current selection
 
-` switchKey.currentState.selection() `
+```dart
+final selectedItems = controller.selectedItem;
+```
+### enabled items
+
+```dart
+controller.enabledItemsByValues(List<T> values); 
+```
+----------
+```dart
+controller.enabledItemsByTitles(List<String> itemsTitles); 
+```
+
+### disable item
+
+```dart
+controller.disabledItemsByValues(List<T> values);
+```
+
+```dart
+controller.disabledItemsByTitles(List<String> items)
+```
 
 ####  `SimpleGroupedSwitch`
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
-|`preSelection`         | A list of values that you want to be initially selected.   |
 |`values`               |(required) Values contains in each element.   |
 |`disableItems`         | Specifies which item should be disabled. The value passed to this must match the values list |
 |`onItemSelected`       | Call when users make  selection    |
-|`isMutlipleSelection`  |`enable multiple selection`.  |
 
 
 ## showDialogGroupedCheckbox
@@ -229,18 +307,35 @@ showDialogGroupedCheckbox(
 |`submitDialogText`             |`(string) label for submitButton`.  |
 |`isMultiSelection`             |`enable multiple selection`.  |
 
-## ListGroupedCheckbox  *(experimental)
+## ListGroupedCheckbox  
 
 > display  list of groupedCheckbox
 > return all values selected
+>
+### Declare ListGroupController to get all item selected or get item selected by group index
 
-### Declare GlobalKey to get selected values
+```dart
+ListGroupController controller = ListGroupController();
+```
 
-`  GlobalKey<ListGroupedCheckboxState> globalKey = GlobalKey<ListGroupedCheckboxState>();`
+####  `GroupController`
+|   Properties                  |  Description |
+|------------------------------ |--------------|
+|`isMultipleSelectionPerGroup`  | (List<bool>)  enable multiple selection  in each grouped checkbox. |
+|`initSelectedValues`           | (List) A Initialize list of values on each group of checkbox that will be selected in group.   |
 
-### Get all values selected
 
-` await globalKey.currentState.getAllValues() `
+### Get current selection
+* get all selection
+
+```dart
+final selectedItems = controller.allSelectedItems;
+```
+* get all selection by group
+
+```dart
+final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
+```
 
 
 #### Creating a basic `ListGroupedCheckbox`
@@ -248,7 +343,7 @@ showDialogGroupedCheckbox(
      
 ```dart
                 ListGroupedCheckbox(
-                        key: globalKey,
+                        controller: listController,
                         groupTitles: List.generate(3, (index) => "groupe $index"),
                         values: List.generate(
                           3,
@@ -259,12 +354,8 @@ showDialogGroupedCheckbox(
                           3,
                           (i) => List.generate(5, (j) => "Title:$i-$j"),
                         ),
-                        isMultipleSelectionPerGroup: [true, false, true],
                       )
 ```
-
-
-     
 
 
 ####  `showDialogGroupedCheckbox`
@@ -276,6 +367,6 @@ showDialogGroupedCheckbox(
 |`subTitles`                          | A list of list strings that describes second Text in each groupedChckbox.   |
 |`onSelectedGroupChanged`             | CallBack to get all selected items when users  new   selection instantly  |
 |`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
-|`preSelectedValues`                  | A list of list values that you want to be initially selected of each groupedCheckbox.   |
-|`isMultipleSelectionPerGroup`        | A list of boolean to enable multiple selection of each groupedCheckbox.  |
 
+------------------
+MIT Licences
