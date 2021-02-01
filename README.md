@@ -82,6 +82,7 @@ controller.disabledItemsByTitles(List<String> items)
 ####  `SimpleGroupedCheckbox`
 |   Properties          |  Description |
 |-----------------------|--------------|
+|`controller`           | (required)  Group Controller to recuperate selectionItems and disable or enableItems.  |
 |`activeColor`          | The color to use when a CheckBox is checked.  |
 |`itemsTitle`           | (required) A list of strings that describes each checkbox button. Each label must be distinct.   |
 |`itemsSubTitle`        | A list of strings that describes second Text.   |
@@ -145,6 +146,7 @@ final selectedItem = controller.selectedItem;
 ####  `CustomGroupedCheckbox`
 |   Properties          |  Description |
 |-----------------------|--------------|
+|`controller`           | (required) Custom Group Controller to recuperate selectionItems and disable or enableItems.  |
 |`groupTitle`           |`widget title for group checkbox`.              |
 |`itemBuilder`          |(required) `Called to build children.`          |
 |`values`               |(required) `Values contains in each element.`   |
@@ -205,6 +207,7 @@ controller.disabledItemsByTitles(List<String> items)
 ####  `SimpleGroupedChip`
 |   Properties          |  Description |
 |-----------------------|--------------|
+|`controller`           | (required) Group Controller to recuperate selectionItems and disable or enableItems.  |
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
 |`disabledItems`        | Specifies which item should be disabled. The strings passed to this must match the Titles  |
 |`values`               |(required) Values contains in each element.   |
@@ -269,6 +272,7 @@ controller.disabledItemsByTitles(List<String> items)
 ####  `SimpleGroupedSwitch`
 |   Properties          |  Description |
 |-----------------------|--------------|
+|`controller`           | (required) Group Controller to recuperate selectionItems and disable or enableItems.  |
 |`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
 |`values`               |(required) Values contains in each element.   |
 |`disableItems`         | Specifies which item should be disabled. The value passed to this must match the values list |
@@ -361,6 +365,7 @@ final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
 ####  `ListGroupedCheckbox`
 |   Properties                        |  Description |
 |-------------------------------------|--------------------------------------------------------------------------------------------------|
+|`controller`                         | (required) manage the ListGroupedCheckbox.  |
 |`groupTitles`                        | (required)Text title for group checkbox in each groupedCheckbox.  |
 |`titles`                             | (required) A list of list of strings that describes each checkbox button. Each label must be distinct in groupedCheckbox.   |
 |`values`                             | (required) Values contains in each element in each groupedCheckbox.   |
