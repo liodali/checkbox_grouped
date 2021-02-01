@@ -1,3 +1,5 @@
+## [0.8.0+1] -improve readme 
+*  add docs,fix readme 
 ## [0.8.0] -improve readability of the code and  remove working with globalKey 
 *  add GroupController to control simple grouped checkbox/switch/chips 
 *  add CustomGroupController to control custom grouped checkbox 
