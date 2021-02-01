@@ -1,31 +1,31 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
 
 typedef onGroupChanged<T> = void Function(dynamic selected);
 
 class ListGroupedCheckbox<T> extends StatefulWidget {
+  final ListGroupController controller;
   final List<List<T>> values;
   final List<List<String>> titles;
   final List<String> groupTitles;
   final List<String> subTitles;
-  final List<bool> isMultipleSelectionPerGroup;
-  final List<List<T>> preSelectedValues;
   final List<List<T>> disabledValues;
   final onGroupChanged<T> onSelectedGroupChanged;
 
   ListGroupedCheckbox({
+    @required this.controller,
     @required this.titles,
     @required this.groupTitles,
     @required this.values,
     this.subTitles,
-    this.isMultipleSelectionPerGroup,
     this.onSelectedGroupChanged,
-    this.preSelectedValues = const [],
     this.disabledValues = const [],
-    @required Key key,
+    Key key,
   })  : assert(values.length == titles.length),
         assert(groupTitles.length == titles.length),
-        assert(isMultipleSelectionPerGroup.length == titles.length),
+        assert(controller.isMultipleSelectionPerGroup.isEmpty ||
+            controller.isMultipleSelectionPerGroup.length == titles.length),
         super(key: key);
 
   static ListGroupedCheckboxState of<T>(BuildContext context,
@@ -50,19 +50,29 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
 
 class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   int len = 0;
-  List<GlobalKey<SimpleGroupedCheckboxState>> listKeys = [];
+  List<GroupController> listControllers = [];
 
   @override
   void initState() {
     super.initState();
     len = widget.values.length;
-    listKeys.addAll(List.generate(widget.values.length,
-        (index) => GlobalKey<SimpleGroupedCheckboxState>()));
+    widget.controller.init(this);
+    listControllers.addAll(List.generate(
+        widget.values.length,
+        (index) => GroupController(
+              initSelectedItem: widget.controller.initSelectedValues.isNotEmpty
+                  ? widget.controller.initSelectedValues[index]
+                  : [],
+              isMultipleSelection:
+                  widget.controller.isMultipleSelectionPerGroup.isNotEmpty
+                      ? widget.controller.isMultipleSelectionPerGroup[index]
+                      : false,
+            )));
   }
 
   Future<List<T>> getAllValues() async {
     List<T> resultList = List<T>();
-    var values = listKeys.map((e) => e.currentState.selection()).where((v) {
+    var values = listControllers.map((e) => e.selectedItem).where((v) {
       if (v != null) {
         if (v is List && v.isNotEmpty) {
           return true;
@@ -86,7 +96,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   Future<List<T>> getValuesByIndex(int index) async {
     assert(index < len);
     List<T> resultList = List<T>();
-    resultList.addAll(listKeys[index].currentState.selection());
+    resultList.addAll(listControllers[index].selectedItem);
     return resultList;
   }
 
@@ -98,22 +108,20 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
         return SimpleGroupedCheckbox<T>(
-          key: listKeys[index],
+          controller: listControllers[index],
           itemsTitle: widget.titles[index],
           values: widget.values[index],
-          preSelection: widget.preSelectedValues.isNotEmpty
-              ? widget.preSelectedValues[index]
-              : [],
           disableItems: widget.disabledValues.isNotEmpty
               ? widget.disabledValues[index]
               : [],
           groupTitle: widget.groupTitles[index],
-          onItemSelected: (selection) async {
-            final list = await getAllValues();
-            widget.onSelectedGroupChanged(list);
-          },
+          onItemSelected: widget.onSelectedGroupChanged != null
+              ? (selection) async {
+                  final list = await getAllValues();
+                  widget.onSelectedGroupChanged(list);
+                }
+              : null,
           isCirculaire: false,
-          multiSelection: widget.isMultipleSelectionPerGroup[index],
         );
       },
       itemCount: len,

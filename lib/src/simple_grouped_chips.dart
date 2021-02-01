@@ -1,7 +1,11 @@
-import 'package:checkbox_grouped/src/item.dart';
+import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 
+import 'common/state_group.dart';
+
+///  [controller] : A list of values that you want to be initially selected.
 ///  [preSelection] : A list of values that you want to be initially selected.
 ///  [isMultiple] : enable multiple selection
 ///  [isScrolling] : enable horizontal scrolling
@@ -16,8 +20,7 @@ import 'package:flutter/material.dart';
 ///  [disabledItems] : Specifies which item should be disabled
 
 class SimpleGroupedChips<T> extends StatefulWidget {
-  final List<T> preSelection;
-  final bool isMultiple;
+  final GroupController controller;
   final bool isScrolling;
   final Color backgroundColorItem;
   final Color disabledColor;
@@ -32,6 +35,7 @@ class SimpleGroupedChips<T> extends StatefulWidget {
 
   SimpleGroupedChips({
     Key key,
+    @required this.controller,
     @required this.values,
     @required this.itemTitle,
     this.disabledItems,
@@ -42,13 +46,8 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     this.selectedTextColor = Colors.white,
     this.textColor = Colors.black,
     this.selectedIcon = Icons.done,
-    this.preSelection = const [],
     this.isScrolling = false,
-    this.isMultiple = false,
-  })  : assert(isMultiple == true && preSelection.isNotEmpty ||
-            isMultiple == false && preSelection.isEmpty ||
-            isMultiple == true && preSelection.isEmpty),
-        assert(
+  })  : assert(
             disabledItems == null ||
                 disabledItems == [] ||
                 disabledItems
@@ -77,36 +76,27 @@ class SimpleGroupedChips<T> extends StatefulWidget {
   SimpleGroupedChipsState<T> createState() => SimpleGroupedChipsState<T>();
 }
 
-class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
-  Item _previousActive;
-  T _selectedValue;
-  List<T> _selectionsValue = [];
-  List<ValueNotifier<Item>> _items = [];
-  bool valueTitle = false;
-
+class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   @override
   void initState() {
     super.initState();
-    if (widget.isMultiple && widget.preSelection.isNotEmpty) {
-      _selectionsValue.addAll(widget.preSelection as List<T>);
-    }
-    _items.addAll(widget.itemTitle
-        .map((item) => ValueNotifier(Item(
-              title: item,
-              checked: widget.isMultiple && widget.preSelection.isNotEmpty
-                  ? _selectionsValue
-                      .contains(widget.values[widget.itemTitle.indexOf(item)])
-                  : false,
-              isDisabled: widget.disabledItems?.contains(item) ?? false,
-            )))
-        .toList());
+    init(
+      values: widget.values,
+      checkFirstElement: false,
+      preSelection: widget.controller.initSelectedItem.cast<T>(),
+      multiSelection: widget.controller.isMultipleSelection,
+      itemsTitle: widget.itemTitle,
+      disableItems: widget.disabledItems,
+    );
+    widget.controller.init(this);
   }
 
-  selection() {
-    if (widget.isMultiple) {
-      return _selectionsValue;
+  @override
+  dynamic selection() {
+    if (widget.controller.isMultipleSelection) {
+      return selectionsValue.value;
     }
-    return _selectedValue;
+    return selectedValue.value;
   }
 
   @override
@@ -117,13 +107,13 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
           spacing: 15.0,
           direction: Axis.horizontal,
           children: [
-            for (int i = 0; i < _items.length; i++) ...[
+            for (int i = 0; i < notifierItems.length; i++) ...[
               ValueListenableBuilder(
-                valueListenable: _items[i],
+                valueListenable: notifierItems[i],
                 builder: (ctx, item, child) {
                   return _ChoiceChipsWidget(
                     onSelection: (v) {
-                      _changeSelection(index: i, item: item, value: v);
+                      changeSelection(i, v);
                     },
                     selectedIcon: Icon(
                       widget.selectedIcon,
@@ -155,13 +145,13 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
       direction: Axis.horizontal,
       verticalDirection: VerticalDirection.down,
       children: [
-        for (int i = 0; i < _items.length; i++) ...[
+        for (int i = 0; i < notifierItems.length; i++) ...[
           ValueListenableBuilder(
-            valueListenable: _items[i],
+            valueListenable: notifierItems[i],
             builder: (ctx, item, child) {
               return _ChoiceChipsWidget(
                 onSelection: (v) {
-                  _changeSelection(index: i, item: item, value: v);
+                  changeSelection(i, v);
                 },
                 selectedIcon: Icon(
                   widget.selectedIcon,
@@ -187,47 +177,70 @@ class SimpleGroupedChipsState<T> extends State<SimpleGroupedChips> {
     );
   }
 
-  void _changeSelection({int index, Item item, bool value}) {
-    Item _item = item.copy();
+  @override
+  void changeSelection(int index, dynamic value) {
+    Item _item = notifierItems[index].value.copy();
     if (value) {
-      if (widget.isMultiple) {
-        _selectionsValue.add(widget.values[index]);
+      if (widget.controller.isMultipleSelection) {
+        selectionsValue.value = List.from(selectionsValue.value)
+          ..add(widget.values[index]);
         _item.checked = value;
-        _items[index].value = _item;
+        notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
-          widget.onItemSelected(_selectionsValue);
+          widget.onItemSelected(selectionsValue);
         }
       } else {
-        if (_selectedValue != widget.values[index]) {
+        if (selectedValue.value != widget.values[index]) {
           // TODO : find old selected and deselected
-          var valueListenerOldItem = _items.firstWhere(
+          var valueListenerOldItem = notifierItems.firstWhere(
               (element) => element.value.checked == true,
               orElse: () => null);
           if (valueListenerOldItem != null) {
             Item oldItem = valueListenerOldItem.value.copy();
-            int indexOldItem = _items.indexOf(valueListenerOldItem);
+            int indexOldItem = notifierItems.indexOf(valueListenerOldItem);
             oldItem.checked = false;
-            _items[indexOldItem].value = oldItem;
+            notifierItems[indexOldItem].value = oldItem;
           }
 
           _item.checked = true;
-          _items[index].value = _item;
-          _selectedValue = widget.values[index];
+          notifierItems[index].value = _item;
+          selectedValue.value = widget.values[index];
           if (widget.onItemSelected != null) {
             widget.onItemSelected(widget.values[index]);
           }
         }
       }
     } else {
-      if (widget.isMultiple) {
-        _selectionsValue.remove(widget.values[index]);
+      if (widget.controller.isMultipleSelection) {
+        selectionsValue.value = List.from(selectionsValue.value)
+          ..remove(widget.values[index]);
         _item.checked = value;
-        _items[index].value = _item;
+        notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
-          widget.onItemSelected(_selectionsValue);
+          widget.onItemSelected(selectionsValue);
         }
       }
     }
+  }
+
+  @override
+  void disabledItemsByTitles(List<String> items) {
+    // TODO: implement disabledItemsByTitles
+  }
+
+  @override
+  void disabledItemsByValues(List itemsValues) {
+    // TODO: implement disabledItemsByValues
+  }
+
+  @override
+  void enabledItemsByTitles(List<String> items) {
+    // TODO: implement enabledItemsByTitles
+  }
+
+  @override
+  void enabledItemsByValues(List itemsValues) {
+    // TODO: implement enabledItemsByValues
   }
 }
 

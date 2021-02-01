@@ -5,13 +5,15 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets("test CustomGroupedCheckbox ", (tester) async {
+    CustomGroupController controller = CustomGroupController();
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: Builder(
             builder: (ctx) {
               return CustomGroupedCheckbox<int>(
-                itemBuilder: (ctx, index, v) {
+                controller: controller,
+                itemBuilder: (ctx, index, v,isDisabled) {
                   return Text("$index");
                 },
                 itemCount: 10,
@@ -22,37 +24,103 @@ void main() {
         ),
       ),
     );
-    expect(find.byType(Text), findsNWidgets(10));
-    expect(find.text("11"), findsNothing);
     await tester.pump();
+    await tester.tap(find.byType(Text).at(1));
+    await tester.pump();
+    expect(controller.selectedItem, 1);
+    await tester.tap(find.byType(Text).at(2));
+    await tester.pump();
+    expect(controller.selectedItem, 2);
   });
-  testWidgets("test CustomGroupedCheckbox with global key", (tester) async {
-    GlobalKey<CustomGroupedCheckboxState> _customCheckBoxKey =
-        GlobalKey<CustomGroupedCheckboxState>();
+  testWidgets("test multiple selection CustomGroupedCheckbox ", (tester) async {
+    CustomGroupController controller =
+        CustomGroupController(isMultipleSelection: true);
+
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: Builder(
             builder: (ctx) {
               return CustomGroupedCheckbox<int>(
-                key: _customCheckBoxKey,
-                itemBuilder: (ctx, index, v) {
+                controller: controller,
+                itemBuilder: (ctx, index, v,isDisabled) {
                   return Text("$index");
                 },
                 itemCount: 10,
-                isMultipleSelection: true,
-                values: List<int>.generate(10, (i) => i+1),
+                values: List<int>.generate(10, (i) => i + 1),
               );
             },
           ),
         ),
       ),
     );
-    expect(find.byType(Text), findsNWidgets(10));
-    expect(find.text("11"), findsNothing);
+
     await tester.pump();
     await tester.tap(find.byType(Text).at(4));
-    var selectedItems=_customCheckBoxKey.currentState.selection();
-    expect(selectedItems,[5]);
+    await tester.pump();
+    expect(controller.selectedItem, [5]);
+    await tester.tap(find.byType(Text).at(5));
+    await tester.pump();
+    expect(controller.selectedItem, [5, 6]);
   });
+  testWidgets("test disable/Enable selection CustomGroupedCheckbox ",
+      (tester) async {
+    CustomGroupController controller =
+        CustomGroupController(isMultipleSelection: true);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (ctx) {
+              return CustomGroupedCheckbox<User>(
+                controller: controller,
+                itemBuilder: (ctx, index, v, isDisabled) {
+                  return Container(
+                    color: isDisabled ? Colors.grey : null,
+                    padding: EdgeInsets.all(5.0),
+                    child: Text("$index"),
+                  );
+                },
+                itemCount: 10,
+                values: List<User>.generate(10, (i) => User("name${i + 1}")),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.tap(find.byType(Text).at(4));
+    await tester.pump();
+    expect(controller.selectedItem, [User("name5")]);
+    controller.disabledItems([User("name6")]);
+    await tester.tap(find.byType(Text).at(5));
+    await tester.pump();
+    expect(controller.selectedItem, [User("name5")]);
+    controller.enabledItems([User("name6")]);
+    await tester.tap(find.byType(Text).at(5));
+    await tester.pump();
+    expect(controller.selectedItem, [User("name5"),User("name6")]);
+  });
+}
+
+class User {
+  final String name;
+
+  User(this.name);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User && runtimeType == other.runtimeType && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
+
+  @override
+  String toString() {
+    return "{$name}";
+  }
 }

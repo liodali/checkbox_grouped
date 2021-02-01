@@ -1,3 +1,10 @@
+## [0.8.0] -improve readability of the code and  remove working with globalKey 
+*  add GroupController to control simple grouped checkbox/switch/chips 
+*  add CustomGroupController to control custom grouped checkbox 
+*  add ListGroupController to control list grouped checkbox 
+*  add enable/disable items in all groups checkbox 
+*  modify example with new changes 
+*  add and update widget unit tests 
 ## [0.7.0+1] - add groupTitleAlignment,helperGroupTitle checkbox 
 *  add helperGroupTitle to show or hid checkbox in groupTile 
 *  add groupTitleAlignment to change alignment of groupTitle  of 2 new method disableItemsByTitles 

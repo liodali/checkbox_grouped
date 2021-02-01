@@ -50,4 +50,14 @@ class CustomItem<T> extends BaseItem {
           checked: checked,
           isDisabled: isDisabled,
         );
+  CustomItem<T> copy({
+    T data,
+    checked,
+    isDisabled = false,
+  }) {
+    return CustomItem(
+        data: data ?? this.data,
+        checked: checked ?? this.checked,
+        isDisabled: isDisabled ?? this.isDisabled);
+  }
 }

@@ -1,31 +1,41 @@
-import 'package:checkbox_grouped/src/item.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
 import 'package:flutter/material.dart';
 
-typedef CustomIndexedWidgetBuilder = Widget Function(BuildContext, int, bool);
+import 'common/custom_state_group.dart';
+
+/// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
+/// list.
+typedef CustomIndexedWidgetBuilder = Widget Function(
+  BuildContext builder,
+  int index,
+  bool checked,
+  bool isDisabled,
+);
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
+/// [controller] : Text Widget that describe Title of group checkbox
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [itemBuilder] :  builder function  takes an index and checked state of widget
 /// [values] : list of values
 /// [itemCount] : list of initial values that you want to be selected
 /// [itemExtent] : same as [itemExtent] of [ListView]
-/// [isMultipleSelection] : enable mutli selection groupedCheckbox
 class CustomGroupedCheckbox<T> extends StatefulWidget {
+  final CustomGroupController controller;
   final Widget groupTitle;
   final CustomIndexedWidgetBuilder itemBuilder;
   final int itemCount;
   final double itemExtent;
   final List<T> values;
-  final bool isMultipleSelection;
 
   CustomGroupedCheckbox({
     Key key,
+    @required this.controller,
     this.groupTitle,
     @required this.itemBuilder,
     @required this.itemCount,
     @required this.values,
     this.itemExtent = 50.0,
-    this.isMultipleSelection = false,
   })  : assert(itemCount > 0),
         super(key: key);
 
@@ -49,30 +59,20 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   }
 }
 
-class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
-  T _itemSelected;
-  List<T> _itemsSelections;
-  CustomItem<T> _previous;
-
-  List<CustomItem<T>> _items;
-
+class CustomGroupedCheckboxState<T>
+    extends CustomStateGroup<T, CustomGroupedCheckbox> {
   SliverChildBuilderDelegate childrenDelegate;
 
   @override
   void initState() {
     super.initState();
-    _itemsSelections = [];
-    _items = [];
+    itemsSelections = ValueNotifier([]);
+    items = [];
     widget.values.forEach((v) {
-      _items.add(CustomItem(data: v, checked: false, isDisabled: false));
+      items.add(ValueNotifier(
+          (CustomItem(data: v, checked: false, isDisabled: false))));
     });
-  }
-    /// function to recuperate selection or list of selected Items
-   selection() {
-    if (widget.isMultipleSelection) {
-      return _itemsSelections;
-    }
-    return _itemSelected;
+    widget.controller.init(this);
   }
 
   @override
@@ -93,18 +93,26 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemBuilder: (ctx, index) {
-                return _ItemWidget(
-                  child:
-                      widget.itemBuilder(context, index, _items[index].checked),
-                  value: _items[index].checked,
-                  callback: (v) {
-                    setState(() {
-                      onChanged(index, v);
-                    });
+                return ValueListenableBuilder<CustomItem<T>>(
+                  valueListenable: items[index],
+                  builder: (ctx, value, child) {
+                    return _ItemWidget(
+                      child: widget.itemBuilder(
+                        context,
+                        index,
+                        items[index].value.checked,
+                        items[index].value.isDisabled,
+                      ),
+                      value: items[index].value.checked,
+                      callback: (v) {
+                        if (!items[index].value.isDisabled)
+                          changeSelection(index, v);
+                      },
+                    );
                   },
                 );
               },
-              itemCount: _items.length,
+              itemCount: items.length,
               itemExtent: widget.itemExtent,
             ),
           ),
@@ -113,32 +121,42 @@ class CustomGroupedCheckboxState<T> extends State<CustomGroupedCheckbox> {
     );
   }
 
-  void onChanged(int i, bool v) {
-    if (widget.isMultipleSelection) {
-      if (!_itemsSelections.contains(widget.values[i])) {
-        if (v) {
-          _itemsSelections.add(widget.values[i]);
+  @override
+  void changeSelection(int index, dynamic value) {
+    if (widget.controller.isMultipleSelection) {
+      if (!itemsSelections.value.contains(widget.values[index])) {
+        if (value) {
+          itemsSelections.value = List.from(itemsSelections.value)
+            ..add(widget.values[index]);
         }
       } else {
-        if (!v) {
-          _itemsSelections.remove(widget.values[i]);
+        if (!value) {
+          itemsSelections.value = List.from(itemsSelections.value)
+            ..remove(widget.values[index]);
         }
       }
-      _items[i].checked = v;
+      items[index].value = items[index].value.copy(checked: value);
     } else {
-      if (v) {
-        _items[i].checked = v;
-        if (_previous != _items[i]) {
-          if (_previous != null) {
-            _previous.checked = false;
-          } else {
-            _previous = _items[i];
+      if (value) {
+        if (itemSelected.value != null) {
+          if (itemSelected.value != items[index].value.data) {
+            int indexPrevious = widget.values.indexOf(itemSelected.value);
+            items[indexPrevious].value =
+                items[indexPrevious].value.copy(checked: false);
           }
         }
-        _itemSelected = widget.values[i];
-        _previous = _items[i];
+        itemSelected.value = widget.values[index];
+        items[index].value = items[index].value.copy(checked: value);
       }
     }
+  }
+
+  @override
+  dynamic selection() {
+    if (widget.controller.isMultipleSelection) {
+      return itemsSelections.value;
+    }
+    return itemSelected.value;
   }
 }
 

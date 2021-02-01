@@ -8,7 +8,9 @@
 .buildlog/
 .history
 .svn/
-
+/param.json
+/automatisation_version.py
+/tagManager.sh
 # IntelliJ related
 *.iml
 *.ipr

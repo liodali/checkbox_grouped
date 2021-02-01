@@ -9,8 +9,8 @@ class CustomGroupedExample extends StatefulWidget {
 }
 
 class _CustomGroupedExampleState extends State<CustomGroupedExample> {
-  GlobalKey<CustomGroupedCheckboxState> _customCheckBoxKey =
-      GlobalKey<CustomGroupedCheckboxState>();
+  CustomGroupController controller =
+  CustomGroupController(isMultipleSelection: true);
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,12 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
         Flexible(
           fit: FlexFit.loose,
           child: CustomGroupedCheckbox<int>(
-            key: _customCheckBoxKey,
-            isMultipleSelection: true,
+            controller: controller,
             groupTitle: Container(
               padding: EdgeInsets.all(5.0),
               child: Text("Custom GroupedCheckbox"),
             ),
-            itemBuilder: (ctx, index, v) {
+            itemBuilder: (ctx, index, v,isDisabled) {
               return Card(
                 margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                 child: Row(
@@ -59,7 +58,7 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
         ),
         RaisedButton(
           onPressed: () {
-            print(_customCheckBoxKey.currentState.selection());
+            print(controller.selectedItem);
           },
           child: Text("selection"),
         )

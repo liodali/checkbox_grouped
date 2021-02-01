@@ -1,3 +1,4 @@
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 
@@ -72,14 +73,17 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
 
 class _CoreDialogGroupedCheckboxState
     extends State<_CoreDialogGroupedCheckbox> {
-  GlobalKey<SimpleGroupedCheckboxState> globalKey;
+  GroupController controller;
   ValueNotifier<bool> canSubmit;
 
   @override
   void initState() {
     super.initState();
     canSubmit = ValueNotifier<bool>(false);
-    globalKey = GlobalKey<SimpleGroupedCheckboxState>();
+    controller = GroupController(
+      isMultipleSelection: widget.isMultiSelection,
+      initSelectedItem: widget.initialSelectedValues,
+    );
   }
 
   @override
@@ -99,11 +103,9 @@ class _CoreDialogGroupedCheckboxState
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: SimpleGroupedCheckbox(
-              key: globalKey,
+              controller: controller,
               values: widget.values,
               itemsTitle: widget.itemsTitle,
-              preSelection: widget.initialSelectedValues,
-              multiSelection: widget.isMultiSelection,
               onItemSelected: (items) {
                 if (widget.isMultiSelection) {
                   if ((items as List).isNotEmpty) {
@@ -136,8 +138,7 @@ class _CoreDialogGroupedCheckboxState
             return FlatButton(
               onPressed: canSubmit
                   ? () {
-                      Navigator.pop(
-                          context, globalKey.currentState.selection());
+                      Navigator.pop(context, controller.selectedItem);
                     }
                   : null,
               child: Text(

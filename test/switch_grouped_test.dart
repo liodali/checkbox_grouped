@@ -3,76 +3,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
   testWidgets("test single selection SimpleGroupedSwitch ", (tester) async {
-    await tester.pumpWidget(Example1());
-    await tester.tap(find.byType(SwitchListTile).at(1));
-//    await tester.pump();
-
-    SwitchListTile cb =
-        tester.widget(find.byType(SwitchListTile).first) as SwitchListTile;
-    SwitchListTile cb2 = tester.widget(find.byType(SwitchListTile).at(1)) as SwitchListTile;
-
-    expect(cb.value, false);
-    expect(cb2.value, true);
-  });
-  testWidgets("test disable selection SimpleGroupedSwitch ", (tester) async {
-    GlobalKey key = GlobalKey<SimpleGroupedSwitchState<int>>();
+    GroupController controller = GroupController();
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedSwitch<int>(
-          key: key,
+          controller: controller,
           itemsTitle: ["1", "2", "4", "5"],
-          disableItems: [2],
           values: [1, 2, 4, 5],
-          isMultipleSelection: false,
           textStyle: TextStyle(color: Colors.black),
         ),
-      ) ,
+      ),
     ));
 
-   await tester.pump();
+    await tester.pump();
 
-    SwitchListTile cb = tester.widget(find.byType(SwitchListTile).at(1)) as SwitchListTile;
-    expect(cb.onChanged, null);
+    await tester.tap(find.byType(SwitchListTile).at(1));
+    await tester.pump();
+    expect(controller.selectedItem, 2);
   });
-}
-
-class Example1 extends StatefulWidget {
-  final bool isMultiple;
-
-  Example1({Key key, this.isMultiple = false}) : super(key: key);
-
-  @override
-  _Example1State createState() => _Example1State();
-}
-
-class _Example1State extends State<Example1> {
-  GlobalKey<SimpleGroupedSwitchState<int>> switchKey;
-
-  @override
-  void initState() {
-    super.initState();
-    switchKey = GlobalKey<SimpleGroupedSwitchState<int>>();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("SingleGroupedSwitch"),
-        ),
-        body: SimpleGroupedSwitch<int>(
-          key: switchKey,
-          itemsTitle: ["1", "2", "4", "5"],
-          values: [1, 2, 4, 5],
-          isMultipleSelection: widget.isMultiple,
-        ),
-      ),
+  testWidgets("test multiple selection SimpleGroupedSwitch ", (tester) async {
+    GroupController controller = GroupController(
+      isMultipleSelection: true,
     );
-  }
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SimpleGroupedSwitch<int>(
+          controller: controller,
+          itemsTitle: ["1", "2", "4", "5"],
+          disableItems: [2, 4],
+          values: [1, 2, 4, 5],
+          textStyle: TextStyle(color: Colors.black),
+        ),
+      ),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byType(SwitchListTile).at(1));
+    await tester.pump();
+    expect(controller.selectedItem, []);
+
+    await tester.tap(find.byType(SwitchListTile).at(0));
+    await tester.pump();
+    await tester.tap(find.byType(SwitchListTile).at(2));
+    await tester.pump();
+    expect(controller.selectedItem, [1]);
+  });
+  testWidgets("test enable/disable item  SimpleGroupedSwitch ", (tester) async {
+    GroupController controller = GroupController(
+      isMultipleSelection: true,
+      initSelectedItem: [2, 3],
+    );
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SimpleGroupedSwitch<int>(
+          controller: controller,
+          itemsTitle: List.generate(10, (index) => "$index"),
+          values: List.generate(10, (index) => index),
+          textStyle: TextStyle(fontSize: 16),
+          activeColor: Colors.red,
+          onItemSelected: (values) {
+            print(values);
+          },
+        ),
+      ),
+    ));
+    await tester.pump();
+    expect(controller.selectedItem, [2, 3]);
+    controller.disabledItemsByValues([2]);
+    await tester.pump();
+    await tester.tap(find.byType(SwitchListTile).at(2));
+    await tester.pump();
+    await tester.tap(find.byType(SwitchListTile).at(3));
+    await tester.pump();
+    expect(controller.selectedItem, [2]);
+    controller.enabledItemsByValues([2]);
+    await tester.pump();
+    await tester.tap(find.byType(SwitchListTile).at(2));
+    await tester.pump();
+    expect(controller.selectedItem, []);
+  });
 }
