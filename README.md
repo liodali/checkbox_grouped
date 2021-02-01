@@ -86,7 +86,7 @@ controller.disabledItemsByTitles(List<String> items)
 |`activeColor`          | The color to use when a CheckBox is checked.  |
 |`itemsTitle`           | (required) A list of strings that describes each checkbox button. Each label must be distinct.   |
 |`itemsSubTitle`        | A list of strings that describes second Text.   |
-|`onItemSelected`       | Call when users make  selection    |
+|`onItemSelected`       | Callback fire when the user make  selection    |
 |`disableItems`         | Specifies which item should be disabled. The strings passed to this must match the Titles  |
 |`values`               | (required) Values contains in each element.   |
 |`checkFirstElement`    | `make first element in list checked`.  |
@@ -105,7 +105,7 @@ controller.disabledItemsByTitles(List<String> items)
     CustomGroupedCheckbox<int>(
             controller:customController,
             groupTitle: "Custom GroupedCheckbox",
-            itemBuilder: (ctx,index,v){
+            itemBuilder: (ctx,index,value,isDisabled){
             return Card(
                 child: Row(
                     children: <Widget>[
@@ -208,10 +208,10 @@ controller.disabledItemsByTitles(List<String> items)
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Group Controller to recuperate selectionItems and disable or enableItems.  |
-|`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
+|`itemsTitle`           | (required) A list of strings that describes each chip button. Each label must be distinct.   |
 |`disabledItems`        | Specifies which item should be disabled. The strings passed to this must match the Titles  |
-|`values`               |(required) Values contains in each element.   |
-|`onItemSelected`       | Callback when users make  selection    |
+|`values`               | (required) Values contains in each element.   |
+|`onItemSelected`       | Callback when users make  selection  or deselection  |
 |`backgroundColorItem`  |`the background color for each item`.  |
 |`selectedColorItem`    |`the background color to use when item is  selected`.  |
 |`textColor`            |`the color to use for each text of item `.  |
@@ -273,10 +273,10 @@ controller.disabledItemsByTitles(List<String> items)
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Group Controller to recuperate selectionItems and disable or enableItems.  |
-|`itemsTitle`           |(required) A list of strings that describes each chip button. Each label must be distinct.   |
-|`values`               |(required) Values contains in each element.   |
+|`itemsTitle`           | (required) A list of strings that describes each chip button. Each label must be distinct.   |
+|`values`               | (required) Values contains in each element.   |
 |`disableItems`         | Specifies which item should be disabled. The value passed to this must match the values list |
-|`onItemSelected`       | Call when users make  selection    |
+|`onItemSelected`       | Call when users make  selection  or deselection  |
 
 
 ## showDialogGroupedCheckbox
@@ -370,7 +370,7 @@ final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
 |`titles`                             | (required) A list of list of strings that describes each checkbox button. Each label must be distinct in groupedCheckbox.   |
 |`values`                             | (required) Values contains in each element in each groupedCheckbox.   |
 |`subTitles`                          | A list of list strings that describes second Text in each groupedChckbox.   |
-|`onSelectedGroupChanged`             | CallBack to get all selected items when users  new   selection instantly  |
+|`onSelectedGroupChanged`             | CallBack to get all selected items when users  make select new items or deselect items  |
 |`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
 
 ------------------

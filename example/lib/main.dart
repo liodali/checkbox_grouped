@@ -54,9 +54,7 @@ class _MainExampleState extends State<MainExample>
     controller = GroupController(initSelectedItem: [2]);
     circularController = GroupController();
     switchController = GroupController();
-    chipsController = GroupController(
-      isMultipleSelection: true
-    );
+    chipsController = GroupController(isMultipleSelection: true);
     multipleController = GroupController(isMultipleSelection: true);
     multipleCheckController = GroupController(
       isMultipleSelection: true,

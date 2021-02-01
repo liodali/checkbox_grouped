@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 
 typedef onGroupChanged<T> = void Function(dynamic selected);
 
+/// display  simple groupedCheckbox
+/// [controller] :  (required) List Group Controller to recuperate selection
+/// [titles] :  (required) A list of strings that describes each checkbox group
+/// [values] : list of values in each group
+/// [onSelectedGroupChanged] : callback to get selected items,it fred when the user selected items or deselect items
+/// [subTitles] : A list of strings that describes second Text
+/// [groupTitles] : Text Widget that describe Title of group checkbox
+/// [disabledValues] : specifies which item should be disabled
 class ListGroupedCheckbox<T> extends StatefulWidget {
   final ListGroupController controller;
   final List<List<T>> values;
@@ -71,7 +79,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   }
 
   Future<List<T>> getAllValues() async {
-    List<T> resultList = List<T>();
+    List<T> resultList = List.empty();
     var values = listControllers.map((e) => e.selectedItem).where((v) {
       if (v != null) {
         if (v is List && v.isNotEmpty) {
@@ -95,7 +103,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
 
   Future<List<T>> getValuesByIndex(int index) async {
     assert(index < len);
-    List<T> resultList = List<T>();
+    List<T> resultList = List.empty();
     resultList.addAll(listControllers[index].selectedItem);
     return resultList;
   }

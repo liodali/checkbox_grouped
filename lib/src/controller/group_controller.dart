@@ -1,4 +1,5 @@
 import '../common/state_group.dart';
+
 /// GroupController to manage simple grouped checkbox/chips/switch
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.

@@ -11,23 +11,21 @@ import 'common/state_group.dart';
 typedef onChanged = Function(dynamic selected);
 
 /// display  simple groupedCheckbox
-/// [controller] :  (required) Group Controller to recuperate selectionItems and disable or enableItems
+/// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
 /// [itemsTitle] :  (required) A list of strings that describes each checkbox button
 /// [values] : list of values
-/// [onItemSelected] : list of initial values that you want to be selected
+/// [onItemSelected] :(callback) callback to receive item selected when it selected directly(callback) callback to receive item selected when it selected directly
 /// [itemsSubTitle] : A list of strings that describes second Text
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [groupTitleStyle] : Text Style  that describe style of title of group checkbox
 /// [activeColor] : the color to use when this checkbox button is selected
 /// [disableItems] : specifies which item should be disabled
-/// [preSelection] :  A list of values that you want to be initially selected
 /// [checkFirstElement] : make first element in list checked
 /// [isCirculaire] : enable to use circulaire checkbox
 /// [isLeading] : same as [itemExtent] of [ListView]
 /// [isExpandableTitle] : enable group checkbox to be expandable
 /// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
-/// [multiSelection] : enable multiple selection groupedCheckbox
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final GroupController controller;
   final List<String> itemsTitle;

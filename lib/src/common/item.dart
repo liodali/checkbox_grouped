@@ -50,6 +50,7 @@ class CustomItem<T> extends BaseItem {
           checked: checked,
           isDisabled: isDisabled,
         );
+
   CustomItem<T> copy({
     T data,
     checked,

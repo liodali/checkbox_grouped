@@ -1,6 +1,6 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/common/state_group.dart';
 import 'package:checkbox_grouped/src/common/item.dart';
+import 'package:checkbox_grouped/src/common/state_group.dart';
 import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -110,12 +110,11 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
         notifierItems[index].value = item.copy(checked: false);
         selectionsValue.value = List.from(selectionsValue.value)
           ..remove(widget.values[index]);
-      }else{
+      } else {
         notifierItems[index].value = item.copy(checked: value);
         selectionsValue.value = List.from(selectionsValue.value)
           ..add(widget.values[index]);
       }
-
     } else {
       if (!item.checked && value) {
         notifierItems[index].value = item.copy(checked: value);
