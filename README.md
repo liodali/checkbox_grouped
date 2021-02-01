@@ -358,7 +358,7 @@ final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
 ```
 
 
-####  `showDialogGroupedCheckbox`
+####  `ListGroupedCheckbox`
 |   Properties                        |  Description |
 |-------------------------------------|--------------------------------------------------------------------------------------------------|
 |`groupTitles`                        | (required)Text title for group checkbox in each groupedCheckbox.  |
