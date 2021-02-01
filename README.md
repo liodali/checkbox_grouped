@@ -133,13 +133,13 @@ controller.disabledItemsByTitles(List<String> items)
 ### Declare CustomGroupController to get selection ,enabled/disable items
 
 ```dart
- CustomGroupController controller =CustomGroupController();
+ CustomGroupController controller = CustomGroupController();
 ```
 
 ### Get current selection
 
 ```dart
-final selectedItem = CustomGroupController.selectedItem;
+final selectedItem = controller.selectedItem;
 ```
 
 ####  `CustomGroupedCheckbox`
