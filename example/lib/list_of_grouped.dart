@@ -11,12 +11,13 @@ class ListOfGrouped extends StatefulWidget {
 }
 
 class _ListOfGroupedState extends State<ListOfGrouped> {
-  GlobalKey<ListGroupedCheckboxState> global ;
-
+  ListGroupController controller;
   @override
   void initState() {
     super.initState();
-    global = GlobalKey<ListGroupedCheckboxState>();
+    controller = ListGroupController(
+      isMultipleSelectionPerGroup: [true, false, true],
+    );
   }
 
   @override
@@ -25,7 +26,7 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
       child: Column(
         children: [
           ListGroupedCheckbox<String>(
-            key: global,
+            controller: controller,
             groupTitles: List.generate(3, (index) => "groupe $index"),
             values: List.generate(
               3,
@@ -36,14 +37,13 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               3,
               (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
-            isMultipleSelectionPerGroup: [true, false, true],
             onSelectedGroupChanged: (list){
               print(list);
             },
           ),
           RaisedButton(
             onPressed: () async {
-              final list = await global.currentState.getAllValues();
+              final list = await controller.allSelectedItems;
               print(list);
             },
             child: Text("see data"),
