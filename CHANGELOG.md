@@ -1,3 +1,6 @@
+## [0.8.1] -improve readme 
+* change example 
+* fix bug
 ## [0.8.0+1] -improve readme 
 *  add docs,fix readme 
 ## [0.8.0] -improve readability of the code and  remove working with globalKey 

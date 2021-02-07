@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.8.0%2B1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v0.8.1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -11,7 +11,7 @@
     * list of groupedCheckbox
 
 ## Getting Started
-<img src="https://github.com/liodali/checkbox_grouped/blob/master/CheckboxGroupExamples.gif?raw=true" alt="checkboxGrouped examples"><br>
+<img src="https://github.com/liodali/checkbox_grouped/blob/master/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
 
 
 ## Installing
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.8.0+1
+		checkbox_grouped: ^0.8.1
 
 
 

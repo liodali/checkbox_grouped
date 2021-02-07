@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'item.dart';
 
 abstract class CustomGroupInterface<T> {
+  /// enable the Items of the list of selection value
+  /// [itemsValues] : (list) values of items that you want to be enabled
   void enabledItemsByValues(List<T> itemsValues);
 
+  /// disable the Items of the list of selection value
+  /// [itemsValues] : (list) values of items that you want to be disabled
   void disabledItemsByValues(List<T> itemsValues);
 
   /// recuperate value selection if is not multi selection

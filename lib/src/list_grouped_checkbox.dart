@@ -79,7 +79,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
   }
 
   Future<List<T>> getAllValues() async {
-    List<T> resultList = List.empty();
+    List<T> resultList = List.empty(growable: true);
     var values = listControllers.map((e) => e.selectedItem).where((v) {
       if (v != null) {
         if (v is List && v.isNotEmpty) {
