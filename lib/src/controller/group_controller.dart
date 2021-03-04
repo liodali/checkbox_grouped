@@ -6,11 +6,11 @@ import '../common/state_group.dart';
 class GroupController {
   dynamic initSelectedItem;
 
-  final bool isMultipleSelection;
+  final bool? isMultipleSelection;
 
   dynamic get selectedItem => _widgetState.selection();
 
-  StateGroup _widgetState;
+  late StateGroup _widgetState;
 
   GroupController({
     this.initSelectedItem = const [],

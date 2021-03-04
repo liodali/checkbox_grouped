@@ -13,10 +13,10 @@ import 'package:flutter/material.dart';
 /// [submitDialogText] : label for submitButton
 /// [isMultiSelection] : enable mutli selection groupedCheckbox
 Future<dynamic> showDialogGroupedCheckbox({
-  @required BuildContext context,
-  @required Text dialogTitle,
-  @required List<String> itemsTitle,
-  @required List<dynamic> values,
+  required BuildContext context,
+  required Text dialogTitle,
+  required List<String> itemsTitle,
+  required List<dynamic> values,
   List<dynamic> initialSelectedValues = const [],
   bool isDismissible = true,
   String cancelDialogText = "Cancel",
@@ -49,13 +49,13 @@ Future<dynamic> showDialogGroupedCheckbox({
 }
 
 class _CoreDialogGroupedCheckbox extends StatefulWidget {
-  final Text dialogTitle;
-  final List<String> itemsTitle;
-  final List<dynamic> values;
-  final List<dynamic> initialSelectedValues;
-  final String cancelDialogText;
-  final String submitDialogText;
-  final bool isMultiSelection;
+  final Text? dialogTitle;
+  final List<String>? itemsTitle;
+  final List<dynamic>? values;
+  final List<dynamic>? initialSelectedValues;
+  final String? cancelDialogText;
+  final String? submitDialogText;
+  final bool? isMultiSelection;
 
   _CoreDialogGroupedCheckbox({
     this.dialogTitle,
@@ -73,8 +73,8 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
 
 class _CoreDialogGroupedCheckboxState
     extends State<_CoreDialogGroupedCheckbox> {
-  GroupController controller;
-  ValueNotifier<bool> canSubmit;
+  GroupController? controller;
+  late ValueNotifier<bool> canSubmit;
 
   @override
   void initState() {
@@ -104,10 +104,10 @@ class _CoreDialogGroupedCheckboxState
             width: MediaQuery.of(context).size.width,
             child: SimpleGroupedCheckbox(
               controller: controller,
-              values: widget.values,
-              itemsTitle: widget.itemsTitle,
+              values: widget.values!,
+              itemsTitle: widget.itemsTitle!,
               onItemSelected: (items) {
-                if (widget.isMultiSelection) {
+                if (widget.isMultiSelection!) {
                   if ((items as List).isNotEmpty) {
                     canSubmit.value = true;
                   } else {
@@ -130,7 +130,7 @@ class _CoreDialogGroupedCheckboxState
           onPressed: () {
             Navigator.of(context).pop(null);
           },
-          child: Text(widget.cancelDialogText),
+          child: Text(widget.cancelDialogText!),
         ),
         ValueListenableBuilder<bool>(
           valueListenable: canSubmit,
@@ -138,11 +138,11 @@ class _CoreDialogGroupedCheckboxState
             return FlatButton(
               onPressed: canSubmit
                   ? () {
-                      Navigator.pop(context, controller.selectedItem);
+                      Navigator.pop(context, controller!.selectedItem);
                     }
                   : null,
               child: Text(
-                widget.submitDialogText,
+                widget.submitDialogText!,
               ),
               textColor: Theme.of(context).primaryColor,
             );

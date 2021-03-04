@@ -7,7 +7,7 @@ import '../list_grouped_checkbox.dart';
 class ListGroupController {
   final List<bool> isMultipleSelectionPerGroup;
   final List<List<dynamic>> initSelectedValues;
-  ListGroupedCheckboxState _state;
+  late ListGroupedCheckboxState _state;
 
   Future<List<dynamic>> get allSelectedItems async =>
       await _state.getAllValues();

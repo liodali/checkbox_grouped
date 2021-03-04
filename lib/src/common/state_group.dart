@@ -20,21 +20,21 @@ abstract class GroupInterface {
 
 abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     with GroupInterface {
-  ValueNotifier<K> selectedValue;
+  late ValueNotifier<K?> selectedValue;
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
   List<Item> items = [];
-  ValueNotifier<bool> valueTitle = ValueNotifier(false);
+  ValueNotifier<bool?> valueTitle = ValueNotifier(false);
   List<K> values = [];
 
   @protected
   void init({
-    @required List<K> values,
+    required List<K> values,
     bool checkFirstElement = false,
-    List<K> preSelection,
-    bool multiSelection = false,
-    @required List<String> itemsTitle,
-    List<String> disableItems,
+    List<K>? preSelection,
+    bool? multiSelection = false,
+    required List<String?> itemsTitle,
+    List<String>? disableItems,
   }) {
     this.values = values;
     selectedValue = ValueNotifier(null);
@@ -49,13 +49,13 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     itemsTitle.asMap().forEach((key, title) {
       bool checked = false;
       if (key == 0) {
-        if (multiSelection && checkFirstElement) {
+        if (multiSelection! && checkFirstElement) {
           selectionsValue.value = List.from(selectionsValue.value)
             ..add(values[0]);
           checked = true;
         }
       }
-      if (multiSelection && preSelection != null && preSelection.length > 0) {
+      if (multiSelection! && preSelection != null && preSelection.length > 0) {
         valueTitle.value = null;
         if (preSelection.contains(values[key])) {
           checked = true;
@@ -142,14 +142,14 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     _itemStatus(items, false);
   }
 
-  List<String> _recuperateTitleFromValues(List<K> itemsValues) {
+  List<String?> _recuperateTitleFromValues(List<K> itemsValues) {
     return itemsValues.map((e) {
       var indexOfItem = values.indexOf(e);
       return items[indexOfItem].title;
     }).toList();
   }
 
-  void _itemStatus(List<String> items, bool isDisabled) {
+  void _itemStatus(List<String?> items, bool isDisabled) {
     notifierItems
         .where((element) => items.contains(element.value.title))
         .toList()

@@ -199,16 +199,6 @@ class _SimpleGrouped extends StatelessWidget {
             checkFirstElement: false,
           ),
           SimpleGroupedCheckbox<int>(
-            controller: circularController,
-            groupTitle: "Circulaire Checkbox",
-            itemsTitle: ["1 ", "2 ", "4 ", "5 "],
-            values: [1, 2, 4, 5],
-            isCirculaire: true,
-            activeColor: Colors.blue,
-            isLeading: true,
-            checkFirstElement: false,
-          ),
-          SimpleGroupedCheckbox<int>(
             controller: multipleCheckController,
             itemsTitle: List.generate(10, (index) => "$index"),
             values: List.generate(10, (index) => index),

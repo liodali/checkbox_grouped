@@ -39,7 +39,7 @@ void main() {
     var cb2 =
         tester.widget(find.byType(CheckboxListTile).at(1)) as CheckboxListTile;
     expect(cb2.value, true);
-    expect((controller.selectedItem as List<int>), [0, 1]);
+    expect((controller.selectedItem as List<int>?), [0, 1]);
   });
 
   testWidgets("test pre-selection for single selection", (tester) async {

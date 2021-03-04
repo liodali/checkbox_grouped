@@ -18,15 +18,15 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<T> values;
   final GroupController controller;
   final List<T> disableItems;
-  final onChanged onItemSelected;
-  final Color activeColor;
-  final TextStyle textStyle;
+  final onChanged? onItemSelected;
+  final Color? activeColor;
+  final TextStyle? textStyle;
 
   SimpleGroupedSwitch({
-    Key key,
-    @required this.itemsTitle,
-    @required this.values,
-    @required this.controller,
+    Key? key,
+    required this.itemsTitle,
+    required this.values,
+    required this.controller,
     this.disableItems = const [],
     this.activeColor,
     this.textStyle,
@@ -39,11 +39,11 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
             "you cannot disable item doesn't exist"),
         super(key: key);
 
-  static SimpleGroupedSwitchState of<T>(BuildContext context,
+  static SimpleGroupedSwitchState? of<T>(BuildContext context,
       {bool nullOk = false}) {
     assert(context != null);
     assert(nullOk != null);
-    final SimpleGroupedSwitchState<T> result =
+    final SimpleGroupedSwitchState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedSwitchState<T>>();
     if (nullOk || result != null) return result;
     throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -59,7 +59,7 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   State<StatefulWidget> createState() => SimpleGroupedSwitchState<T>();
 }
 
-class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
+class SimpleGroupedSwitchState<T> extends StateGroup<T?, SimpleGroupedSwitch> {
   @override
   void initState() {
     super.initState();
@@ -105,7 +105,7 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
   @override
   void changeSelection(int index, value) {
     Item item = notifierItems[index].value.copy();
-    if (widget.controller.isMultipleSelection) {
+    if (widget.controller.isMultipleSelection!) {
       if (!value) {
         notifierItems[index].value = item.copy(checked: false);
         selectionsValue.value = List.from(selectionsValue.value)
@@ -116,7 +116,7 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
           ..add(widget.values[index]);
       }
     } else {
-      if (!item.checked && value) {
+      if (!item.checked! && value) {
         notifierItems[index].value = item.copy(checked: value);
         if (value) {
           if (widget.values.indexOf(selectedValue.value) != index) {
@@ -132,13 +132,13 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
           }
         }
       }
-      if (widget.onItemSelected != null) widget.onItemSelected(selection());
+      if (widget.onItemSelected != null) widget.onItemSelected!(selection());
     }
   }
 
   @override
   dynamic selection() {
-    if (widget.controller.isMultipleSelection) {
+    if (widget.controller.isMultipleSelection!) {
       return selectionsValue.value;
     }
     return selectedValue.value;
@@ -149,36 +149,36 @@ class _SwitchListItem extends StatelessWidget {
   final Item item;
   final int indexItem;
   final Function(int, bool) onItemChanged;
-  final Color activeColor;
-  final TextStyle textStyle;
+  final Color? activeColor;
+  final TextStyle? textStyle;
 
   _SwitchListItem({
-    @required this.item,
-    @required this.onItemChanged,
-    @required this.indexItem,
+    required this.item,
+    required this.onItemChanged,
+    required this.indexItem,
     this.activeColor,
     this.textStyle,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      onChanged: item.isDisabled
+      onChanged: item.isDisabled!
           ? null
           : (v) {
               onItemChanged(indexItem, v);
             },
       activeColor: activeColor ?? Theme.of(context).primaryColor,
-      value: item.checked,
+      value: item.checked!,
       title: Text(
         "${item.title}",
         style: textStyle?.copyWith(
-          color: item.checked
+          color: item.checked!
               ? activeColor
               : (textStyle?.color ??
-                      Theme.of(context).textTheme.headline6.color) ??
-                  Theme.of(context).textTheme.headline6.getTextStyle(),
+                      Theme.of(context).textTheme.headline6!.color) ??
+                  Theme.of(context).textTheme.headline6!.getTextStyle() as Color?,
         ),
       ),
     );

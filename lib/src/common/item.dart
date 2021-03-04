@@ -2,8 +2,8 @@
 /// [checked] : bool to get if item checked or not
 /// [isDisabled] : bool to disabled or enable item to be selected or not
 abstract class BaseItem {
-  bool checked;
-  bool isDisabled;
+  bool? checked;
+  bool? isDisabled;
 
   BaseItem({
     this.checked,
@@ -14,7 +14,7 @@ abstract class BaseItem {
 /// item class use it to build items in groupedCheckbox
 /// [title] : string use it to sepecifie title of checkbox item
 class Item extends BaseItem {
-  final String title;
+  final String? title;
 
   Item({
     this.title,
@@ -40,7 +40,7 @@ class Item extends BaseItem {
 /// custom item class use it to build items in custom groupedCheckbox
 /// [data] : generic variable to recuperate value of item
 class CustomItem<T> extends BaseItem {
-  final T data;
+  final T? data;
 
   CustomItem({
     this.data,
@@ -52,7 +52,7 @@ class CustomItem<T> extends BaseItem {
         );
 
   CustomItem<T> copy({
-    T data,
+    T? data,
     checked,
     isDisabled = false,
   }) {

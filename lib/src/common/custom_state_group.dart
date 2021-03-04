@@ -20,11 +20,11 @@ abstract class CustomGroupInterface<T> {
 
 abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
     with CustomGroupInterface<K> {
-  ValueNotifier<K> itemSelected = ValueNotifier(null);
+  ValueNotifier<K?> itemSelected = ValueNotifier(null);
 
   ValueNotifier<List<K>> itemsSelections = ValueNotifier([]);
 
-  List<ValueNotifier<CustomItem<K>>> items;
+  late List<ValueNotifier<CustomItem<K>>> items;
 
   @override
   void enabledItemsByValues(List<K> itemsValues) {
@@ -66,7 +66,7 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
           checked: notifierItem.value.checked,
           data: notifierItem.value.data);
       item.isDisabled = enable;
-      items[index].value = item;
+      items[index].value = item as CustomItem<K>;
     });
   }
 }

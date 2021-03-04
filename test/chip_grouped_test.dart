@@ -28,7 +28,7 @@ void main() {
     ChoiceChip cb = tester.widget(find.byType(ChoiceChip).at(2)) as ChoiceChip;
     // ChoiceChip cb2=tester.widget(find.byType(ChoiceChip).at(2)) as ChoiceChip;
     await tester.tap(find.byWidget(cb));
-    int value = controller.selectedItem;
+    int? value = controller.selectedItem;
     expect(value, 4);
   });
 
