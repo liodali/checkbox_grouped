@@ -1,3 +1,7 @@
+## [1.0.0-nullsafety.0] -nullsafety migration
+* remove dependencies that doesn't support null safety
+* remove circulaire checkbox for now until will reimplemented 
+* nullsafety migration
 ## [0.8.1] -improve readme 
 * change example 
 * fix bug
