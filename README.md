@@ -11,7 +11,7 @@
     * list of groupedCheckbox
 
 ## Getting Started
-<img src="https://github.com/liodali/checkbox_grouped/blob/master/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
+<img src="https://github.com/liodali/checkbox_grouped/blob/null-safety/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
 
 
 ## Installing
