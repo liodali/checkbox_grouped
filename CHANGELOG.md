@@ -1,3 +1,6 @@
+## [1.0.0-nullsafety.1] - remove unnecessary files
+* change gis example 
+* remove asset of flare 
 ## [1.0.0-nullsafety.0] -nullsafety migration
 * remove dependencies that doesn't support null safety
 * remove circulaire checkbox for now until will reimplemented 
