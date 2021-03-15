@@ -1,6 +1,8 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/group_controller.dart';
+import '../controller/list_group_controller.dart';
+import 'simple_grouped_checkbox.dart';
 
 typedef onGroupChanged<T> = void Function(dynamic selected);
 
@@ -17,7 +19,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<List<T>> values;
   final List<List<String>> titles;
   final List<String> groupTitles;
-  final List<String>? subTitles;
+  final List<String> subTitles;
   final List<List<T>> disabledValues;
   final onGroupChanged<T>? onSelectedGroupChanged;
 
@@ -26,7 +28,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
     required this.titles,
     required this.groupTitles,
     required this.values,
-    this.subTitles,
+    this.subTitles = const [],
     this.onSelectedGroupChanged,
     this.disabledValues = const [],
     Key? key,
@@ -38,8 +40,6 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
 
   static ListGroupedCheckboxState? of<T>(BuildContext context,
       {bool nullOk = false}) {
-    assert(context != null);
-    assert(nullOk != null);
     final ListGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<ListGroupedCheckboxState<T>>();
     if (nullOk || result != null) return result;
@@ -120,8 +120,8 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
           itemsTitle: widget.titles[index],
           values: widget.values[index] as List<T>,
           disableItems: widget.disabledValues.isNotEmpty
-              ? widget.disabledValues[index] as List<String>?
-              : [],
+              ? widget.disabledValues[index] as List<String>
+              :  [],
           groupTitle: widget.groupTitles[index],
           onItemSelected: widget.onSelectedGroupChanged != null
               ? (selection) async {

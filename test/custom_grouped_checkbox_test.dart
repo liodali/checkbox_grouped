@@ -1,5 +1,5 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/custom_grouped_checkbox.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/custom_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

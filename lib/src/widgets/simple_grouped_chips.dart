@@ -1,10 +1,10 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/common/item.dart';
-import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
+import '../../checkbox_grouped.dart';
+import '../common/item.dart';
+import 'simple_grouped_checkbox.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 
-import 'common/state_group.dart';
+import '../common/state_group.dart';
 
 ///  [controller] : A list of values that you want to be initially selected.
 ///  [preSelection] : A list of values that you want to be initially selected.
@@ -93,8 +93,8 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   }
 
   @override
-  dynamic selection() {
-    if (widget.controller.isMultipleSelection!) {
+   selection() {
+    if (widget.controller.isMultipleSelection) {
       return selectionsValue.value;
     }
     return selectedValue.value;
@@ -182,13 +182,13 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   void changeSelection(int index, dynamic value) {
     Item _item = notifierItems[index].value.copy();
     if (value) {
-      if (widget.controller.isMultipleSelection!) {
+      if (widget.controller.isMultipleSelection) {
         selectionsValue.value = List.from(selectionsValue.value)
           ..add(widget.values[index]);
         _item.checked = value;
         notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
-          widget.onItemSelected!(selectionsValue);
+          widget.onItemSelected!(selectionsValue.value);
         }
       } else {
         if (selectedValue.value != widget.values[index]) {
@@ -211,13 +211,13 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         }
       }
     } else {
-      if (widget.controller.isMultipleSelection!) {
+      if (widget.controller.isMultipleSelection) {
         selectionsValue.value = List.from(selectionsValue.value)
           ..remove(widget.values[index]);
         _item.checked = value;
         notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
-          widget.onItemSelected!(selectionsValue);
+          widget.onItemSelected!(selectionsValue.value);
         }
       }
     }

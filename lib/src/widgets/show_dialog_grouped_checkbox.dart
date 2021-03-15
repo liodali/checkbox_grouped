@@ -1,6 +1,6 @@
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
-import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
+
+import '../../checkbox_grouped.dart';
 
 /// display  groupedCheckbox inside dialog
 /// [context] : BuildContext to pop the dialog
@@ -55,7 +55,7 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
   final List<dynamic>? initialSelectedValues;
   final String? cancelDialogText;
   final String? submitDialogText;
-  final bool? isMultiSelection;
+  final bool isMultiSelection;
 
   _CoreDialogGroupedCheckbox({
     this.dialogTitle,
@@ -64,7 +64,7 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
     this.initialSelectedValues,
     this.cancelDialogText,
     this.submitDialogText,
-    this.isMultiSelection,
+    this.isMultiSelection = false,
   });
 
   @override
@@ -73,7 +73,7 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
 
 class _CoreDialogGroupedCheckboxState
     extends State<_CoreDialogGroupedCheckbox> {
-  GroupController? controller;
+  late GroupController controller;
   late ValueNotifier<bool> canSubmit;
 
   @override
@@ -107,7 +107,7 @@ class _CoreDialogGroupedCheckboxState
               values: widget.values!,
               itemsTitle: widget.itemsTitle!,
               onItemSelected: (items) {
-                if (widget.isMultiSelection!) {
+                if (widget.isMultiSelection) {
                   if ((items as List).isNotEmpty) {
                     canSubmit.value = true;
                   } else {
@@ -126,7 +126,7 @@ class _CoreDialogGroupedCheckboxState
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.of(context).pop(null);
           },
@@ -134,19 +134,25 @@ class _CoreDialogGroupedCheckboxState
         ),
         ValueListenableBuilder<bool>(
           valueListenable: canSubmit,
-          builder: (ctx, canSubmit, _) {
-            return FlatButton(
+          builder: (ctx, canSubmit, child) {
+            return ElevatedButton(
               onPressed: canSubmit
                   ? () {
-                      Navigator.pop(context, controller!.selectedItem);
+                      Navigator.pop(context, controller.selectedItem);
                     }
                   : null,
-              child: Text(
-                widget.submitDialogText!,
+              child: child,
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                textStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
-              textColor: Theme.of(context).primaryColor,
             );
           },
+          child: Text(
+            widget.submitDialogText!,
+          ),
         )
       ],
     );

@@ -1,8 +1,8 @@
-import 'package:checkbox_grouped/src/common/item.dart';
-import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
+import '../controller/custom_group_controller.dart';
+import '../common/item.dart';
 import 'package:flutter/material.dart';
 
-import 'common/custom_state_group.dart';
+import '../common/custom_state_group.dart';
 
 /// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
 /// list.
@@ -105,7 +105,7 @@ class CustomGroupedCheckboxState<T>
                       ),
                       value: items[index].value.checked,
                       callback: (v) {
-                        if (!items[index].value.isDisabled!)
+                        if (!items[index].value.isDisabled)
                           changeSelection(index, v);
                       },
                     );

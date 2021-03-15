@@ -1,7 +1,7 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/common/item.dart';
-import 'package:checkbox_grouped/src/common/state_group.dart';
-import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
+import '../../checkbox_grouped.dart';
+import '../common/item.dart';
+import '../common/state_group.dart';
+import 'simple_grouped_checkbox.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -59,7 +59,7 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   State<StatefulWidget> createState() => SimpleGroupedSwitchState<T>();
 }
 
-class SimpleGroupedSwitchState<T> extends StateGroup<T?, SimpleGroupedSwitch> {
+class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
   @override
   void initState() {
     super.initState();
@@ -105,7 +105,7 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T?, SimpleGroupedSwitch> {
   @override
   void changeSelection(int index, value) {
     Item item = notifierItems[index].value.copy();
-    if (widget.controller.isMultipleSelection!) {
+    if (widget.controller.isMultipleSelection) {
       if (!value) {
         notifierItems[index].value = item.copy(checked: false);
         selectionsValue.value = List.from(selectionsValue.value)
@@ -137,8 +137,8 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T?, SimpleGroupedSwitch> {
   }
 
   @override
-  dynamic selection() {
-    if (widget.controller.isMultipleSelection!) {
+  selection() {
+    if (widget.controller.isMultipleSelection) {
       return selectionsValue.value;
     }
     return selectedValue.value;
@@ -164,7 +164,7 @@ class _SwitchListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      onChanged: item.isDisabled!
+      onChanged: item.isDisabled
           ? null
           : (v) {
               onItemChanged(indexItem, v);

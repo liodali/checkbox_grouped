@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'item.dart';
 
-abstract class CustomGroupInterface<T> {
+abstract class _CustomGroupInterface<T> {
   /// enable the Items of the list of selection value
   /// [itemsValues] : (list) values of items that you want to be enabled
   void enabledItemsByValues(List<T> itemsValues);
@@ -19,7 +19,7 @@ abstract class CustomGroupInterface<T> {
 }
 
 abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
-    with CustomGroupInterface<K> {
+    with _CustomGroupInterface<K> {
   ValueNotifier<K?> itemSelected = ValueNotifier(null);
 
   ValueNotifier<List<K>> itemsSelections = ValueNotifier([]);

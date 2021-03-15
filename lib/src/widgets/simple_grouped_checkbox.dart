@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'common/item.dart';
-import 'common/state_group.dart';
+import '../common/item.dart';
+import '../common/state_group.dart';
 
 typedef onChanged = Function(dynamic selected);
 
@@ -26,16 +26,16 @@ typedef onChanged = Function(dynamic selected);
 /// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
-  final GroupController? controller;
-  final List<String?> itemsTitle;
+  final GroupController controller;
+  final List<String> itemsTitle;
   final onChanged? onItemSelected;
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
   final TextStyle? groupTitleStyle;
-  final List<String>? itemsSubTitle;
+  final List<String> itemsSubTitle;
   final Color? activeColor;
   final List<T> values;
-  final List<String>? disableItems;
+  final List<String> disableItems;
   final bool checkFirstElement;
   final bool isLeading;
   final bool isExpandableTitle;
@@ -50,34 +50,28 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.groupTitle,
     this.groupTitleAlignment = Alignment.center,
     this.groupTitleStyle,
-    this.itemsSubTitle,
-    this.disableItems,
+    this.itemsSubTitle = const [],
+    this.disableItems = const [],
     this.activeColor,
     this.checkFirstElement = false,
     this.isLeading = false,
     this.isExpandableTitle = false,
     this.helperGroupTitle = true,
-  })  : assert(values != null),
-        assert(values.length == itemsTitle.length),
-        /*  assert(
-            multiSelection == false &&
-                    preSelection != null &&
-                    (preSelection.length > 1 || checkFirstElement == true)
-                ? false
-                : true,
-            "you cannot make multiple selection in single selection"),
-        */
-        assert(itemsSubTitle != null
+  })  : assert(values.length == itemsTitle.length),
+        assert(itemsSubTitle.isNotEmpty
             ? itemsSubTitle.length == itemsTitle.length
             : true),
         assert(
             (groupTitle == null && !isExpandableTitle) ||
-                (groupTitle != null && isExpandableTitle ||
-                    groupTitle != null && !isExpandableTitle),
+                (groupTitle != null &&
+                        groupTitle.isNotEmpty &&
+                        isExpandableTitle ||
+                    groupTitle != null &&
+                        groupTitle.isNotEmpty &&
+                        !isExpandableTitle),
             "you cannot make isExpandable without textTitle"),
         assert(
-            disableItems == null ||
-                disableItems.isEmpty ||
+            disableItems.isEmpty ||
                 disableItems
                     .takeWhile((c) => itemsTitle.contains(c))
                     .isNotEmpty,
@@ -86,8 +80,6 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 
   static SimpleGroupedCheckboxState? of<T>(BuildContext context,
       {bool nullOk = false}) {
-    assert(context != null);
-    assert(nullOk != null);
     final SimpleGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedCheckboxState<T>>();
     if (nullOk || result != null) return result;
@@ -115,10 +107,10 @@ class SimpleGroupedCheckboxState<T>
       checkFirstElement: widget.checkFirstElement,
       disableItems: widget.disableItems,
       itemsTitle: widget.itemsTitle,
-      multiSelection: widget.controller!.isMultipleSelection,
-      preSelection: widget.controller!.initSelectedItem?.cast<T>(),
+      multiSelection: widget.controller.isMultipleSelection,
+      preSelection: widget.controller.initSelectedItem?.cast<T>(),
     );
-    widget.controller!.init(this);
+    widget.controller.init(this);
   }
 
   @override
@@ -142,11 +134,10 @@ class SimpleGroupedCheckboxState<T>
               value: widget.values[i],
               activeColor: widget.activeColor,
               isLeading: widget.isLeading,
-              itemSubTitle: widget.itemsSubTitle != null &&
-                      widget.itemsSubTitle!.isNotEmpty
-                  ? widget.itemsSubTitle![i]
+              itemSubTitle: widget.itemsSubTitle.isNotEmpty
+                  ? widget.itemsSubTitle[i]
                   : null,
-              isMultpileSelection: widget.controller!.isMultipleSelection,
+              isMultipleSelection: widget.controller.isMultipleSelection,
             );
           },
         );
@@ -158,7 +149,7 @@ class SimpleGroupedCheckboxState<T>
         titleWidget: _TitleGroupedCheckbox(
           title: widget.groupTitle,
           titleStyle: widget.groupTitleStyle,
-          isMultiSelection: widget.controller!.isMultipleSelection,
+          isMultiSelection: widget.controller.isMultipleSelection,
           alignment: widget.groupTitleAlignment,
           checkboxTitle: widget.helperGroupTitle
               ? ValueListenableBuilder(
@@ -188,7 +179,7 @@ class SimpleGroupedCheckboxState<T>
           _TitleGroupedCheckbox(
             title: widget.groupTitle,
             titleStyle: widget.groupTitleStyle,
-            isMultiSelection: widget.controller!.isMultipleSelection,
+            isMultiSelection: widget.controller.isMultipleSelection,
             checkboxTitle: widget.helperGroupTitle
                 ? ValueListenableBuilder(
                     valueListenable: valueTitle,
@@ -219,7 +210,8 @@ class SimpleGroupedCheckboxState<T>
       valueTitle.value = true;
       selectionsValue.value = List.from(selectionsValue.value)
         ..addAll(widget.values
-            .where((elem) => selectionsValue.value.contains(elem) == false) as Iterable<T>);
+                .where((elem) => selectionsValue.value.contains(elem) == false)
+            as Iterable<T>);
     } else if (valueTitle.value!) {
       valueTitle.value = false;
       selectionsValue.value = [];
@@ -245,7 +237,7 @@ class SimpleGroupedCheckboxState<T>
 
   @override
   selection() {
-    if (widget.controller!.isMultipleSelection!) {
+    if (widget.controller.isMultipleSelection) {
       return selectionsValue.value;
     }
     return selectedValue.value;
@@ -258,7 +250,7 @@ class SimpleGroupedCheckboxState<T>
       checked: notifierItems[index].value.checked,
       isDisabled: notifierItems[index].value.isDisabled,
     );
-    if (widget.controller!.isMultipleSelection!) {
+    if (widget.controller.isMultipleSelection) {
       if (!selectionsValue.value.contains(widget.values[index])) {
         if (value) {
           selectionsValue.value = List.from(selectionsValue.value)
@@ -282,13 +274,8 @@ class SimpleGroupedCheckboxState<T>
       item.checked = value;
     } else {
       selectedValue.value = value;
-      /*if (_previousActive != null) {
-        _previousActive.checked = false;
-      }
-      _items[index].checked = true;
-      _previousActive = _items[index];*/
-      var notifierPrevious = notifierItems
-          .firstWhereOrNull((element) => element.value.checked!);
+      var notifierPrevious =
+          notifierItems.firstWhereOrNull((element) => element.value.checked!);
       if (notifierPrevious != null) {
         var indexPrevious = notifierItems.indexOf(notifierPrevious);
         var previous = Item(
@@ -367,8 +354,7 @@ class _TitleGroupedCheckbox extends StatelessWidget {
 }
 
 class _CheckboxItem<T> extends StatelessWidget {
-
-  final bool? isMultpileSelection;
+  final bool isMultipleSelection;
   final bool isLeading;
   final T value;
   final T selectedValue;
@@ -379,7 +365,7 @@ class _CheckboxItem<T> extends StatelessWidget {
   final Function(int i, dynamic v) onChangedCheckBox;
 
   _CheckboxItem({
-    this.isMultpileSelection = false,
+    this.isMultipleSelection = false,
     this.isLeading = false,
     this.activeColor,
     required this.item,
@@ -392,11 +378,10 @@ class _CheckboxItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    if (!isMultpileSelection!) {
+    if (!isMultipleSelection) {
       return RadioListTile<T>(
         groupValue: selectedValue,
-        onChanged: item.isDisabled!
+        onChanged: item.isDisabled
             ? null
             : (v) {
                 onChangedCheckBox(index, v);
@@ -423,7 +408,7 @@ class _CheckboxItem<T> extends StatelessWidget {
     }
 
     return CheckboxListTile(
-      onChanged: item.isDisabled!
+      onChanged: item.isDisabled
           ? null
           : (v) {
               //setState(() {
@@ -432,7 +417,7 @@ class _CheckboxItem<T> extends StatelessWidget {
             },
       activeColor: activeColor ?? Theme.of(context).primaryColor,
       title: AutoSizeText(
-        item.title!,
+        item.title,
         minFontSize: 12,
       ),
       subtitle: itemSubTitle != null
