@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.0.0--nullsafety.1-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.0.1--nullsafety.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.0.0-nullsafety.1
+		checkbox_grouped: ^1.0.1-nullsafety.0
 
 
 
@@ -146,11 +146,11 @@ final selectedItem = controller.selectedItem;
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Custom Group Controller to recuperate selectionItems and disable or enableItems.  |
-|`groupTitle`           |`widget title for group checkbox`.              |
-|`itemBuilder`          |(required) `Called to build children.`          |
-|`values`               |(required) `Values contains in each element.`   |
-|`itemCount`            |(required)` The total number of children `      |
-|`itemExtent`           |` The extent the children are forced to have in the main axis`  |
+|`groupTitle`           | `widget title for group checkbox`.              |
+|`itemBuilder`          | (required) `Called to build children.`          |
+|`values`               | (required) `Values contains in each element.`   |
+|`itemCount`            | (required)` The total number of children `      |
+|`itemExtent`           | ` The extent the children are forced to have in the main axis`  |
 
 
 ## Chip grouped Usage

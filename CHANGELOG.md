@@ -1,3 +1,7 @@
+## [1.0.1-nullsafety.0] - fix bugs,refactoring code 
+*  fix bugs in chips grouped 
+*  ameliorate null safety generated code 
+*  fix bugs unit test 
 ## [1.0.0-nullsafety.1] - remove unnecessary files
 * change gis example 
 * remove asset of flare 
