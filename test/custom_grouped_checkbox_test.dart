@@ -1,5 +1,5 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/custom_grouped_checkbox.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/custom_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,7 +13,7 @@ void main() {
             builder: (ctx) {
               return CustomGroupedCheckbox<int>(
                 controller: controller,
-                itemBuilder: (ctx, index, v,isDisabled) {
+                itemBuilder: (ctx, index, v, isDisabled) {
                   return Text("$index");
                 },
                 itemCount: 10,
@@ -43,7 +43,7 @@ void main() {
             builder: (ctx) {
               return CustomGroupedCheckbox<int>(
                 controller: controller,
-                itemBuilder: (ctx, index, v,isDisabled) {
+                itemBuilder: (ctx, index, v, isDisabled) {
                   return Text("$index");
                 },
                 itemCount: 10,
@@ -77,7 +77,7 @@ void main() {
                 controller: controller,
                 itemBuilder: (ctx, index, v, isDisabled) {
                   return Container(
-                    color: isDisabled ? Colors.grey : null,
+                    color: isDisabled == true ? Colors.grey : null,
                     padding: EdgeInsets.all(5.0),
                     child: Text("$index"),
                   );
@@ -102,7 +102,7 @@ void main() {
     controller.enabledItems([User("name6")]);
     await tester.tap(find.byType(Text).at(5));
     await tester.pump();
-    expect(controller.selectedItem, [User("name5"),User("name6")]);
+    expect(controller.selectedItem, [User("name5"), User("name6")]);
   });
 }
 

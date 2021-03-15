@@ -2,43 +2,51 @@ import 'package:flutter/material.dart';
 
 import 'item.dart';
 
-abstract class GroupInterface {
+/// class [GroupInterface] : abstract class that contain basic function of StateGroup
+abstract class _GroupInterface {
+  ///[itemsValues] : values that you want to enabled
   void enabledItemsByValues(List<dynamic> itemsValues);
 
+  ///[items] : (List) list of string that you want to enabled
   void enabledItemsByTitles(List<String> items);
 
+  ///[items] : (List) list of string that you want to disabled
   void disabledItemsByTitles(List<String> items);
 
+  ///[itemsValues] : (List) list of values that you want to enabled
   void disabledItemsByValues(List<dynamic> itemsValues);
 
   /// recuperate value selection if is not multi selection
   /// recuperate list of selection value if is multi selection
   dynamic selection();
 
+  /// [index] : (int) index of item that his value wil change
+  ///
+  /// [value] : new value of item
   void changeSelection(int index, dynamic value);
 }
 
 abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
-    with GroupInterface {
-  ValueNotifier<K> selectedValue;
+    with _GroupInterface {
+  late ValueNotifier<K?> selectedValue;
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
   List<Item> items = [];
-  ValueNotifier<bool> valueTitle = ValueNotifier(false);
+  ValueNotifier<bool?> valueTitle = ValueNotifier(false);
   List<K> values = [];
 
   @protected
   void init({
-    @required List<K> values,
+    required List<K> values,
     bool checkFirstElement = false,
-    List<K> preSelection,
+    List<K> preSelection = const [],
     bool multiSelection = false,
-    @required List<String> itemsTitle,
-    List<String> disableItems,
+    required List<String> itemsTitle,
+    List<String>? disableItems,
   }) {
     this.values = values;
     selectedValue = ValueNotifier(null);
-    if (preSelection != null && preSelection.isNotEmpty) {
+    if (preSelection.isNotEmpty) {
       final cacheSelection = preSelection.toList();
       cacheSelection.removeWhere((e) => values.contains(e));
       if (cacheSelection.isNotEmpty) {
@@ -55,7 +63,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
           checked = true;
         }
       }
-      if (multiSelection && preSelection != null && preSelection.length > 0) {
+      if (multiSelection && preSelection.length > 0) {
         valueTitle.value = null;
         if (preSelection.contains(values[key])) {
           checked = true;
@@ -63,10 +71,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
             ..add(values[key]);
         }
       } else {
-        if (!multiSelection &&
-            !checkFirstElement &&
-            preSelection != null &&
-            preSelection.length == 1) {
+        if (!multiSelection && !checkFirstElement && preSelection.length == 1) {
           valueTitle.value = null;
           if (preSelection.contains(values[key])) {
             checked = true;
@@ -142,14 +147,14 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     _itemStatus(items, false);
   }
 
-  List<String> _recuperateTitleFromValues(List<K> itemsValues) {
+  List<String?> _recuperateTitleFromValues(List<K> itemsValues) {
     return itemsValues.map((e) {
       var indexOfItem = values.indexOf(e);
       return items[indexOfItem].title;
     }).toList();
   }
 
-  void _itemStatus(List<String> items, bool isDisabled) {
+  void _itemStatus(List<String?> items, bool isDisabled) {
     notifierItems
         .where((element) => items.contains(element.value.title))
         .toList()

@@ -1,9 +1,10 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/common/item.dart';
-import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
+import '../../checkbox_grouped.dart';
+import '../common/item.dart';
+import 'simple_grouped_checkbox.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 
-import 'common/state_group.dart';
+import '../common/state_group.dart';
 
 ///  [controller] : A list of values that you want to be initially selected.
 ///  [preSelection] : A list of values that you want to be initially selected.
@@ -23,21 +24,21 @@ class SimpleGroupedChips<T> extends StatefulWidget {
   final GroupController controller;
   final bool isScrolling;
   final Color backgroundColorItem;
-  final Color disabledColor;
+  final Color? disabledColor;
   final Color selectedColorItem;
   final Color textColor;
   final Color selectedTextColor;
   final IconData selectedIcon;
   final List<T> values;
   final List<String> itemTitle;
-  final List<String> disabledItems;
-  final onChanged onItemSelected;
+  final List<String>? disabledItems;
+  final onChanged? onItemSelected;
 
   SimpleGroupedChips({
-    Key key,
-    @required this.controller,
-    @required this.values,
-    @required this.itemTitle,
+    Key? key,
+    required this.controller,
+    required this.values,
+    required this.itemTitle,
     this.disabledItems,
     this.onItemSelected,
     this.backgroundColorItem = Colors.grey,
@@ -56,11 +57,11 @@ class SimpleGroupedChips<T> extends StatefulWidget {
             "you cannot disable items doesn't exist in itemTitle"),
         super(key: key);
 
-  static SimpleGroupedChipsState of<T>(BuildContext context,
+  static SimpleGroupedChipsState? of<T>(BuildContext context,
       {bool nullOk = false}) {
     assert(context != null);
     assert(nullOk != null);
-    final SimpleGroupedChipsState<T> result =
+    final SimpleGroupedChipsState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedChipsState<T>>();
     if (nullOk || result != null) return result;
     throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -81,7 +82,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   void initState() {
     super.initState();
     init(
-      values: widget.values,
+      values: widget.values as List<T>,
       checkFirstElement: false,
       preSelection: widget.controller.initSelectedItem.cast<T>(),
       multiSelection: widget.controller.isMultipleSelection,
@@ -92,7 +93,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   }
 
   @override
-  dynamic selection() {
+   selection() {
     if (widget.controller.isMultipleSelection) {
       return selectionsValue.value;
     }
@@ -110,7 +111,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
             for (int i = 0; i < notifierItems.length; i++) ...[
               ValueListenableBuilder(
                 valueListenable: notifierItems[i],
-                builder: (ctx, item, child) {
+                builder: (ctx, dynamic item, child) {
                   return _ChoiceChipsWidget(
                     onSelection: (v) {
                       changeSelection(i, v);
@@ -148,7 +149,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         for (int i = 0; i < notifierItems.length; i++) ...[
           ValueListenableBuilder(
             valueListenable: notifierItems[i],
-            builder: (ctx, item, child) {
+            builder: (ctx, dynamic item, child) {
               return _ChoiceChipsWidget(
                 onSelection: (v) {
                   changeSelection(i, v);
@@ -187,14 +188,13 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         _item.checked = value;
         notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
-          widget.onItemSelected(selectionsValue);
+          widget.onItemSelected!(selectionsValue.value);
         }
       } else {
         if (selectedValue.value != widget.values[index]) {
           // TODO : find old selected and deselected
-          var valueListenerOldItem = notifierItems.firstWhere(
-              (element) => element.value.checked == true,
-              orElse: () => null);
+          var valueListenerOldItem = notifierItems.firstWhereOrNull(
+              (element) => element.value.checked == true);
           if (valueListenerOldItem != null) {
             Item oldItem = valueListenerOldItem.value.copy();
             int indexOldItem = notifierItems.indexOf(valueListenerOldItem);
@@ -206,7 +206,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
           notifierItems[index].value = _item;
           selectedValue.value = widget.values[index];
           if (widget.onItemSelected != null) {
-            widget.onItemSelected(widget.values[index]);
+            widget.onItemSelected!(widget.values[index]);
           }
         }
       }
@@ -217,7 +217,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         _item.checked = value;
         notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
-          widget.onItemSelected(selectionsValue);
+          widget.onItemSelected!(selectionsValue.value);
         }
       }
     }
@@ -245,14 +245,14 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
 }
 
 class _ChoiceChipsWidget extends StatelessWidget {
-  final Color backgroundColorItem;
-  final Color disabledColor;
-  final Color selectedColorItem;
-  final Icon selectedIcon;
-  final Function(bool) onSelection;
-  final bool isSelected;
-  final Widget label;
-  final Widget avatar;
+  final Color? backgroundColorItem;
+  final Color? disabledColor;
+  final Color? selectedColorItem;
+  final Icon? selectedIcon;
+  final Function(bool)? onSelection;
+  final bool? isSelected;
+  final Widget? label;
+  final Widget? avatar;
 
   _ChoiceChipsWidget({
     this.label,
@@ -263,22 +263,22 @@ class _ChoiceChipsWidget extends StatelessWidget {
     this.disabledColor,
     this.selectedColorItem,
     this.selectedIcon,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
-      label: label,
+      label: label!,
       avatar: avatar != null
           ? avatar
-          : isSelected
+          : isSelected!
               ? selectedIcon
               : null,
       selectedColor: selectedColorItem,
       backgroundColor: backgroundColorItem,
       disabledColor: disabledColor,
-      selected: isSelected,
+      selected: isSelected!,
       onSelected: onSelection,
     );
   }

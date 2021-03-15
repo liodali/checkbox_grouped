@@ -10,7 +10,7 @@ class GroupController {
 
   dynamic get selectedItem => _widgetState.selection();
 
-  StateGroup _widgetState;
+  late StateGroup _widgetState;
 
   GroupController({
     this.initSelectedItem = const [],

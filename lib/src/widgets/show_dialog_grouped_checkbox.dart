@@ -1,6 +1,6 @@
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
-import 'package:checkbox_grouped/src/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
+
+import '../../checkbox_grouped.dart';
 
 /// display  groupedCheckbox inside dialog
 /// [context] : BuildContext to pop the dialog
@@ -13,10 +13,10 @@ import 'package:flutter/material.dart';
 /// [submitDialogText] : label for submitButton
 /// [isMultiSelection] : enable mutli selection groupedCheckbox
 Future<dynamic> showDialogGroupedCheckbox({
-  @required BuildContext context,
-  @required Text dialogTitle,
-  @required List<String> itemsTitle,
-  @required List<dynamic> values,
+  required BuildContext context,
+  required Text dialogTitle,
+  required List<String> itemsTitle,
+  required List<dynamic> values,
   List<dynamic> initialSelectedValues = const [],
   bool isDismissible = true,
   String cancelDialogText = "Cancel",
@@ -49,12 +49,12 @@ Future<dynamic> showDialogGroupedCheckbox({
 }
 
 class _CoreDialogGroupedCheckbox extends StatefulWidget {
-  final Text dialogTitle;
-  final List<String> itemsTitle;
-  final List<dynamic> values;
-  final List<dynamic> initialSelectedValues;
-  final String cancelDialogText;
-  final String submitDialogText;
+  final Text? dialogTitle;
+  final List<String>? itemsTitle;
+  final List<dynamic>? values;
+  final List<dynamic>? initialSelectedValues;
+  final String? cancelDialogText;
+  final String? submitDialogText;
   final bool isMultiSelection;
 
   _CoreDialogGroupedCheckbox({
@@ -64,7 +64,7 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
     this.initialSelectedValues,
     this.cancelDialogText,
     this.submitDialogText,
-    this.isMultiSelection,
+    this.isMultiSelection = false,
   });
 
   @override
@@ -73,8 +73,8 @@ class _CoreDialogGroupedCheckbox extends StatefulWidget {
 
 class _CoreDialogGroupedCheckboxState
     extends State<_CoreDialogGroupedCheckbox> {
-  GroupController controller;
-  ValueNotifier<bool> canSubmit;
+  late GroupController controller;
+  late ValueNotifier<bool> canSubmit;
 
   @override
   void initState() {
@@ -104,8 +104,8 @@ class _CoreDialogGroupedCheckboxState
             width: MediaQuery.of(context).size.width,
             child: SimpleGroupedCheckbox(
               controller: controller,
-              values: widget.values,
-              itemsTitle: widget.itemsTitle,
+              values: widget.values!,
+              itemsTitle: widget.itemsTitle!,
               onItemSelected: (items) {
                 if (widget.isMultiSelection) {
                   if ((items as List).isNotEmpty) {
@@ -126,27 +126,33 @@ class _CoreDialogGroupedCheckboxState
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.of(context).pop(null);
           },
-          child: Text(widget.cancelDialogText),
+          child: Text(widget.cancelDialogText!),
         ),
         ValueListenableBuilder<bool>(
           valueListenable: canSubmit,
-          builder: (ctx, canSubmit, _) {
-            return FlatButton(
+          builder: (ctx, canSubmit, child) {
+            return ElevatedButton(
               onPressed: canSubmit
                   ? () {
                       Navigator.pop(context, controller.selectedItem);
                     }
                   : null,
-              child: Text(
-                widget.submitDialogText,
+              child: child,
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                textStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
-              textColor: Theme.of(context).primaryColor,
             );
           },
+          child: Text(
+            widget.submitDialogText!,
+          ),
         )
       ],
     );

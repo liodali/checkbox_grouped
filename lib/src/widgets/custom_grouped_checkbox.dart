@@ -1,16 +1,16 @@
-import 'package:checkbox_grouped/src/common/item.dart';
-import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
+import '../controller/custom_group_controller.dart';
+import '../common/item.dart';
 import 'package:flutter/material.dart';
 
-import 'common/custom_state_group.dart';
+import '../common/custom_state_group.dart';
 
 /// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
 /// list.
 typedef CustomIndexedWidgetBuilder = Widget Function(
   BuildContext builder,
   int index,
-  bool checked,
-  bool isDisabled,
+  bool? checked,
+  bool? isDisabled,
 );
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
@@ -22,19 +22,19 @@ typedef CustomIndexedWidgetBuilder = Widget Function(
 /// [itemExtent] : same as [itemExtent] of [ListView]
 class CustomGroupedCheckbox<T> extends StatefulWidget {
   final CustomGroupController controller;
-  final Widget groupTitle;
+  final Widget? groupTitle;
   final CustomIndexedWidgetBuilder itemBuilder;
   final int itemCount;
   final double itemExtent;
   final List<T> values;
 
   CustomGroupedCheckbox({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.groupTitle,
-    @required this.itemBuilder,
-    @required this.itemCount,
-    @required this.values,
+    required this.itemBuilder,
+    required this.itemCount,
+    required this.values,
     this.itemExtent = 50.0,
   })  : assert(itemCount > 0),
         super(key: key);
@@ -42,11 +42,11 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   @override
   CustomGroupedCheckboxState createState() => CustomGroupedCheckboxState();
 
-  static CustomGroupedCheckboxState of<T>(BuildContext context,
+  static CustomGroupedCheckboxState? of<T>(BuildContext context,
       {bool nullOk = false}) {
     assert(context != null);
     assert(nullOk != null);
-    final CustomGroupedCheckboxState<T> result =
+    final CustomGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<CustomGroupedCheckboxState<T>>();
     if (nullOk || result != null) return result;
     throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -60,8 +60,8 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
 }
 
 class CustomGroupedCheckboxState<T>
-    extends CustomStateGroup<T, CustomGroupedCheckbox> {
-  SliverChildBuilderDelegate childrenDelegate;
+    extends CustomStateGroup<T?, CustomGroupedCheckbox> {
+  SliverChildBuilderDelegate? childrenDelegate;
 
   @override
   void initState() {
@@ -93,7 +93,7 @@ class CustomGroupedCheckboxState<T>
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemBuilder: (ctx, index) {
-                return ValueListenableBuilder<CustomItem<T>>(
+                return ValueListenableBuilder<CustomItem<T?>>(
                   valueListenable: items[index],
                   builder: (ctx, value, child) {
                     return _ItemWidget(
@@ -161,9 +161,9 @@ class CustomGroupedCheckboxState<T>
 }
 
 class _ItemWidget extends StatelessWidget {
-  final Widget child;
-  final Function(bool) callback;
-  final bool value;
+  final Widget? child;
+  final Function(bool)? callback;
+  final bool? value;
 
   _ItemWidget({
     this.child,
@@ -175,7 +175,7 @@ class _ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        callback(!value);
+        callback!(!value!);
       },
       child: child,
     );

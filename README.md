@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v0.8.1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.0.1--nullsafety.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -11,7 +11,7 @@
     * list of groupedCheckbox
 
 ## Getting Started
-<img src="https://github.com/liodali/checkbox_grouped/blob/master/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
+<img src="https://github.com/liodali/checkbox_grouped/blob/null-safety/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
 
 
 ## Installing
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^0.8.1
+		checkbox_grouped: ^1.0.1-nullsafety.0
 
 
 
@@ -90,7 +90,6 @@ controller.disabledItemsByTitles(List<String> items)
 |`disableItems`         | Specifies which item should be disabled. The strings passed to this must match the Titles  |
 |`values`               | (required) Values contains in each element.   |
 |`checkFirstElement`    | `make first element in list checked`.  |
-|`isCirculaire`         | `enable to use circulaire checkbox`.  |
 |`isExpandableTitle`    | `enable group checkbox to be expandable `.  |
 |`groupTitle`           | `Text title for group checkbox`.  |
 |`groupTitleStyle`      | `TextStyle of title for group checkbox`.  |
@@ -147,11 +146,11 @@ final selectedItem = controller.selectedItem;
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Custom Group Controller to recuperate selectionItems and disable or enableItems.  |
-|`groupTitle`           |`widget title for group checkbox`.              |
-|`itemBuilder`          |(required) `Called to build children.`          |
-|`values`               |(required) `Values contains in each element.`   |
-|`itemCount`            |(required)` The total number of children `      |
-|`itemExtent`           |` The extent the children are forced to have in the main axis`  |
+|`groupTitle`           | `widget title for group checkbox`.              |
+|`itemBuilder`          | (required) `Called to build children.`          |
+|`values`               | (required) `Values contains in each element.`   |
+|`itemCount`            | (required)` The total number of children `      |
+|`itemExtent`           | ` The extent the children are forced to have in the main axis`  |
 
 
 ## Chip grouped Usage

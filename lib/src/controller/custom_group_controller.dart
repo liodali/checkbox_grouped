@@ -3,7 +3,7 @@ import '../common/custom_state_group.dart';
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.
 class CustomGroupController {
-  CustomStateGroup _customStateGroup;
+  late CustomStateGroup _customStateGroup;
 
   final List<dynamic> initSelectedItem;
   final bool isMultipleSelection;

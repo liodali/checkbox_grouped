@@ -1,6 +1,8 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/group_controller.dart';
+import '../controller/list_group_controller.dart';
+import 'simple_grouped_checkbox.dart';
 
 typedef onGroupChanged<T> = void Function(dynamic selected);
 
@@ -19,28 +21,26 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<String> groupTitles;
   final List<String> subTitles;
   final List<List<T>> disabledValues;
-  final onGroupChanged<T> onSelectedGroupChanged;
+  final onGroupChanged<T>? onSelectedGroupChanged;
 
   ListGroupedCheckbox({
-    @required this.controller,
-    @required this.titles,
-    @required this.groupTitles,
-    @required this.values,
-    this.subTitles,
+    required this.controller,
+    required this.titles,
+    required this.groupTitles,
+    required this.values,
+    this.subTitles = const [],
     this.onSelectedGroupChanged,
     this.disabledValues = const [],
-    Key key,
+    Key? key,
   })  : assert(values.length == titles.length),
         assert(groupTitles.length == titles.length),
         assert(controller.isMultipleSelectionPerGroup.isEmpty ||
             controller.isMultipleSelectionPerGroup.length == titles.length),
         super(key: key);
 
-  static ListGroupedCheckboxState of<T>(BuildContext context,
+  static ListGroupedCheckboxState? of<T>(BuildContext context,
       {bool nullOk = false}) {
-    assert(context != null);
-    assert(nullOk != null);
-    final ListGroupedCheckboxState<T> result =
+    final ListGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<ListGroupedCheckboxState<T>>();
     if (nullOk || result != null) return result;
     throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -118,18 +118,17 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
         return SimpleGroupedCheckbox<T>(
           controller: listControllers[index],
           itemsTitle: widget.titles[index],
-          values: widget.values[index],
+          values: widget.values[index] as List<T>,
           disableItems: widget.disabledValues.isNotEmpty
-              ? widget.disabledValues[index]
-              : [],
+              ? widget.disabledValues[index] as List<String>
+              :  [],
           groupTitle: widget.groupTitles[index],
           onItemSelected: widget.onSelectedGroupChanged != null
               ? (selection) async {
                   final list = await getAllValues();
-                  widget.onSelectedGroupChanged(list);
+                  widget.onSelectedGroupChanged!(list);
                 }
               : null,
-          isCirculaire: false,
         );
       },
       itemCount: len,

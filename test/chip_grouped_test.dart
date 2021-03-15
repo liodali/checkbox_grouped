@@ -1,4 +1,5 @@
-import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_chips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -28,7 +29,7 @@ void main() {
     ChoiceChip cb = tester.widget(find.byType(ChoiceChip).at(2)) as ChoiceChip;
     // ChoiceChip cb2=tester.widget(find.byType(ChoiceChip).at(2)) as ChoiceChip;
     await tester.tap(find.byWidget(cb));
-    int value = controller.selectedItem;
+    int? value = controller.selectedItem;
     expect(value, 4);
   });
 

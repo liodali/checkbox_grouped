@@ -2,12 +2,12 @@
 /// [checked] : bool to get if item checked or not
 /// [isDisabled] : bool to disabled or enable item to be selected or not
 abstract class BaseItem {
-  bool checked;
+  bool? checked;
   bool isDisabled;
 
   BaseItem({
-    this.checked,
-    this.isDisabled,
+    required this.checked,
+    required this.isDisabled,
   });
 }
 
@@ -17,8 +17,8 @@ class Item extends BaseItem {
   final String title;
 
   Item({
-    this.title,
-    checked,
+    required this.title,
+    bool? checked,
     isDisabled = false,
   }) : super(
           checked: checked,
@@ -26,14 +26,15 @@ class Item extends BaseItem {
         );
 
   Item copy({
-    title,
-    checked,
-    isDisabled = false,
+    String? title,
+    bool? checked,
+    bool? isDisabled = false,
   }) {
     return Item(
-        title: title ?? this.title,
-        checked: checked ?? this.checked,
-        isDisabled: isDisabled ?? this.isDisabled);
+      title: title ?? this.title,
+      checked: checked ?? this.checked,
+      isDisabled: isDisabled ?? this.isDisabled,
+    );
   }
 }
 
@@ -43,7 +44,7 @@ class CustomItem<T> extends BaseItem {
   final T data;
 
   CustomItem({
-    this.data,
+    required this.data,
     checked,
     isDisabled = false,
   }) : super(
@@ -52,13 +53,14 @@ class CustomItem<T> extends BaseItem {
         );
 
   CustomItem<T> copy({
-    T data,
-    checked,
-    isDisabled = false,
+    T? data,
+    bool? checked,
+    bool? isDisabled = false,
   }) {
     return CustomItem(
-        data: data ?? this.data,
-        checked: checked ?? this.checked,
-        isDisabled: isDisabled ?? this.isDisabled);
+      data: data ?? this.data,
+      checked: checked ?? this.checked,
+      isDisabled: isDisabled ?? this.isDisabled,
+    );
   }
 }

@@ -1,3 +1,14 @@
+## [1.0.1-nullsafety.0] - fix bugs,refactoring code 
+*  fix bugs in chips grouped 
+*  ameliorate null safety generated code 
+*  fix bugs unit test 
+## [1.0.0-nullsafety.1] - remove unnecessary files
+* change gis example 
+* remove asset of flare 
+## [1.0.0-nullsafety.0] -nullsafety migration
+* remove dependencies that doesn't support null safety
+* remove circulaire checkbox for now until will reimplemented 
+* nullsafety migration
 ## [0.8.1] -improve readme 
 * change example 
 * fix bug

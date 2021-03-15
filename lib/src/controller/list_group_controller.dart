@@ -1,4 +1,4 @@
-import '../list_grouped_checkbox.dart';
+import '../widgets/list_grouped_checkbox.dart';
 
 /// ListGroupController to manage list of  grouped checkbox/chips/switch
 /// [isMultipleSelectionPerGroup] : (List<bool>) enable multiple selection  in each grouped checkbox.
@@ -7,7 +7,7 @@ import '../list_grouped_checkbox.dart';
 class ListGroupController {
   final List<bool> isMultipleSelectionPerGroup;
   final List<List<dynamic>> initSelectedValues;
-  ListGroupedCheckboxState _state;
+  late ListGroupedCheckboxState _state;
 
   Future<List<dynamic>> get allSelectedItems async =>
       await _state.getAllValues();
