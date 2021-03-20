@@ -1,8 +1,8 @@
-import '../controller/custom_group_controller.dart';
-import '../common/item.dart';
 import 'package:flutter/material.dart';
 
 import '../common/custom_state_group.dart';
+import '../common/item.dart';
+import '../controller/custom_group_controller.dart';
 
 /// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
 /// list.
@@ -27,6 +27,8 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   final int itemCount;
   final double itemExtent;
   final List<T> values;
+  final bool isGrid;
+  final SliverGridDelegate? gridDelegate;
 
   CustomGroupedCheckbox({
     Key? key,
@@ -37,18 +39,37 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
     required this.values,
     this.itemExtent = 50.0,
   })  : assert(itemCount > 0),
+        this.isGrid = false,
+        this.gridDelegate = null,
+        super(key: key);
+
+  CustomGroupedCheckbox.grid({
+    Key? key,
+    required this.controller,
+    this.groupTitle,
+    SliverGridDelegate gridDelegate =
+        const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+    ),
+    required this.itemBuilder,
+    required this.itemCount,
+    required this.values,
+  })   : assert(itemCount > 0),
+        this.isGrid = true,
+        this.gridDelegate = gridDelegate,
+        this.itemExtent = 0.0,
         super(key: key);
 
   @override
   CustomGroupedCheckboxState createState() => CustomGroupedCheckboxState();
 
-  static CustomGroupedCheckboxState? of<T>(BuildContext context,
-      {bool nullOk = false}) {
-    assert(context != null);
-    assert(nullOk != null);
+  static CustomGroupController of<T>(
+    BuildContext context, {
+    bool nullOk = false,
+  }) {
     final CustomGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<CustomGroupedCheckboxState<T>>();
-    if (nullOk || result != null) return result;
+    if (result != null) return result.widget.controller;
     throw FlutterError.fromParts(<DiagnosticsNode>[
       ErrorSummary(
           'CustomGroupedCheckbox.of() called with a context that does not contain an CustomGroupedCheckbox.'),
@@ -82,39 +103,49 @@ class CustomGroupedCheckboxState<T>
 
   @override
   Widget build(BuildContext context) {
+    final builder = (ctx, index) {
+      return ValueListenableBuilder<CustomItem<T?>>(
+        valueListenable: items[index],
+        builder: (ctx, value, child) {
+          return _ItemWidget(
+            child: widget.itemBuilder(
+              context,
+              index,
+              items[index].value.checked,
+              items[index].value.isDisabled,
+            ),
+            value: items[index].value.checked,
+            callback: (v) {
+              if (!items[index].value.isDisabled) changeSelection(index, v);
+            },
+          );
+        },
+      );
+    };
+    Widget child = ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemBuilder: builder,
+      itemCount: items.length,
+      itemExtent: widget.itemExtent,
+    );
+    if (widget.isGrid) {
+      child = GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: widget.gridDelegate!,
+        itemBuilder: builder,
+        itemCount: items.length,
+        shrinkWrap: true,
+      );
+    }
     return Column(
       children: <Widget>[
         widget.groupTitle ?? Container(),
         Expanded(
           child: ScrollConfiguration(
             behavior: ScrollBehavior(),
-            child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (ctx, index) {
-                return ValueListenableBuilder<CustomItem<T?>>(
-                  valueListenable: items[index],
-                  builder: (ctx, value, child) {
-                    return _ItemWidget(
-                      child: widget.itemBuilder(
-                        context,
-                        index,
-                        items[index].value.checked,
-                        items[index].value.isDisabled,
-                      ),
-                      value: items[index].value.checked,
-                      callback: (v) {
-                        if (!items[index].value.isDisabled)
-                          changeSelection(index, v);
-                      },
-                    );
-                  },
-                );
-              },
-              itemCount: items.length,
-              itemExtent: widget.itemExtent,
-            ),
+            child: child,
           ),
         ),
       ],
