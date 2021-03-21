@@ -33,7 +33,7 @@ class CustomGridGroupedExample extends StatelessWidget {
     final users = List<_User>.generate(
       10,
       (i) => _User(
-        name: faker.person.name(),
+        name: faker.person.firstName(),
         email: faker.internet.email(),
       ),
     );
@@ -54,18 +54,34 @@ class CustomGridGroupedExample extends StatelessWidget {
                   top: 5.0,
                   bottom: 5.0,
                 ),
-                child: ListTile(
-                  tileColor: selected ? Colors.green[300] : Colors.white,
-                  title: Text(users[index].name),
-                  subtitle: Text(users[index].email),
-                  trailing: Opacity(
-                    opacity: selected ? 1 : 0,
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 24,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: ListTile(
+                        tileColor: Colors.white,
+                        title: Text(
+                          users[index].name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          users[index].email,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      left: 10,
+                      right: 10,
+                      bottom: 0,
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        color: Colors.green[300],
+                        height: selected ? 5 : 0,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
