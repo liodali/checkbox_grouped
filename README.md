@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.0.1--nullsafety.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.1.0--nullsafety.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.0.1-nullsafety.0
+		checkbox_grouped: ^1.1.0-nullsafety.0
 
 
 
@@ -141,6 +141,24 @@ controller.disabledItemsByTitles(List<String> items)
 ```dart
 final selectedItem = controller.selectedItem;
 ```
+### enable items
+
+```dart
+    controller.enabledItems([value]);
+```
+### disable items
+
+```dart
+    controller.disabledItems([value]);
+
+```
+### listen to changed values 
+
+```dart
+controller.listen((value){
+ print(value);
+})
+```
 
 ####  `CustomGroupedCheckbox`
 |   Properties          |  Description |
@@ -149,8 +167,19 @@ final selectedItem = controller.selectedItem;
 |`groupTitle`           | `widget title for group checkbox`.              |
 |`itemBuilder`          | (required) `Called to build children.`          |
 |`values`               | (required) `Values contains in each element.`   |
-|`itemCount`            | (required)` The total number of children `      |
 |`itemExtent`           | ` The extent the children are forced to have in the main axis`  |
+|`isScroll`             | (bool) ` To make list of item scrollable `  |
+
+
+####  `CustomGroupedCheckbox.grid` 
+|   Properties          |  Description |
+|-----------------------|--------------|
+|`controller`           | (required) Custom Group Controller to recuperate selectionItems and disable or enableItems.  |
+|`groupTitle`           | `widget title for group checkbox`.              |
+|`itemBuilder`          | (required) `Called to build children.`          |
+|`values`               | (required) `Values contains in each element.`   |
+|`isScroll`             | (bool) ` To indicate that the  list of children scrollable `  |
+|`gridDelegate`         | (SliverGridDelegate) `a delegate that controls the layout of the children`   | 
 
 
 ## Chip grouped Usage

@@ -26,7 +26,7 @@ Future<dynamic> showDialogGroupedCheckbox({
   assert(values.isNotEmpty);
   assert(itemsTitle.isNotEmpty);
   assert(values.length == itemsTitle.length);
-  if (initialSelectedValues != null && initialSelectedValues.isNotEmpty) {
+  if (initialSelectedValues.isNotEmpty) {
     assert(initialSelectedValues
         .where((element) =>
             !values.map((e) => e.runtimeType).contains(element.runtimeType))

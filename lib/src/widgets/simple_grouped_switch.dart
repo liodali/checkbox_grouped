@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
 import '../../checkbox_grouped.dart';
 import '../common/item.dart';
 import '../common/state_group.dart';
 import 'simple_grouped_checkbox.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 ///  [textStyle] : the style to use for each text of item
 ///  [activeColor] :the selected color to use for each switch item
@@ -33,16 +34,14 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
     this.onItemSelected,
   })  : assert(values.length == itemsTitle.length),
         assert(
-            disableItems == null ||
-                disableItems.isEmpty ||
-                disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
-            "you cannot disable item doesn't exist"),
+          disableItems.isEmpty ||
+              disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
+          "you cannot disable item doesn't exist",
+        ),
         super(key: key);
 
   static SimpleGroupedSwitchState? of<T>(BuildContext context,
       {bool nullOk = false}) {
-    assert(context != null);
-    assert(nullOk != null);
     final SimpleGroupedSwitchState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedSwitchState<T>>();
     if (nullOk || result != null) return result;
@@ -178,7 +177,8 @@ class _SwitchListItem extends StatelessWidget {
               ? activeColor
               : (textStyle?.color ??
                       Theme.of(context).textTheme.headline6!.color) ??
-                  Theme.of(context).textTheme.headline6!.getTextStyle() as Color?,
+                  Theme.of(context).textTheme.headline6!.getTextStyle()
+                      as Color?,
         ),
       ),
     );

@@ -37,13 +37,13 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
   );
 
   void selectedListen(CustomListener listener) {
-    streamOneValue.stream.listen((data){
+    streamOneValue.stream.listen((data) {
       listener(data);
     });
   }
 
   void selectionsListen(CustomListener listener) {
-    streamListValues.stream.listen((data){
+    streamListValues.stream.listen((data) {
       listener(data);
     });
   }

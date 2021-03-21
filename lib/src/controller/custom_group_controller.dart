@@ -18,8 +18,9 @@ class CustomGroupController {
 
   /// add listener : to get  data changed directly
   void listen(void Function(dynamic) listener) {
-    if (_customStateGroup == null) _listeners.add(listener);
-    else{
+    if (_customStateGroup == null)
+      _listeners.add(listener);
+    else {
       _addListener(listener);
     }
   }
@@ -43,7 +44,7 @@ class CustomGroupController {
   }
 
   void _addListener(CustomListener element) {
-     if (!isMultipleSelection) {
+    if (!isMultipleSelection) {
       _customStateGroup!.selectedListen(element);
     } else {
       _customStateGroup!.selectionsListen(element);

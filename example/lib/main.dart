@@ -69,11 +69,10 @@ class _MainExampleState extends State<MainExample>
     tabController.addListener(tabChanged);
     customController.listen((value) {
       final index = drawerItems.indexOf(value);
-      if(index!=-1){
+      if (index != -1) {
         tabController.index = index;
         Navigator.pop(context);
       }
-
     });
   }
 

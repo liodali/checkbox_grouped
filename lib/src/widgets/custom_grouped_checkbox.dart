@@ -18,7 +18,6 @@ typedef CustomIndexedWidgetBuilder = Widget Function(
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 /// [itemBuilder] :  builder function  takes an index and checked state of widget
 /// [values] : list of values
-/// [itemCount] : list of initial values that you want to be selected
 /// [itemExtent] : same as [itemExtent] of [ListView]
 class CustomGroupedCheckbox<T> extends StatefulWidget {
   final CustomGroupController controller;
@@ -174,7 +173,8 @@ class CustomGroupedCheckboxState<T>
         }
       }
       items[index].value = items[index].value.copy(checked: value);
-     if(streamListValues.hasListener) streamListValues.add(itemsSelections.value);
+      if (streamListValues.hasListener)
+        streamListValues.add(itemsSelections.value);
     } else {
       if (value) {
         if (itemSelected.value != null) {

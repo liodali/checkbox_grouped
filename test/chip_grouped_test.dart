@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
   testWidgets("test simple SimpleGroupedChip", (tester) async {
-    GroupController controller=GroupController(
-        isMultipleSelection: false
-    );
-       await tester.pumpWidget(MaterialApp(
+    GroupController controller = GroupController(isMultipleSelection: false);
+    await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedChips<int>(
           controller: controller,
@@ -34,10 +31,8 @@ void main() {
   });
 
   testWidgets("test multiple selection SimpleGroupedChip", (tester) async {
-    GroupController controller=GroupController(
-      initSelectedItem: [2,4],
-      isMultipleSelection: true
-    );
+    GroupController controller =
+        GroupController(initSelectedItem: [2, 4], isMultipleSelection: true);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedChips<int>(
@@ -55,7 +50,7 @@ void main() {
     await tester.pump();
 
     var values = controller.selectedItem;
-    expect(values, [2,4]);
+    expect(values, [2, 4]);
     ChoiceChip cb = tester.widget(find.byType(ChoiceChip).at(2)) as ChoiceChip;
     await tester.tap(find.byWidget(cb));
     await tester.pump(Duration(seconds: 1));
