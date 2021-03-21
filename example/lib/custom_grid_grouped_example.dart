@@ -23,12 +23,10 @@ class _User {
   int get hashCode => name.hashCode ^ email.hashCode;
 }
 
-class CustomGroupedExample extends StatelessWidget {
+class CustomGridGroupedExample extends StatelessWidget {
   final faker = Faker();
 
-  CustomGroupedExample({
-    Key key,
-  }) : super(key: key);
+  CustomGridGroupedExample({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +37,17 @@ class CustomGroupedExample extends StatelessWidget {
         email: faker.internet.email(),
       ),
     );
-    final controller = CustomGroupController(
-      isMultipleSelection: false,
-    );
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
           fit: FlexFit.loose,
-          child: CustomGroupedCheckbox<_User>(
-            controller: controller,
+          child: CustomGroupedCheckbox<_User>.grid(
+            controller: CustomGroupController(isMultipleSelection: true),
             groupTitle: Container(
               padding: EdgeInsets.all(5.0),
               child: Text("Custom GroupedCheckbox"),
             ),
-            isScroll: true,
             itemBuilder: (ctx, index, selected, isDisabled) {
               return Card(
                 margin: EdgeInsets.only(
@@ -75,13 +69,16 @@ class CustomGroupedExample extends StatelessWidget {
                 ),
               );
             },
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
             values: users,
           ),
         ),
         Builder(builder: (ctx) {
           return ElevatedButton(
             onPressed: () {
-              print(controller.selectedItem);
+              print(CustomGroupedCheckbox.of(ctx).selectedItem);
             },
             child: Text("selection"),
           );

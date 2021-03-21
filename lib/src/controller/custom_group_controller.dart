@@ -12,13 +12,13 @@ class CustomGroupController {
 
   final List<dynamic> initSelectedItem;
   final bool isMultipleSelection;
-  final List<CustomListener> listeners = [];
+  final List<CustomListener> _listeners = [];
 
   dynamic get selectedItem => _customStateGroup!.selection();
 
   /// add listener : to get  data changed directly
-  void listen(CustomListener listener) {
-    if (_customStateGroup == null) listeners.add(listener);
+  void listen(void Function(dynamic) listener) {
+    if (_customStateGroup == null) _listeners.add(listener);
     else{
       _addListener(listener);
     }
@@ -37,7 +37,7 @@ class CustomGroupController {
 
   void init(CustomStateGroup stateGroup) {
     this._customStateGroup = stateGroup;
-    listeners.forEach((element) {
+    _listeners.forEach((element) {
       _addListener(element);
     });
   }

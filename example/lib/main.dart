@@ -1,4 +1,5 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:example/custom_grid_grouped_example.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_grouped_example.dart';
@@ -41,6 +42,17 @@ class _MainExampleState extends State<MainExample>
     with TickerProviderStateMixin {
   TabController tabController;
   ValueNotifier<int> current = ValueNotifier(0);
+  final customController = CustomGroupController(
+    isMultipleSelection: false,
+    initSelectedItem: "basics",
+  );
+  final List<String> drawerItems = [
+    "basics",
+    "custom",
+    "grid custom",
+    "dialog",
+    "list of group",
+  ];
 
   void tabChanged() {
     current.value = tabController.index;
@@ -49,9 +61,20 @@ class _MainExampleState extends State<MainExample>
   @override
   void initState() {
     super.initState();
-    tabController =
-        TabController(initialIndex: current.value, length: 4, vsync: this);
+    tabController = TabController(
+      initialIndex: current.value,
+      length: drawerItems.length,
+      vsync: this,
+    );
     tabController.addListener(tabChanged);
+    customController.listen((value) {
+      final index = drawerItems.indexOf(value);
+      if(index!=-1){
+        tabController.index = index;
+        Navigator.pop(context);
+      }
+
+    });
   }
 
   @override
@@ -72,53 +95,22 @@ class _MainExampleState extends State<MainExample>
                 SizedBox(
                   height: 56,
                 ),
-                ListTile(
-                  title: Text(
-                    "basics",
-                    style: TextStyle(
-                      color: value == 0 ? Colors.blue : null,
-                    ),
+                Expanded(
+                  child: CustomGroupedCheckbox<String>(
+                    controller: customController,
+                    itemBuilder: (ctx, index, isSelected, isDisabled) {
+                      return ListTile(
+                        title: Text(
+                          drawerItems[index],
+                          style: TextStyle(
+                            color: value == index ? Colors.blue : null,
+                          ),
+                        ),
+                      );
+                    },
+                    itemExtent: 64,
+                    values: drawerItems,
                   ),
-                  onTap: () {
-                    tabController.index = 0;
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    "customs",
-                    style: TextStyle(
-                      color: value == 1 ? Colors.blue : null,
-                    ),
-                  ),
-                  onTap: () {
-                    tabController.index = 1;
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    "dialog",
-                    style: TextStyle(
-                      color: value == 2 ? Colors.blue : null,
-                    ),
-                  ),
-                  onTap: () {
-                    tabController.index = 2;
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    "list of grouped",
-                    style: TextStyle(
-                      color: value == 3 ? Colors.blue : null,
-                    ),
-                  ),
-                  onTap: () {
-                    tabController.index = 3;
-                    Navigator.pop(context);
-                  },
                 ),
               ],
             );
@@ -134,26 +126,8 @@ class _MainExampleState extends State<MainExample>
         children: <Widget>[
           _SimpleGrouped(),
           CustomGroupedExample(),
-          Column(
-            children: <Widget>[
-              FlatButton(
-                onPressed: () async {
-                  var values = await showDialogGroupedCheckbox(
-                      context: context,
-                      cancelDialogText: "cancel",
-                      isMultiSelection: true,
-                      itemsTitle: List.generate(15, (index) => "$index"),
-                      submitDialogText: "select",
-                      dialogTitle: Text("example dialog"),
-                      values: List.generate(15, (index) => index));
-                  if (values != null) {
-                    print(values);
-                  }
-                },
-                child: Text("show dialog checkbox grouped"),
-              ),
-            ],
-          ),
+          CustomGridGroupedExample(),
+          _DialogExample(),
           ListOfGrouped(),
         ],
       ),
@@ -165,7 +139,6 @@ class _SimpleGrouped extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GroupController controller = GroupController(initSelectedItem: [2]);
-    GroupController circularController = GroupController();
     GroupController switchController = GroupController();
     GroupController chipsController =
         GroupController(isMultipleSelection: true);
@@ -238,6 +211,32 @@ class _SimpleGrouped extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DialogExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        TextButton(
+          onPressed: () async {
+            var values = await showDialogGroupedCheckbox(
+                context: context,
+                cancelDialogText: "cancel",
+                isMultiSelection: true,
+                itemsTitle: List.generate(15, (index) => "$index"),
+                submitDialogText: "select",
+                dialogTitle: Text("example dialog"),
+                values: List.generate(15, (index) => index));
+            if (values != null) {
+              print(values);
+            }
+          },
+          child: Text("show dialog checkbox grouped"),
+        ),
+      ],
     );
   }
 }

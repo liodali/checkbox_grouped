@@ -16,7 +16,6 @@ void main() {
                 itemBuilder: (ctx, index, v, isDisabled) {
                   return Text("$index");
                 },
-                itemCount: 10,
                 values: List<int>.generate(10, (i) => i),
               );
             },
@@ -46,7 +45,6 @@ void main() {
                 itemBuilder: (ctx, index, v, isDisabled) {
                   return Text("$index");
                 },
-                itemCount: 10,
                 values: List<int>.generate(10, (i) => i + 1),
               );
             },
@@ -82,7 +80,6 @@ void main() {
                     child: Text("$index"),
                   );
                 },
-                itemCount: 10,
                 values: List<User>.generate(10, (i) => User("name${i + 1}")),
               );
             },
