@@ -1,3 +1,8 @@
+## [1.1.0-nullsafety.0] - grid custom grouped checkbox
+* add grid custom grouped checkbox
+* add `listen` method to add listener in changed data in real time
+* add `isScroll` attribute in custom grouped checkbox
+* fix bugs
 ## [1.0.1-nullsafety.0] - fix bugs,refactoring code 
 *  fix bugs in chips grouped 
 *  ameliorate null safety generated code 

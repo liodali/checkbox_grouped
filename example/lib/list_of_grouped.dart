@@ -37,11 +37,11 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               3,
               (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
-            onSelectedGroupChanged: (list){
+            onSelectedGroupChanged: (list) {
               print(list);
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: () async {
               final list = await controller.allSelectedItems;
               print(list);

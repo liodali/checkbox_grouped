@@ -43,10 +43,8 @@ void main() {
   });
 
   testWidgets("test pre-selection for single selection", (tester) async {
-    GroupController controller = GroupController(
-      isMultipleSelection: false,
-      initSelectedItem: [2]
-    );
+    GroupController controller =
+        GroupController(isMultipleSelection: false, initSelectedItem: [2]);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedCheckbox<int>(
@@ -69,10 +67,8 @@ void main() {
   });
 
   testWidgets("test disable function", (tester) async {
-    GroupController controller = GroupController(
-        isMultipleSelection: false,
-        initSelectedItem: [2]
-    );
+    GroupController controller =
+        GroupController(isMultipleSelection: false, initSelectedItem: [2]);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedCheckbox<int>(
@@ -100,10 +96,8 @@ void main() {
 
   testWidgets("test helperGroupTitle : false  simple SimpleGroupedCheckbox",
       (tester) async {
-        GroupController controller = GroupController(
-            isMultipleSelection: true,
-            initSelectedItem: []
-        );
+    GroupController controller =
+        GroupController(isMultipleSelection: true, initSelectedItem: []);
     var listValues = List.generate(5, (index) => index);
     await tester.pumpWidget(
       MaterialApp(
@@ -131,10 +125,8 @@ void main() {
   });
   testWidgets("test helperGroupTitle : true simple SimpleGroupedCheckbox",
       (tester) async {
-        GroupController controller = GroupController(
-            isMultipleSelection: true,
-            initSelectedItem: []
-        );
+    GroupController controller =
+        GroupController(isMultipleSelection: true, initSelectedItem: []);
     var listValues = List.generate(5, (index) => index);
     await tester.pumpWidget(
       MaterialApp(

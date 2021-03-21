@@ -240,7 +240,7 @@ class SimpleGroupedCheckboxState<T>
     if (widget.controller.isMultipleSelection) {
       return selectionsValue.value;
     }
-    return selectedValue.value;
+    return selectedValue.value as T;
   }
 
   @override

@@ -59,8 +59,6 @@ class SimpleGroupedChips<T> extends StatefulWidget {
 
   static SimpleGroupedChipsState? of<T>(BuildContext context,
       {bool nullOk = false}) {
-    assert(context != null);
-    assert(nullOk != null);
     final SimpleGroupedChipsState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedChipsState<T>>();
     if (nullOk || result != null) return result;
@@ -93,7 +91,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   }
 
   @override
-   selection() {
+  selection() {
     if (widget.controller.isMultipleSelection) {
       return selectionsValue.value;
     }
@@ -193,8 +191,8 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
       } else {
         if (selectedValue.value != widget.values[index]) {
           // TODO : find old selected and deselected
-          var valueListenerOldItem = notifierItems.firstWhereOrNull(
-              (element) => element.value.checked == true);
+          var valueListenerOldItem = notifierItems
+              .firstWhereOrNull((element) => element.value.checked == true);
           if (valueListenerOldItem != null) {
             Item oldItem = valueListenerOldItem.value.copy();
             int indexOldItem = notifierItems.indexOf(valueListenerOldItem);
