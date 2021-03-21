@@ -1,14 +1,6 @@
-import 'dart:collection';
-
 import '../common/custom_state_group.dart';
 
 typedef CustomListener = void Function(dynamic);
-
-class _ListenerEntry extends LinkedListEntry<_ListenerEntry> {
-  _ListenerEntry(this.listener);
-
-  final CustomListener listener;
-}
 
 /// CustomStateGroup to manage custom selection grouped
 ///
@@ -16,16 +8,20 @@ class _ListenerEntry extends LinkedListEntry<_ListenerEntry> {
 ///
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.
 class CustomGroupController {
-  late CustomStateGroup _customStateGroup;
+  CustomStateGroup? _customStateGroup;
 
   final List<dynamic> initSelectedItem;
   final bool isMultipleSelection;
   final List<CustomListener> listeners = [];
 
-  dynamic get selectedItem => _customStateGroup.selection();
+  dynamic get selectedItem => _customStateGroup!.selection();
 
+  /// add listener : to get  data changed directly
   void listen(CustomListener listener) {
-    listeners.add(listener);
+    if (_customStateGroup == null) listeners.add(listener);
+    else{
+      _addListener(listener);
+    }
   }
 
   CustomGroupController({
@@ -42,17 +38,27 @@ class CustomGroupController {
   void init(CustomStateGroup stateGroup) {
     this._customStateGroup = stateGroup;
     listeners.forEach((element) {
-      if (!isMultipleSelection) {
-        _customStateGroup.selectedListen(element);
-      } else {
-        _customStateGroup.selectionsListen(element);
-      }
+      _addListener(element);
     });
   }
 
-  void enabledItems(List<dynamic> items) =>
-      _customStateGroup.enabledItemsByValues(items);
+  void _addListener(CustomListener element) {
+     if (!isMultipleSelection) {
+      _customStateGroup!.selectedListen(element);
+    } else {
+      _customStateGroup!.selectionsListen(element);
+    }
+  }
 
+  /// enabledItems : to make items enabled
+  ///
+  /// [items] : (list) list of items that will be enabled
+  void enabledItems(List<dynamic> items) =>
+      _customStateGroup!.enabledItemsByValues(items);
+
+  /// enabledItems : to disabled specific  items by they values
+  ///
+  /// [items] : (list) list of items that will be disabled
   void disabledItems(List<dynamic> items) =>
-      _customStateGroup.disabledItemsByValues(items);
+      _customStateGroup!.disabledItemsByValues(items);
 }
