@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../../checkbox_grouped.dart';
 import 'item.dart';
 
 abstract class _CustomGroupInterface<T> {
@@ -25,6 +28,32 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
   ValueNotifier<List<K>> itemsSelections = ValueNotifier([]);
 
   late List<ValueNotifier<CustomItem<K>>> items;
+
+  final streamOneValue = StreamController<K>.broadcast(
+    sync: true,
+  );
+  final streamListValues = StreamController<List<K>>.broadcast(
+    sync: true,
+  );
+
+  void selectedListen(CustomListener listener) {
+    streamOneValue.stream.listen((data){
+      listener(data);
+    });
+  }
+
+  void selectionsListen(CustomListener listener) {
+    streamListValues.stream.listen((data){
+      listener(data);
+    });
+  }
+
+  @override
+  void dispose() {
+    streamOneValue.close();
+    streamListValues.close();
+    super.dispose();
+  }
 
   @override
   void enabledItemsByValues(List<K> itemsValues) {

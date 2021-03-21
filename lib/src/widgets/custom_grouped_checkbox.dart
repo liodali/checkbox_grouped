@@ -24,10 +24,10 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   final CustomGroupController controller;
   final Widget? groupTitle;
   final CustomIndexedWidgetBuilder itemBuilder;
-  final int itemCount;
-  final double itemExtent;
+  final double? itemExtent;
   final List<T> values;
-  final bool isGrid;
+  final bool _isGrid;
+  final bool isScroll;
   final SliverGridDelegate? gridDelegate;
 
   CustomGroupedCheckbox({
@@ -35,11 +35,10 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
     required this.controller,
     this.groupTitle,
     required this.itemBuilder,
-    required this.itemCount,
     required this.values,
-    this.itemExtent = 50.0,
-  })  : assert(itemCount > 0),
-        this.isGrid = false,
+    this.isScroll = false,
+    this.itemExtent,
+  })  : this._isGrid = false,
         this.gridDelegate = null,
         super(key: key);
 
@@ -51,11 +50,10 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
         const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
     ),
+    this.isScroll = false,
     required this.itemBuilder,
-    required this.itemCount,
     required this.values,
-  })   : assert(itemCount > 0),
-        this.isGrid = true,
+  })   : this._isGrid = true,
         this.gridDelegate = gridDelegate,
         this.itemExtent = 0.0,
         super(key: key);
@@ -69,7 +67,7 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   }) {
     final CustomGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<CustomGroupedCheckboxState<T>>();
-    if (result != null) return result.widget.controller;
+    if (nullOk || result != null) return result!.widget.controller;
     throw FlutterError.fromParts(<DiagnosticsNode>[
       ErrorSummary(
           'CustomGroupedCheckbox.of() called with a context that does not contain an CustomGroupedCheckbox.'),
@@ -94,6 +92,11 @@ class CustomGroupedCheckboxState<T>
           (CustomItem(data: v, checked: false, isDisabled: false))));
     });
     widget.controller.init(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -123,16 +126,20 @@ class CustomGroupedCheckboxState<T>
       );
     };
     Widget child = ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
+      physics: widget.isScroll
+          ? AlwaysScrollableScrollPhysics()
+          : NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       itemBuilder: builder,
       itemCount: items.length,
       itemExtent: widget.itemExtent,
     );
-    if (widget.isGrid) {
+    if (widget._isGrid) {
       child = GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: widget.isScroll
+            ? AlwaysScrollableScrollPhysics()
+            : NeverScrollableScrollPhysics(),
         gridDelegate: widget.gridDelegate!,
         itemBuilder: builder,
         itemCount: items.length,
@@ -167,6 +174,7 @@ class CustomGroupedCheckboxState<T>
         }
       }
       items[index].value = items[index].value.copy(checked: value);
+     if(streamListValues.hasListener) streamListValues.add(itemsSelections.value);
     } else {
       if (value) {
         if (itemSelected.value != null) {
@@ -179,6 +187,7 @@ class CustomGroupedCheckboxState<T>
         itemSelected.value = widget.values[index];
         items[index].value = items[index].value.copy(checked: value);
       }
+      if (streamOneValue.hasListener) streamOneValue.add(itemSelected.value);
     }
   }
 
@@ -208,7 +217,10 @@ class _ItemWidget extends StatelessWidget {
       onTap: () {
         callback!(!value!);
       },
-      child: child,
+      child: AbsorbPointer(
+        absorbing: true,
+        child: child,
+      ),
     );
   }
 }
