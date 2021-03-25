@@ -1,3 +1,4 @@
+## [1.1.0-nullsafety.1] - change gif example
 ## [1.1.0-nullsafety.0] - grid custom grouped checkbox
 * add grid custom grouped checkbox
 * add `listen` method to add listener in changed data in real time
