@@ -272,6 +272,9 @@ class SimpleGroupedCheckboxState<T>
       //_items[index].checked = v;
 
       item.checked = value;
+      if (streamListValues.hasListener) {
+        streamListValues.add(selection());
+      }
     } else {
       selectedValue.value = value;
       var notifierPrevious =
@@ -291,6 +294,9 @@ class SimpleGroupedCheckboxState<T>
     }
     notifierItems[index].value = item;
     if (widget.onItemSelected != null) widget.onItemSelected!(selection());
+    if (streamOneValue.hasListener) {
+      streamOneValue.add(selection());
+    }
   }
 }
 
