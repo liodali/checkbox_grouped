@@ -114,6 +114,9 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
         selectionsValue.value = List.from(selectionsValue.value)
           ..add(widget.values[index]);
       }
+      if (streamListValues.hasListener) {
+        streamListValues.add(selection());
+      }
     } else {
       if (!item.checked! && value) {
         notifierItems[index].value = item.copy(checked: value);
@@ -132,6 +135,9 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
         }
       }
       if (widget.onItemSelected != null) widget.onItemSelected!(selection());
+      if (streamOneValue.hasListener) {
+        streamOneValue.add(selection());
+      }
     }
   }
 

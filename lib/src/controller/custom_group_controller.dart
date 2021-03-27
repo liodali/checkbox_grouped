@@ -1,6 +1,7 @@
+import '../common/utilities.dart';
+
 import '../common/custom_state_group.dart';
 
-typedef CustomListener = void Function(dynamic);
 
 /// CustomStateGroup to manage custom selection grouped
 ///
@@ -16,14 +17,7 @@ class CustomGroupController {
 
   dynamic get selectedItem => _customStateGroup!.selection();
 
-  /// add listener : to get  data changed directly
-  void listen(void Function(dynamic) listener) {
-    if (_customStateGroup == null)
-      _listeners.add(listener);
-    else {
-      _addListener(listener);
-    }
-  }
+
 
   CustomGroupController({
     this.isMultipleSelection = false,
@@ -32,9 +26,8 @@ class CustomGroupController {
         this.initSelectedItem = [initSelectedItem];
 
   CustomGroupController.multiple({
-    this.isMultipleSelection = true,
     this.initSelectedItem = const [],
-  });
+  }) : this.isMultipleSelection = true;
 
   void init(CustomStateGroup stateGroup) {
     this._customStateGroup = stateGroup;
@@ -42,7 +35,14 @@ class CustomGroupController {
       _addListener(element);
     });
   }
-
+  /// add listener : to get  data changed directly
+  void listen(void Function(dynamic) listener) {
+    if (_customStateGroup == null)
+      _listeners.add(listener);
+    else {
+      _addListener(listener);
+    }
+  }
   void _addListener(CustomListener element) {
     if (!isMultipleSelection) {
       _customStateGroup!.selectedListen(element);

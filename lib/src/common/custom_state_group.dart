@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../checkbox_grouped.dart';
 import 'item.dart';
+import 'utilities.dart';
 
 abstract class _CustomGroupInterface<T> {
   /// enable the Items of the list of selection value

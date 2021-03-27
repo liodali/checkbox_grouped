@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'item.dart';
+import 'utilities.dart';
 
 /// class [GroupInterface] : abstract class that contain basic function of StateGroup
 abstract class _GroupInterface {
@@ -28,12 +31,42 @@ abstract class _GroupInterface {
 
 abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     with _GroupInterface {
+
+
+
   late ValueNotifier<K?> selectedValue;
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
   List<Item> items = [];
   ValueNotifier<bool?> valueTitle = ValueNotifier(false);
   List<K> values = [];
+
+ late final  StreamController streamOneValue  = StreamController<K>.broadcast(
+   sync: true,
+ );
+
+  late final StreamController streamListValues = StreamController<List<K>>.broadcast(
+    sync: true,
+  );
+
+  void selectedListen(CustomListener listener) {
+    streamOneValue.stream.listen((data) {
+      listener(data);
+    });
+  }
+
+  void selectionsListen(CustomListener listener) {
+    streamListValues.stream.listen((data) {
+      listener(data);
+    });
+  }
+
+  @override
+  void dispose() {
+    streamOneValue.close();
+    streamListValues.close();
+    super.dispose();
+  }
 
   @protected
   void init({

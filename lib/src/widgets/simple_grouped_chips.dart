@@ -1,10 +1,10 @@
-import '../../checkbox_grouped.dart';
-import '../common/item.dart';
-import 'simple_grouped_checkbox.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 
+import '../../checkbox_grouped.dart';
+import '../common/item.dart';
 import '../common/state_group.dart';
+import 'simple_grouped_checkbox.dart';
 
 ///  [controller] : A list of values that you want to be initially selected.
 ///  [preSelection] : A list of values that you want to be initially selected.
@@ -188,6 +188,9 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         if (widget.onItemSelected != null) {
           widget.onItemSelected!(selectionsValue.value);
         }
+        if (streamListValues.hasListener) {
+          streamListValues.add(selection());
+        }
       } else {
         if (selectedValue.value != widget.values[index]) {
           // TODO : find old selected and deselected
@@ -206,6 +209,9 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
           if (widget.onItemSelected != null) {
             widget.onItemSelected!(widget.values[index]);
           }
+          if (streamOneValue.hasListener) {
+            streamOneValue.add(selection());
+          }
         }
       }
     } else {
@@ -216,6 +222,9 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         notifierItems[index].value = _item;
         if (widget.onItemSelected != null) {
           widget.onItemSelected!(selectionsValue.value);
+        }
+        if (streamListValues.hasListener) {
+          streamListValues.add(selection());
         }
       }
     }
