@@ -1,3 +1,5 @@
+## [1.2.0-nullsafety.0] - add listener to groupController
+* create new method `listen` to get selected value from controller out side of widget
 ## [1.1.0-nullsafety.1] - change gif example
 ## [1.1.0-nullsafety.0] - grid custom grouped checkbox
 * add grid custom grouped checkbox

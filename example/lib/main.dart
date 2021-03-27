@@ -145,6 +145,7 @@ class _SimpleGrouped extends StatelessWidget {
       isMultipleSelection: true,
       initSelectedItem: [2, 5, 4],
     );
+
     return SingleChildScrollView(
       controller: ScrollController(),
       child: Column(
