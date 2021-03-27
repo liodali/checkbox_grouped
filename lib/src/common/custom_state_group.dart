@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../checkbox_grouped.dart';
 import 'item.dart';
 import 'utilities.dart';
 

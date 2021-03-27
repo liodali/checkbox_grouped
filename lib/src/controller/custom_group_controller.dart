@@ -9,13 +9,13 @@ import '../common/custom_state_group.dart';
 ///
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.
 class CustomGroupController {
-  CustomStateGroup? _customStateGroup;
+  late CustomStateGroup _customStateGroup;
 
   final List<dynamic> initSelectedItem;
   final bool isMultipleSelection;
   final List<CustomListener> _listeners = [];
 
-  dynamic get selectedItem => _customStateGroup!.selection();
+  dynamic get selectedItem => _customStateGroup.selection();
 
 
 
@@ -37,17 +37,17 @@ class CustomGroupController {
   }
   /// add listener : to get  data changed directly
   void listen(void Function(dynamic) listener) {
-    if (_customStateGroup == null)
-      _listeners.add(listener);
-    else {
+    try {
       _addListener(listener);
+    }catch(LateInitializationError) {
+      _listeners.add(listener);
     }
   }
   void _addListener(CustomListener element) {
     if (!isMultipleSelection) {
-      _customStateGroup!.selectedListen(element);
+      _customStateGroup.selectedListen(element);
     } else {
-      _customStateGroup!.selectionsListen(element);
+      _customStateGroup.selectionsListen(element);
     }
   }
 
@@ -55,11 +55,11 @@ class CustomGroupController {
   ///
   /// [items] : (list) list of items that will be enabled
   void enabledItems(List<dynamic> items) =>
-      _customStateGroup!.enabledItemsByValues(items);
+      _customStateGroup.enabledItemsByValues(items);
 
   /// enabledItems : to disabled specific  items by they values
   ///
   /// [items] : (list) list of items that will be disabled
   void disabledItems(List<dynamic> items) =>
-      _customStateGroup!.disabledItemsByValues(items);
+      _customStateGroup.disabledItemsByValues(items);
 }
