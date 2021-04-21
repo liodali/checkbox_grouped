@@ -5,6 +5,7 @@ import '../controller/list_group_controller.dart';
 import 'simple_grouped_checkbox.dart';
 
 typedef onGroupChanged<T> = void Function(dynamic selected);
+enum GroupedType { Chips, Switch, Default }
 
 /// display  simple groupedCheckbox
 /// [controller] :  (required) List Group Controller to recuperate selection
@@ -22,12 +23,14 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<String> subTitles;
   final List<List<T>> disabledValues;
   final onGroupChanged<T>? onSelectedGroupChanged;
+  final Map<int, GroupedType>? mapItemGroupedType;
 
   ListGroupedCheckbox({
     required this.controller,
     required this.titles,
     required this.groupTitles,
     required this.values,
+    this.mapItemGroupedType,
     this.subTitles = const [],
     this.onSelectedGroupChanged,
     this.disabledValues = const [],
@@ -115,6 +118,12 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
       addAutomaticKeepAlives: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
+        if(widget.mapItemGroupedType != null
+            && widget.mapItemGroupedType!.isNotEmpty){
+          if(widget.mapItemGroupedType!.containsKey(index)){
+            
+          }
+        }
         return SimpleGroupedCheckbox<T>(
           controller: listControllers[index],
           itemsTitle: widget.titles[index],

@@ -7,8 +7,6 @@ import '../common/state_group.dart';
 import 'simple_grouped_checkbox.dart';
 
 ///  [controller] : A list of values that you want to be initially selected.
-///  [preSelection] : A list of values that you want to be initially selected.
-///  [isMultiple] : enable multiple selection
 ///  [isScrolling] : enable horizontal scrolling
 ///  [backgroundColorItem] : the background color for each item
 ///  [selectedColorItem] : the background color to use when item is  selected
@@ -193,12 +191,10 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         }
       } else {
         if (selectedValue.value != widget.values[index]) {
-          // TODO : find old selected and deselected
-          var valueListenerOldItem = notifierItems
-              .firstWhereOrNull((element) => element.value.checked == true);
-          if (valueListenerOldItem != null) {
-            Item oldItem = valueListenerOldItem.value.copy();
-            int indexOldItem = notifierItems.indexOf(valueListenerOldItem);
+          var indexOldItem = notifierItems
+              .indexWhere((element) => element.value.checked == true);
+          if (indexOldItem != -1) {
+            Item oldItem = notifierItems[indexOldItem].value.copy();
             oldItem.checked = false;
             notifierItems[indexOldItem].value = oldItem;
           }
@@ -228,26 +224,6 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         }
       }
     }
-  }
-
-  @override
-  void disabledItemsByTitles(List<String> items) {
-    // TODO: implement disabledItemsByTitles
-  }
-
-  @override
-  void disabledItemsByValues(List itemsValues) {
-    // TODO: implement disabledItemsByValues
-  }
-
-  @override
-  void enabledItemsByTitles(List<String> items) {
-    // TODO: implement enabledItemsByTitles
-  }
-
-  @override
-  void enabledItemsByValues(List itemsValues) {
-    // TODO: implement enabledItemsByValues
   }
 }
 
