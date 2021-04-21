@@ -158,8 +158,80 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                   )
                 ],
               );
+            } else if (widget.mapItemGroupedType![index] ==
+                GroupedType.Switch) {
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(
+                      widget.groupTitles[index],
+                    ),
+                  ),
+                  SimpleGroupedChips<T>(
+                    controller: listControllers[index],
+                    itemTitle: widget.titles[index],
+                    values: widget.values[index] as List<T>,
+                    isScrolling: widget.chipsStyle.isScrolling,
+                    backgroundColorItem: widget.chipsStyle.backgroundColorItem,
+                    disabledColor: widget.chipsStyle.disabledColor,
+                    selectedColorItem: widget.chipsStyle.selectedColorItem,
+                    selectedIcon: widget.chipsStyle.selectedIcon,
+                    selectedTextColor: widget.chipsStyle.selectedTextColor,
+                    textColor: widget.chipsStyle.textColor,
+                    onItemSelected: widget.onSelectedGroupChanged != null
+                        ? (selection) async {
+                            final list = await getAllValues();
+                            widget.onSelectedGroupChanged!(list);
+                          }
+                        : null,
+                  )
+                ],
+              );
             }
           }
+          return Column(
+            children: [
+              ListTile(
+                title: Text(
+                  widget.groupTitles[index],
+                ),
+              ),
+              if (widget.mapItemGroupedType![index] == GroupedType.Chips) ...[
+                SimpleGroupedChips<T>(
+                  controller: listControllers[index],
+                  itemTitle: widget.titles[index],
+                  values: widget.values[index] as List<T>,
+                  isScrolling: widget.chipsStyle.isScrolling,
+                  backgroundColorItem: widget.chipsStyle.backgroundColorItem,
+                  disabledColor: widget.chipsStyle.disabledColor,
+                  selectedColorItem: widget.chipsStyle.selectedColorItem,
+                  selectedIcon: widget.chipsStyle.selectedIcon,
+                  selectedTextColor: widget.chipsStyle.selectedTextColor,
+                  textColor: widget.chipsStyle.textColor,
+                  onItemSelected: widget.onSelectedGroupChanged != null
+                      ? (selection) async {
+                          final list = await getAllValues();
+                          widget.onSelectedGroupChanged!(list);
+                        }
+                      : null,
+                )
+              ] else if (widget.mapItemGroupedType![index] ==
+                  GroupedType.Switch) ...[
+                SimpleGroupedSwitch<T>(
+                  controller: listControllers[index],
+                  itemsTitle: widget.titles[index],
+                  values: widget.values[index] as List<T>,
+                  activeColor: Theme.of(context).primaryColor,
+                  onItemSelected: widget.onSelectedGroupChanged != null
+                      ? (selection) async {
+                          final list = await getAllValues();
+                          widget.onSelectedGroupChanged!(list);
+                        }
+                      : null,
+                )
+              ]
+            ],
+          );
         }
         return SimpleGroupedCheckbox<T>(
           controller: listControllers[index],
