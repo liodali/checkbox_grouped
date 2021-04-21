@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 
+import '../../checkbox_grouped.dart';
+import '../common/utilities.dart';
 import '../controller/group_controller.dart';
 import '../controller/list_group_controller.dart';
 import 'simple_grouped_checkbox.dart';
 
-typedef onGroupChanged<T> = void Function(dynamic selected);
-enum GroupedType { Chips, Switch, Default }
-
 /// display  simple groupedCheckbox
-/// [controller] :  (required) List Group Controller to recuperate selection
-/// [titles] :  (required) A list of strings that describes each checkbox group
-/// [values] : list of values in each group
-/// [onSelectedGroupChanged] : callback to get selected items,it fred when the user selected items or deselect items
-/// [subTitles] : A list of strings that describes second Text
-/// [groupTitles] : Text Widget that describe Title of group checkbox
-/// [disabledValues] : specifies which item should be disabled
+/// [controller]              :  (required) List Group Controller to recuperate selection
+///
+/// [titles]                  :  (required) A list of strings that describes each checkbox group
+///
+/// [values]                  : list of values in each group
+///
+/// [onSelectedGroupChanged]  : callback to get selected items,it fred when the user selected items or deselect items
+///
+/// [subTitles]               : A list of strings that describes second Text
+///
+/// [groupTitles]             : Text Widget that describe Title of group checkbox
+///
+/// [disabledValues]          : specifies which item should be disabled
+///
+/// [mapItemGroupedType]      : (Map) to define type each item in list (chip,switch,default)
 class ListGroupedCheckbox<T> extends StatefulWidget {
   final ListGroupController controller;
   final List<List<T>> values;
@@ -24,12 +31,14 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<List<T>> disabledValues;
   final onGroupChanged<T>? onSelectedGroupChanged;
   final Map<int, GroupedType>? mapItemGroupedType;
+  final ChipsStyle chipsStyle;
 
   ListGroupedCheckbox({
     required this.controller,
     required this.titles,
     required this.groupTitles,
     required this.values,
+    this.chipsStyle = const ChipsStyle(),
     this.mapItemGroupedType,
     this.subTitles = const [],
     this.onSelectedGroupChanged,
@@ -118,10 +127,38 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
       addAutomaticKeepAlives: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
-        if(widget.mapItemGroupedType != null
-            && widget.mapItemGroupedType!.isNotEmpty){
-          if(widget.mapItemGroupedType!.containsKey(index)){
-            
+        if (widget.mapItemGroupedType != null &&
+            widget.mapItemGroupedType!.isNotEmpty) {
+          if (widget.mapItemGroupedType!.containsKey(index)) {
+            if (widget.mapItemGroupedType![index] == GroupedType.Chips) {
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(
+                      widget.groupTitles[index],
+                    ),
+                  ),
+                  SimpleGroupedChips<T>(
+                    controller: listControllers[index],
+                    itemTitle: widget.titles[index],
+                    values: widget.values[index] as List<T>,
+                    isScrolling: widget.chipsStyle.isScrolling,
+                    backgroundColorItem: widget.chipsStyle.backgroundColorItem,
+                    disabledColor: widget.chipsStyle.disabledColor,
+                    selectedColorItem: widget.chipsStyle.selectedColorItem,
+                    selectedIcon: widget.chipsStyle.selectedIcon,
+                    selectedTextColor: widget.chipsStyle.selectedTextColor,
+                    textColor: widget.chipsStyle.textColor,
+                    onItemSelected: widget.onSelectedGroupChanged != null
+                        ? (selection) async {
+                            final list = await getAllValues();
+                            widget.onSelectedGroupChanged!(list);
+                          }
+                        : null,
+                  )
+                ],
+              );
+            }
           }
         }
         return SimpleGroupedCheckbox<T>(

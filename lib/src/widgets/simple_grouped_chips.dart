@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 
 import '../../checkbox_grouped.dart';
@@ -26,7 +25,7 @@ class SimpleGroupedChips<T> extends StatefulWidget {
   final Color selectedColorItem;
   final Color textColor;
   final Color selectedTextColor;
-  final IconData selectedIcon;
+  final IconData? selectedIcon;
   final List<T> values;
   final List<String> itemTitle;
   final List<String>? disabledItems;
@@ -112,10 +111,12 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
                     onSelection: (v) {
                       changeSelection(i, v);
                     },
-                    selectedIcon: Icon(
-                      widget.selectedIcon,
-                      color: widget.selectedTextColor,
-                    ),
+                    selectedIcon: widget.selectedIcon != null
+                        ? Icon(
+                            widget.selectedIcon,
+                            color: widget.selectedTextColor,
+                          )
+                        : null,
                     isSelected: item.checked,
                     label: Text(
                       "${item.title}",
@@ -150,10 +151,12 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
                 onSelection: (v) {
                   changeSelection(i, v);
                 },
-                selectedIcon: Icon(
-                  widget.selectedIcon,
-                  color: widget.selectedTextColor,
-                ),
+                selectedIcon: widget.selectedIcon != null
+                    ? Icon(
+                        widget.selectedIcon,
+                        color: widget.selectedTextColor,
+                      )
+                    : null,
                 isSelected: item.checked,
                 label: Text(
                   "${item.title}",
@@ -234,11 +237,11 @@ class _ChoiceChipsWidget extends StatelessWidget {
   final Icon? selectedIcon;
   final Function(bool)? onSelection;
   final bool? isSelected;
-  final Widget? label;
+  final Widget label;
   final Widget? avatar;
 
   _ChoiceChipsWidget({
-    this.label,
+    required this.label,
     this.avatar,
     this.onSelection,
     this.isSelected,
@@ -252,11 +255,13 @@ class _ChoiceChipsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
-      label: label!,
+      label: label,
       avatar: avatar != null
           ? avatar
           : isSelected!
-              ? selectedIcon
+              ? selectedIcon != null
+                  ? selectedIcon
+                  : null
               : null,
       selectedColor: selectedColorItem,
       backgroundColor: backgroundColorItem,
