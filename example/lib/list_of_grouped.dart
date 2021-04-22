@@ -12,11 +12,18 @@ class ListOfGrouped extends StatefulWidget {
 
 class _ListOfGroupedState extends State<ListOfGrouped> {
   ListGroupController controller;
+
   @override
   void initState() {
     super.initState();
     controller = ListGroupController(
-      isMultipleSelectionPerGroup: [true, false, true],
+      isMultipleSelectionPerGroup: [
+        false,
+        false,
+        true,
+        true,
+        true,
+      ],
     );
   }
 
@@ -27,16 +34,20 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
         children: [
           ListGroupedCheckbox<String>(
             controller: controller,
-            groupTitles: List.generate(3, (index) => "groupe $index"),
+            groupTitles: List.generate(5, (index) => "groupe $index"),
             values: List.generate(
-              3,
+              5,
               (i) =>
                   List.generate(5, (j) => "${(i + Random().nextInt(100)) * j}"),
             ),
             titles: List.generate(
-              3,
+              5,
               (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
+            mapItemGroupedType: {
+              1: GroupedType.Chips,
+              2: GroupedType.Switch,
+            },
             onSelectedGroupChanged: (list) {
               print(list);
             },
