@@ -180,6 +180,7 @@ class SimpleGroupedCheckboxState<T>
             title: widget.groupTitle,
             titleStyle: widget.groupTitleStyle,
             isMultiSelection: widget.controller.isMultipleSelection,
+            alignment: widget.groupTitleAlignment,
             checkboxTitle: widget.helperGroupTitle
                 ? ValueListenableBuilder(
                     valueListenable: valueTitle,
@@ -304,14 +305,14 @@ class _TitleGroupedCheckbox extends StatelessWidget {
   final String? title;
   final TextStyle? titleStyle;
   final AlignmentGeometry alignment;
-  final bool? isMultiSelection;
+  final bool isMultiSelection;
   final VoidCallback? callback;
   final Widget? checkboxTitle;
 
   _TitleGroupedCheckbox({
     this.title,
     this.titleStyle,
-    this.isMultiSelection,
+    required this.isMultiSelection,
     this.callback,
     this.checkboxTitle,
     this.alignment = Alignment.center,
@@ -320,17 +321,16 @@ class _TitleGroupedCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleWidget = Text(
-      title!,
-      style: titleStyle ??
-          TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-    );
-    if (isMultiSelection! && title != null && checkboxTitle != null) {
+    if (isMultiSelection && title != null && checkboxTitle != null) {
       return ListTile(
-        title: titleWidget,
+        title: Text(
+          title!,
+          style: titleStyle ??
+              TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
         onTap: () {
           callback!();
         },
@@ -344,18 +344,21 @@ class _TitleGroupedCheckbox extends StatelessWidget {
       );
     }
     if (title != null)
-      return Align(
-        alignment: alignment,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 5.0,
-            right: 5.0,
+      return ListTile(
+        title: Align(
+          alignment: alignment,
+          child:  Text(
+            title!,
+            style: titleStyle ??
+                TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          child: titleWidget,
         ),
       );
 
-    return Container();
+    return SizedBox.shrink();
   }
 }
 
