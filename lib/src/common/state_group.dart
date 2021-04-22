@@ -31,9 +31,6 @@ abstract class _GroupInterface {
 
 abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     with _GroupInterface {
-
-
-
   late ValueNotifier<K?> selectedValue;
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
@@ -41,11 +38,12 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   ValueNotifier<bool?> valueTitle = ValueNotifier(false);
   List<K> values = [];
 
- late final  StreamController streamOneValue  = StreamController<K>.broadcast(
-   sync: true,
- );
+  late final StreamController streamOneValue = StreamController<K>.broadcast(
+    sync: true,
+  );
 
-  late final StreamController streamListValues = StreamController<List<K>>.broadcast(
+  late final StreamController streamListValues =
+      StreamController<List<K>>.broadcast(
     sync: true,
   );
 

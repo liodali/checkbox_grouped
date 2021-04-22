@@ -1,3 +1,6 @@
+## [1.3.0] - show different type of groupd checkbox in list grouped
+* show  multiple type (chips,switch,(radio/checkbox)) inside list of grouped
+* fix bugs
 ## [1.2.0-nullsafety.0] - add listener to groupController
 * create new method `listen` to get selected value from controller out side of widget
 ## [1.1.0-nullsafety.1] - change gif example

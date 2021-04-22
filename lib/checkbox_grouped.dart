@@ -11,3 +11,4 @@ export 'src/widgets/simple_grouped_checkbox.dart'
     hide SimpleGroupedCheckboxState;
 export 'src/widgets/simple_grouped_chips.dart' hide SimpleGroupedChipsState;
 export 'src/widgets/simple_grouped_switch.dart' hide SimpleGroupedSwitchState;
+export 'src/common/utilities.dart';

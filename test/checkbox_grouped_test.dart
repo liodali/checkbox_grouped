@@ -104,7 +104,7 @@ void main() {
         home: Scaffold(
           body: SimpleGroupedCheckbox<int>(
             controller: controller,
-            itemsTitle: List.generate(5, (index) => "$index"),
+            itemsTitle: List.generate(5, (index) => "name $index"),
             values: listValues,
             groupTitle: "group test",
             activeColor: Colors.green,
@@ -116,17 +116,19 @@ void main() {
       ),
     );
     await tester.pump();
-    final listTiles = tester.elementList(find.byType(ListTile));
+    final listTiles = tester.elementList(find.byType(CheckboxListTile));
 
     expect(listTiles.length, listValues.length);
-    await tester.tap(find.byType(ListTile).first);
+    await tester.tap(find.byType(CheckboxListTile).first);
     await tester.pump();
     expect(controller.selectedItem, [listValues.first]);
   });
   testWidgets("test helperGroupTitle : true simple SimpleGroupedCheckbox",
       (tester) async {
-    GroupController controller =
-        GroupController(isMultipleSelection: true, initSelectedItem: []);
+    GroupController controller = GroupController(
+      isMultipleSelection: true,
+      initSelectedItem: [],
+    );
     var listValues = List.generate(5, (index) => index);
     await tester.pumpWidget(
       MaterialApp(
@@ -146,9 +148,9 @@ void main() {
     );
     await tester.pump();
     //tester.allElements;
-    final listTiles = tester.elementList(find.byType(ListTile));
+    final listTiles = tester.elementList(find.byType(CheckboxListTile));
 
-    expect(listTiles.length, listValues.length + 1);
+    expect(listTiles.length, listValues.length);
     await tester.tap(find.byType(ListTile).first);
     await tester.pump();
     expect(controller.selectedItem, listValues);
