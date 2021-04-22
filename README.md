@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.2.0--nullsafety.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.3.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.2.0-nullsafety.0
+		checkbox_grouped: ^1.3.0
 
 
 
@@ -396,6 +396,9 @@ final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
                           3,
                           (i) => List.generate(5, (j) => "Title:$i-$j"),
                         ),
+                        mapItemGroupedType: {
+                          1: GroupedType.Chips,
+                        },
                       )
 ```
 
@@ -410,6 +413,9 @@ final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
 |`subTitles`                          | A list of list strings that describes second Text in each groupedChckbox.   |
 |`onSelectedGroupChanged`             | CallBack to get all selected items when users  make select new items or deselect items  |
 |`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
+|`titleGroupedAlignment`              | (Alignment) align text title of each group of checkbox  |
+|`titleGroupedTextStyle`              | (TextStyle) style text title of each group   |
+|`mapItemGroupedType`                 | (Map) define type of each group can be chips/switch/(checkbox or radio)  |
 
 ------------------
 MIT Licences

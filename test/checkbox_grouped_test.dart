@@ -104,7 +104,7 @@ void main() {
         home: Scaffold(
           body: SimpleGroupedCheckbox<int>(
             controller: controller,
-            itemsTitle: List.generate(5, (index) => "$index"),
+            itemsTitle: List.generate(5, (index) => "name $index"),
             values: listValues,
             groupTitle: "group test",
             activeColor: Colors.green,
@@ -116,10 +116,10 @@ void main() {
       ),
     );
     await tester.pump();
-    final listTiles = tester.elementList(find.byType(ListTile));
+    final listTiles = tester.elementList(find.byType(CheckboxListTile));
 
     expect(listTiles.length, listValues.length);
-    await tester.tap(find.byType(ListTile).first);
+    await tester.tap(find.byType(CheckboxListTile).first);
     await tester.pump();
     expect(controller.selectedItem, [listValues.first]);
   });

@@ -347,7 +347,7 @@ class _TitleGroupedCheckbox extends StatelessWidget {
       return ListTile(
         title: Align(
           alignment: alignment,
-          child:  Text(
+          child: Text(
             title!,
             style: titleStyle ??
                 TextStyle(

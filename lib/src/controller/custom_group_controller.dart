@@ -2,7 +2,6 @@ import '../common/utilities.dart';
 
 import '../common/custom_state_group.dart';
 
-
 /// CustomStateGroup to manage custom selection grouped
 ///
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
@@ -16,8 +15,6 @@ class CustomGroupController {
   final List<CustomListener> _listeners = [];
 
   dynamic get selectedItem => _customStateGroup.selection();
-
-
 
   CustomGroupController({
     this.isMultipleSelection = false,
@@ -35,14 +32,16 @@ class CustomGroupController {
       _addListener(element);
     });
   }
+
   /// add listener : to get  data changed directly
   void listen(void Function(dynamic) listener) {
     try {
       _addListener(listener);
-    }catch(LateInitializationError) {
+    } catch (LateInitializationError) {
       _listeners.add(listener);
     }
   }
+
   void _addListener(CustomListener element) {
     if (!isMultipleSelection) {
       _customStateGroup.selectedListen(element);
