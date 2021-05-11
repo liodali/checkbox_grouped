@@ -60,4 +60,15 @@ class GroupController implements BaseController {
   @override
   void disabledItemsByValues(List<dynamic> itemsValues) =>
       _widgetState.disabledItemsByValues(itemsValues);
+
+  @override
+  void disableALL() {
+    _widgetState.disableAll();
+  }
+
+  @override
+  void enableAll() {
+    _widgetState.enableAll();
+
+  }
 }
