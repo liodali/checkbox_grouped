@@ -184,7 +184,24 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
       return items[indexOfItem].title;
     }).toList();
   }
-
+  void enableAll(){
+    notifierItems.forEach((notifierItem) {
+      var index = notifierItems.indexOf(notifierItem);
+      Item item = notifierItem.value.copy(
+          isDisabled: true
+      );
+      notifierItems[index].value = item;
+    });
+  }
+  void disableAll(){
+    notifierItems.forEach((notifierItem) {
+      var index = notifierItems.indexOf(notifierItem);
+      Item item = notifierItem.value.copy(
+          isDisabled: false
+      );
+      notifierItems[index].value = item;
+    });
+  }
   void _itemStatus(List<String?> items, bool isDisabled) {
     notifierItems
         .where((element) => items.contains(element.value.title))
@@ -192,11 +209,9 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
         .asMap()
         .forEach((key, notifierItem) {
       var index = notifierItems.indexOf(notifierItem);
-      Item item = Item(
-          isDisabled: notifierItem.value.isDisabled,
-          checked: notifierItem.value.checked,
-          title: notifierItem.value.title);
-      item.isDisabled = isDisabled;
+      Item item = notifierItem.value.copy(
+        isDisabled: isDisabled
+      );
       notifierItems[index].value = item;
     });
   }
