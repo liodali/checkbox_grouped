@@ -6,7 +6,7 @@ import '../widgets/list_grouped_checkbox.dart';
 /// [isMultipleSelectionPerGroup] : (List<bool>) enable multiple selection  in each grouped checkbox.
 /// [initSelectedValues] : (List) A Initialize list of values on each group of checkbox that will be selected in group.
 
-class ListGroupController implements BaseController{
+class ListGroupController implements BaseListController {
   final List<bool> isMultipleSelectionPerGroup;
   final List<List<dynamic>> initSelectedValues;
   late ListGroupedCheckboxState _state;
@@ -27,24 +27,32 @@ class ListGroupController implements BaseController{
   }
 
   @override
-  void disabledItemsByTitles(List<String> items) {
-    // TODO: implement disabledItemsByTitles
+  void disableALL(int index) {
+    _state.listControllers[index].disableALL();
   }
 
   @override
-  void disabledItemsByValues(List itemsValues) {
-    // TODO: implement disabledItemsByValues
+  void disabledItemsByTitles(int index, List<String> items) {
+    _state.listControllers[index].disabledItemsByTitles(items);
   }
 
   @override
-  void enabledItemsByTitles(List<String> items) {
-    // TODO: implement enabledItemsByTitles
+  void disabledItemsByValues(int index, List itemsValues) {
+    _state.listControllers[index].disabledItemsByValues(itemsValues);
   }
 
   @override
-  void enabledItemsByValues(List itemsValues) {
-    // TODO: implement enabledItemsByValues
+  void enableAll(int index) {
+    _state.listControllers[index].enableAll();
   }
 
+  @override
+  void enabledItemsByTitles(int index, List<String> items) {
+    _state.listControllers[index].enabledItemsByTitles(items);
+  }
 
+  @override
+  void enabledItemsByValues(int index, List itemsValues) {
+    _state.listControllers[index].enabledItemsByValues(itemsValues);
+  }
 }
