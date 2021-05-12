@@ -75,4 +75,43 @@ void main() async {
     expect(list,  []);
 
   });
+
+  testWidgets("test enableByValues and disableByValues list grouped ", (tester) async {
+    ListGroupController controller = ListGroupController(
+      isMultipleSelectionPerGroup: [true, false, true],
+    );
+    var values = List.generate(
+      3,
+          (i) =>
+          List.generate(5, (j) => "${(i + Random().nextInt(100)) * j}"),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: ListGroupedCheckbox(
+            controller: controller,
+            groupTitles: List.generate(3, (index) => "groupe $index"),
+            values: values,
+            titles: List.generate(
+              3,
+                  (i) => List.generate(5, (j) => "Title:$i-$j"),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    controller.disabledItemsByValues(0,[values[0][1]]);
+    await tester.pump();
+    await tester.tap(find.byType(CheckboxListTile).at(1));
+    var list = await controller.allSelectedItems;
+    expect(list,  []);
+    controller.enabledItemsByValues(0,[values[0][1]]);
+    await tester.pump();
+    await tester.tap(find.byType(CheckboxListTile).at(1));
+    list = await controller.allSelectedItems;
+    expect(list,  [values[0][1]]);
+
+  });
 }
