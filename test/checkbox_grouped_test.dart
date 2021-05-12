@@ -180,4 +180,39 @@ void main() {
     await tester.tap(finder);
     expect(controller.selectedItem, 3);
   });
+  testWidgets("test enableAll and disableAll GroupController single selection", (tester) async {
+    GroupController controller = GroupController();
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SimpleGroupedCheckbox<int>(
+          controller: controller,
+          itemsTitle: List.generate(10, (index) => "${index + 1}"),
+          values: List.generate(10, (index) => index + 1),
+          activeColor: Colors.red,
+          checkFirstElement: false,
+          isLeading: true,
+        ),
+      ),
+    ));
+    //await tester.pump(Duration(seconds: 5));
+    await tester.pump();
+    controller.disableAll();
+    await tester.pump();
+
+    var finder = find.text("3");
+    await tester.tap(finder);
+
+    await tester.pump();
+
+    expect(controller.selectedItem, null);
+    await tester.pump();
+    controller.enableAll();
+    await tester.pump();
+
+    await tester.tap(finder);
+
+    await tester.pump();
+    expect(controller.selectedItem, 3);
+  });
+
 }

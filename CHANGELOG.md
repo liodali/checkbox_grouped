@@ -1,4 +1,8 @@
-## [1.3.0] - show different type of groupd checkbox in list grouped
+## [1.4.0] - add new method in `BaseController` and `BaseListController`
+* add `enabledAll` and `disabledAll` in `BaseController` and `BaseListController`
+* add unit test  for `enabledAll` and `disabledAll`
+* fix bug
+## [1.3.0] - show different type of group checkbox in list grouped
 * show  multiple type (chips,switch,(radio/checkbox)) inside list of grouped
 * fix bugs
 ## [1.2.0-nullsafety.0] - add listener to groupController

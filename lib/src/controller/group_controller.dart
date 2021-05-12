@@ -1,10 +1,11 @@
 import '../common/state_group.dart';
 import '../common/utilities.dart';
+import 'base_controller.dart';
 
 /// GroupController to manage simple grouped checkbox/chips/switch
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.
-class GroupController {
+class GroupController implements BaseController {
   dynamic initSelectedItem;
 
   final bool isMultipleSelection;
@@ -44,15 +45,30 @@ class GroupController {
     }
   }
 
+  @override
   void enabledItemsByValues(List<dynamic> itemsValues) =>
       _widgetState.enabledItemsByValues(itemsValues);
 
+  @override
   void enabledItemsByTitles(List<String> items) =>
       _widgetState.enabledItemsByTitles(items);
 
+  @override
   void disabledItemsByTitles(List<String> items) =>
       _widgetState.disabledItemsByTitles(items);
 
+  @override
   void disabledItemsByValues(List<dynamic> itemsValues) =>
       _widgetState.disabledItemsByValues(itemsValues);
+
+  @override
+  void disableAll() {
+    _widgetState.disableAll();
+  }
+
+  @override
+  void enableAll() {
+    _widgetState.enableAll();
+
+  }
 }
