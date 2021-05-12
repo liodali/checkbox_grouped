@@ -27,8 +27,8 @@ class ListGroupController implements BaseListController {
   }
 
   @override
-  void disableALL(int index) {
-    _state.listControllers[index].disableALL();
+  void disableAll(int index) {
+    _state.listControllers[index].disableAll();
   }
 
   @override

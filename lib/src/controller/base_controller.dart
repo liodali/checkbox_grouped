@@ -2,7 +2,7 @@ abstract class BaseController {
   /// enable  all items  in groupedCheckBox
   void enableAll();
   /// disable all items  in groupedCheckBox
-  void disableALL();
+  void disableAll();
 
   /// enable items by there values that was disabled in groupedCheckBox
   ///
@@ -28,7 +28,7 @@ abstract class BaseListController {
   /// enable  all items  in groupedCheckBox
   void enableAll(int index);
   /// disable all items  in groupedCheckBox
-  void disableALL(int index);
+  void disableAll(int index);
 
   /// enable items by there values that was disabled in groupedCheckBox
   ///

@@ -62,7 +62,7 @@ class GroupController implements BaseController {
       _widgetState.disabledItemsByValues(itemsValues);
 
   @override
-  void disableALL() {
+  void disableAll() {
     _widgetState.disableAll();
   }
 

@@ -188,7 +188,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     notifierItems.forEach((notifierItem) {
       var index = notifierItems.indexOf(notifierItem);
       Item item = notifierItem.value.copy(
-          isDisabled: true
+          isDisabled: false
       );
       notifierItems[index].value = item;
     });
@@ -197,7 +197,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     notifierItems.forEach((notifierItem) {
       var index = notifierItems.indexOf(notifierItem);
       Item item = notifierItem.value.copy(
-          isDisabled: false
+          isDisabled: true
       );
       notifierItems[index].value = item;
     });
