@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.3.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.4.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.3.0
+		checkbox_grouped: ^1.4.0
 
 
 
@@ -54,6 +54,17 @@ GroupController controller = GroupController();
 ```dart
 final selectedItems = controller.selectedItem;
 ```
+### enable items
+
+```dart
+    controller.enableAll();
+```
+### disable all items
+
+```dart
+    controller.disableAll();
+```
+
 ### enabled items
 
 ```dart
@@ -151,11 +162,13 @@ controller.listen((v) {
 ```dart
 final selectedItem = controller.selectedItem;
 ```
+
 ### enable items
 
 ```dart
     controller.enabledItems([value]);
 ```
+
 ### disable items
 
 ```dart
@@ -378,6 +391,36 @@ final selectedItems = controller.allSelectedItems;
 ```dart
 final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
 ```
+### enable items
+
+```dart
+    controller.enableAll(int indexGroup);
+```
+### disable all items
+
+```dart
+    controller.disableAll(int indexGroup);
+```
+### enabled items
+
+```dart
+controller.enabledItemsByValues(int indexGroup,List<T> values); 
+```
+----------
+```dart
+controller.enabledItemsByTitles(int indexGroup,List<String> itemsTitles); 
+```
+
+### disable item
+
+```dart
+controller.disabledItemsByValues(int indexGroup,List<T> values);
+```
+
+```dart
+controller.disabledItemsByTitles(int indexGroup,List<String> items)
+```
+
 
 
 #### Creating a basic `ListGroupedCheckbox`
