@@ -196,14 +196,22 @@ void main() {
     ));
     //await tester.pump(Duration(seconds: 5));
     await tester.pump();
-    controller.disableALL();
-    //await tester.tap(find.byType(RadioListTile).first);
-    //var rb0 = tester.widget(find.byElementType(RadioListTile).first) as RadioListTile<int>;
+    controller.disableAll();
+    await tester.pump();
+
+    var finder = find.text("3");
+    await tester.tap(finder);
+
+    await tester.pump();
+
     expect(controller.selectedItem, null);
     await tester.pump();
     controller.enableAll();
-    var finder = find.text("3");
+    await tester.pump();
+
     await tester.tap(finder);
+
+    await tester.pump();
     expect(controller.selectedItem, 3);
   });
 }
