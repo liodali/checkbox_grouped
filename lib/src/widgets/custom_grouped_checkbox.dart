@@ -100,6 +100,8 @@ class CustomGroupedCheckboxState<T>
     widget.controller.init(this);
     if (!widget.controller.isMultipleSelection) {
       itemSelected.value = widget.controller.initSelectedItem.first;
+    } else {
+      itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
     }
   }
 
@@ -124,6 +126,9 @@ class CustomGroupedCheckboxState<T>
 
       if (!widget.controller.isMultipleSelection) {
         itemSelected.value = widget.controller.initSelectedItem.first;
+      } else {
+        itemsSelections.value =
+            List.castFrom(widget.controller.initSelectedItem);
       }
     }
   }

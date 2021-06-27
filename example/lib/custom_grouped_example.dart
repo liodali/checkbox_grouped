@@ -41,6 +41,7 @@ class CustomGroupedExample extends StatelessWidget {
     );
     final controller = CustomGroupController(
       isMultipleSelection: false,
+      initSelectedItem: users.first,
     );
     return Column(
       mainAxisSize: MainAxisSize.min,
