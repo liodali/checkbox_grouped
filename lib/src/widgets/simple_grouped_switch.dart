@@ -77,6 +77,30 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
   }
 
   @override
+  void didUpdateWidget(covariant SimpleGroupedSwitch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      selectionsValue = ValueNotifier([]);
+      notifierItems = [];
+      items = [];
+      valueTitle = ValueNotifier(false);
+      values = [];
+      init(
+        values: widget.values as List<T>,
+        checkFirstElement: false,
+        disableItems: widget.itemsTitle
+            .where((element) => widget.disableItems
+                .contains(widget.values[widget.itemsTitle.indexOf(element)]))
+            .toList(),
+        itemsTitle: widget.itemsTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        preSelection: widget.controller.initSelectedItem?.cast<T>(),
+      );
+      widget.controller.init(this);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,

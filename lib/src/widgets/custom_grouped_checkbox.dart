@@ -52,7 +52,7 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
     this.isScroll = false,
     required this.itemBuilder,
     required this.values,
-  })   : this._isGrid = true,
+  })  : this._isGrid = true,
         this.gridDelegate = gridDelegate,
         this.itemExtent = 0.0,
         super(key: key);
@@ -87,10 +87,45 @@ class CustomGroupedCheckboxState<T>
     itemsSelections = ValueNotifier([]);
     items = [];
     widget.values.forEach((v) {
-      items.add(ValueNotifier(
-          (CustomItem(data: v, checked: false, isDisabled: false))));
+      items.add(
+        ValueNotifier(
+          CustomItem(
+            data: v,
+            checked: widget.controller.initSelectedItem.contains(v),
+            isDisabled: false,
+          ),
+        ),
+      );
     });
     widget.controller.init(this);
+    if (!widget.controller.isMultipleSelection) {
+      itemSelected.value = widget.controller.initSelectedItem.first;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomGroupedCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      itemsSelections = ValueNotifier([]);
+      items = [];
+      widget.values.forEach((v) {
+        items.add(
+          ValueNotifier(
+            CustomItem(
+              data: v,
+              checked: widget.controller.initSelectedItem.contains(v),
+              isDisabled: false,
+            ),
+          ),
+        );
+      });
+      widget.controller.init(this);
+
+      if (!widget.controller.isMultipleSelection) {
+        itemSelected.value = widget.controller.initSelectedItem.first;
+      }
+    }
   }
 
   @override
