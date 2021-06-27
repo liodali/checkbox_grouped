@@ -1,3 +1,5 @@
+## [1.4.2] - fix bugs 
+*  fix bugs in helper expandable simple grouped 
 ## [1.4.1] - fix bugs 
 *  fix bugs in simple grouped 
 *  fix bugs in init selected of custom grouped 

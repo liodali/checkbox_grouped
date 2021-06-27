@@ -101,6 +101,9 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
           selectionsValue.value = List.from(selectionsValue.value)
             ..add(values[key]);
         }
+        if (selectionsValue.value.length == preSelection.length) {
+          valueTitle.value = true;
+        }
       } else {
         if (!multiSelection && !checkFirstElement && preSelection.length == 1) {
           valueTitle.value = null;
