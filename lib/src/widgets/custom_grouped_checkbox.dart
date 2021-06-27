@@ -99,9 +99,14 @@ class CustomGroupedCheckboxState<T>
     });
     widget.controller.init(this);
     if (!widget.controller.isMultipleSelection) {
-      itemSelected.value = widget.controller.initSelectedItem.first;
+      if (widget.controller.initSelectedItem.isNotEmpty &&
+          widget.controller.initSelectedItem.first != null)
+        itemSelected.value = widget.controller.initSelectedItem.first;
     } else {
-      itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
+      if (widget.controller.initSelectedItem.isNotEmpty){
+        itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
+
+      }
     }
   }
 
