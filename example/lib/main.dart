@@ -143,7 +143,7 @@ class _SimpleGrouped extends StatelessWidget {
         GroupController(isMultipleSelection: true);
     GroupController multipleCheckController = GroupController(
       isMultipleSelection: true,
-      initSelectedItem: [2, 5, 4],
+      initSelectedItem: List.generate(10, (index) => index),
     );
 
     return SingleChildScrollView(
@@ -179,7 +179,7 @@ class _SimpleGrouped extends StatelessWidget {
             groupTitle: "expanded multiple checkbox selection",
             groupTitleStyle: TextStyle(color: Colors.orange),
             checkFirstElement: false,
-            helperGroupTitle: false,
+            helperGroupTitle: true,
             onItemSelected: (data) {
               print(data);
             },
