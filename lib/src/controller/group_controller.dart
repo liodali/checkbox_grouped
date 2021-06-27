@@ -69,6 +69,5 @@ class GroupController implements BaseController {
   @override
   void enableAll() {
     _widgetState.enableAll();
-
   }
 }

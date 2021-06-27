@@ -1,3 +1,6 @@
+## [1.4.1] - fix bugs 
+*  fix bugs in simple grouped 
+*  fix bugs in init selected of custom grouped 
 ## [1.4.0] - add new method in `BaseController` and `BaseListController`
 * add `enabledAll` and `disabledAll` in `BaseController` and `BaseListController`
 * add unit test  for `enabledAll` and `disabledAll`

@@ -103,9 +103,9 @@ class CustomGroupedCheckboxState<T>
           widget.controller.initSelectedItem.first != null)
         itemSelected.value = widget.controller.initSelectedItem.first;
     } else {
-      if (widget.controller.initSelectedItem.isNotEmpty){
-        itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
-
+      if (widget.controller.initSelectedItem.isNotEmpty) {
+        itemsSelections.value =
+            List.castFrom(widget.controller.initSelectedItem);
       }
     }
   }

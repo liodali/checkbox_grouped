@@ -132,7 +132,6 @@ class SimpleGroupedCheckboxState<T>
       );
       widget.controller.init(this);
     }
-
   }
 
   @override
