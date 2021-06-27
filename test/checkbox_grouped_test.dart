@@ -180,7 +180,8 @@ void main() {
     await tester.tap(finder);
     expect(controller.selectedItem, 3);
   });
-  testWidgets("test enableAll and disableAll GroupController single selection", (tester) async {
+  testWidgets("test enableAll and disableAll GroupController single selection",
+      (tester) async {
     GroupController controller = GroupController();
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
@@ -214,5 +215,4 @@ void main() {
     await tester.pump();
     expect(controller.selectedItem, 3);
   });
-
 }

@@ -14,7 +14,7 @@ import 'simple_grouped_checkbox.dart';
 ///  [selectedIcon] :the selected icon to use for each selected  item
 ///  [values] :(required) Values contains in each element.
 ///  [itemTitle] :(required) A list of strings that describes each chip button
-///  [onItemSelected] : callback listner when item is selected
+///  [onItemSelected] : callback listener when item is selected
 ///  [disabledItems] : Specifies which item should be disabled
 
 class SimpleGroupedChips<T> extends StatefulWidget {
@@ -85,6 +85,27 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
       disableItems: widget.disabledItems,
     );
     widget.controller.init(this);
+  }
+
+  @override
+  void didUpdateWidget(covariant SimpleGroupedChips oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      selectionsValue = ValueNotifier([]);
+      notifierItems = [];
+      items = [];
+      valueTitle = ValueNotifier(false);
+      values = [];
+      init(
+        values: widget.values as List<T>,
+        checkFirstElement: false,
+        disableItems: widget.disabledItems,
+        itemsTitle: widget.itemTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        preSelection: widget.controller.initSelectedItem?.cast<T>(),
+      );
+      widget.controller.init(this);
+    }
   }
 
   @override

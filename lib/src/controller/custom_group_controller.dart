@@ -1,6 +1,5 @@
-import '../common/utilities.dart';
-
 import '../common/custom_state_group.dart';
+import '../common/utilities.dart';
 
 /// CustomStateGroup to manage custom selection grouped
 ///
@@ -20,7 +19,8 @@ class CustomGroupController {
     this.isMultipleSelection = false,
     dynamic initSelectedItem,
   })  : assert(!(initSelectedItem is List), "shouldn't be a List"),
-        this.initSelectedItem = [initSelectedItem];
+        this.initSelectedItem =
+            initSelectedItem != null ? [initSelectedItem] : [];
 
   CustomGroupController.multiple({
     this.initSelectedItem = const [],

@@ -114,6 +114,27 @@ class SimpleGroupedCheckboxState<T>
   }
 
   @override
+  void didUpdateWidget(covariant SimpleGroupedCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      selectionsValue = ValueNotifier([]);
+      notifierItems = [];
+      items = [];
+      valueTitle = ValueNotifier(false);
+      values = [];
+      init(
+        values: widget.values as List<T>,
+        checkFirstElement: widget.checkFirstElement,
+        disableItems: widget.disableItems,
+        itemsTitle: widget.itemsTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        preSelection: widget.controller.initSelectedItem?.cast<T>(),
+      );
+      widget.controller.init(this);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget childListChecks = ListView.builder(
       itemCount: notifierItems.length,
