@@ -3,6 +3,7 @@ import 'package:example/custom_grid_grouped_example.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_grouped_example.dart';
+import 'grid_of_list_grouped_checkbox.dart';
 import 'list_of_grouped.dart';
 
 void main() => runApp(MyApp());
@@ -42,17 +43,6 @@ class _MainExampleState extends State<MainExample>
     with TickerProviderStateMixin {
   TabController tabController;
   ValueNotifier<int> current = ValueNotifier(0);
-  final customController = CustomGroupController(
-    isMultipleSelection: false,
-    initSelectedItem: "basics",
-  );
-  final List<String> drawerItems = [
-    "basics",
-    "custom",
-    "grid custom",
-    "dialog",
-    "list of group",
-  ];
 
   void tabChanged() {
     current.value = tabController.index;
@@ -128,6 +118,7 @@ class _MainExampleState extends State<MainExample>
           CustomGridGroupedExample(),
           _DialogExample(),
           ListOfGrouped(),
+          GridOfListGroupedCheckbox(),
         ],
       ),
     );
@@ -138,6 +129,7 @@ class _SimpleGrouped extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GroupController controller = GroupController(initSelectedItem: [2]);
+    GroupController circularController = GroupController();
     GroupController switchController = GroupController();
     GroupController chipsController =
         GroupController(isMultipleSelection: true);
