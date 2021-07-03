@@ -13,6 +13,7 @@ typedef onChanged = Function(dynamic selected);
 /// display  simple groupedCheckbox
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
 /// [itemsTitle] :  (required) A list of strings that describes each checkbox button
+/// [itemTextStyle] : (TextStyle) A text style of item title
 /// [values] : list of values
 /// [onItemSelected] :(callback) callback to receive item selected when it selected directly(callback) callback to receive item selected when it selected directly
 /// [itemsSubTitle] : A list of strings that describes second Text
@@ -32,6 +33,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
   final TextStyle? groupTitleStyle;
+  final TextStyle? itemTextStyle;
   final List<String> itemsSubTitle;
   final Color? activeColor;
   final List<T> values;
@@ -50,6 +52,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.groupTitle,
     this.groupTitleAlignment = Alignment.center,
     this.groupTitleStyle,
+    this.itemTextStyle,
     this.itemsSubTitle = const [],
     this.disableItems = const [],
     this.activeColor,
