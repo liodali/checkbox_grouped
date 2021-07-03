@@ -157,6 +157,7 @@ class SimpleGroupedCheckboxState<T>
               selectedValue: selectedValue.value,
               value: widget.values[i],
               activeColor: widget.activeColor,
+              itemStyle: widget.itemTextStyle,
               isLeading: widget.isLeading,
               itemSubTitle: widget.itemsSubTitle.isNotEmpty
                   ? widget.itemsSubTitle[i]
@@ -395,12 +396,14 @@ class _CheckboxItem<T> extends StatelessWidget {
   final String? itemSubTitle;
   final int index;
   final Color? activeColor;
+  final TextStyle? itemStyle;
   final Function(int i, dynamic v) onChangedCheckBox;
 
   _CheckboxItem({
     this.isMultipleSelection = false,
     this.isLeading = false,
     this.activeColor,
+    this.itemStyle,
     required this.item,
     this.itemSubTitle,
     required this.value,
@@ -422,7 +425,8 @@ class _CheckboxItem<T> extends StatelessWidget {
         activeColor: activeColor ?? Theme.of(context).primaryColor,
         title: AutoSizeText(
           "${item.title}",
-          minFontSize: 12,
+          style: itemStyle,
+          minFontSize: 9,
         ),
         subtitle: itemSubTitle != null
             ? AutoSizeText(
@@ -451,7 +455,8 @@ class _CheckboxItem<T> extends StatelessWidget {
       activeColor: activeColor ?? Theme.of(context).primaryColor,
       title: AutoSizeText(
         item.title,
-        minFontSize: 12,
+        style: itemStyle,
+        minFontSize: 9,
       ),
       subtitle: itemSubTitle != null
           ? AutoSizeText(
