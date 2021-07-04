@@ -9,7 +9,7 @@ jobs:
       image:  google/dart:latest
     steps:
       - name: export tag
-        run: echo "RELEASE_VERSION=v${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: preparation
         uses: actions/checkout@v1
       - name: Setup credentials
