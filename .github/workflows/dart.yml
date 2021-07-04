@@ -31,4 +31,4 @@ jobs:
         with:
             tag: {{ env.RELEASE_VERSION }}
             name: {{ env.RELEASE_VERSION }}
-            token: ${{ secrets.GITHUB_TOKEN }}
+            token: {{ secrets.GITHUB_TOKEN }}
