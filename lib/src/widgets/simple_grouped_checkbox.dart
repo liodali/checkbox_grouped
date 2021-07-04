@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:checkbox_grouped/src/common/grouped_style.dart';
 import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
@@ -8,34 +9,52 @@ import 'package:flutter/rendering.dart';
 import '../common/item.dart';
 import '../common/state_group.dart';
 
-typedef onChanged = Function(dynamic selected);
+typedef OnChanged = Function(dynamic selected);
 
 /// display  simple groupedCheckbox
+///
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
+///
 /// [itemsTitle] :  (required) A list of strings that describes each checkbox button
-/// [itemTextStyle] : (TextStyle) A text style of item title
+///
 /// [values] : list of values
+///
 /// [onItemSelected] :(callback) callback to receive item selected when it selected directly(callback) callback to receive item selected when it selected directly
+///
 /// [itemsSubTitle] : A list of strings that describes second Text
+///
 /// [groupTitle] : Text Widget that describe Title of group checkbox
+///
 /// [groupTitleStyle] : Text Style  that describe style of title of group checkbox
-/// [activeColor] : the color to use when this checkbox button is selected
+///
+/// [activeColor] : (Color) the color to use when this checkbox button is selected (deprecated)
+///
+/// [groupStyle] : (GroupStyle) the style that should be applied on GroupedTitle,ItemTile,SubTitle
+///
 /// [disableItems] : specifies which item should be disabled
+///
 /// [checkFirstElement] : make first element in list checked
-/// [isLeading] : same as [itemExtent] of [ListView]
-/// [isExpandableTitle] : enable group checkbox to be expandable
+///
+/// [isLeading] : (bool) put check zone on left of item
+///
+/// [isExpandableTitle] :(bool) enable group checkbox to be expandable
+///
 /// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
+///
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
+///
 class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final GroupController controller;
   final List<String> itemsTitle;
-  final onChanged? onItemSelected;
+  final OnChanged? onItemSelected;
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
+  @Deprecated("should use `groupStyle`,will be remove in next version")
   final TextStyle? groupTitleStyle;
-  final TextStyle? itemTextStyle;
   final List<String> itemsSubTitle;
+  @Deprecated("should use `groupStyle`,will be remove in next version")
   final Color? activeColor;
+  final GroupedStyle? groupStyle;
   final List<T> values;
   final List<String> disableItems;
   final bool checkFirstElement;
@@ -51,8 +70,8 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.onItemSelected,
     this.groupTitle,
     this.groupTitleAlignment = Alignment.center,
+    this.groupStyle,
     this.groupTitleStyle,
-    this.itemTextStyle,
     this.itemsSubTitle = const [],
     this.disableItems = const [],
     this.activeColor,
@@ -156,8 +175,8 @@ class SimpleGroupedCheckboxState<T>
               },
               selectedValue: selectedValue.value,
               value: widget.values[i],
-              activeColor: widget.activeColor,
-              itemStyle: widget.itemTextStyle,
+              activeColor: widget.groupStyle?.activeColor ?? widget.activeColor,
+              itemStyle: widget.groupStyle?.itemTitleStyle,
               isLeading: widget.isLeading,
               itemSubTitle: widget.itemsSubTitle.isNotEmpty
                   ? widget.itemsSubTitle[i]
