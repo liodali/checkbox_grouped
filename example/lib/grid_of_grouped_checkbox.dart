@@ -26,6 +26,13 @@ class GridOfListGroupedCheckbox extends StatelessWidget {
             child: SimpleGroupedCheckbox(
               controller: listOfController[index],
               groupTitle: faker.company.position(),
+              groupStyle: GroupStyle(
+                itemTitleStyle: TextStyle(
+                    fontSize: 12,
+                    color: Colors.brown
+                ),
+                activeColor: Colors.amber
+              ),
               helperGroupTitle: false,
               values: data,
               itemsTitle: data,
