@@ -37,7 +37,7 @@ class GridOfListGroupedCheckbox extends StatelessWidget {
       primary: true,
       scrollDirection: Axis.vertical,
       child: Container(
-        height: 368*5.1,
+        height: 368 * 5.1,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [

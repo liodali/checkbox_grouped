@@ -19,15 +19,19 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<T> values;
   final GroupController controller;
   final List<T> disableItems;
-  final onChanged? onItemSelected;
+  final OnChanged? onItemSelected;
+  @Deprecated("should use `groupStyle`,will be remove in next version")
   final Color? activeColor;
+  @Deprecated("should use `groupStyle`,will be remove in next version")
   final TextStyle? textStyle;
+  final SwitchGroupStyle? groupStyle;
 
   SimpleGroupedSwitch({
     Key? key,
     required this.itemsTitle,
     required this.values,
     required this.controller,
+    this.groupStyle,
     this.disableItems = const [],
     this.activeColor,
     this.textStyle,
@@ -114,8 +118,12 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
               indexItem: index,
               onItemChanged: changeSelection,
               item: item,
-              activeColor: widget.activeColor,
-              textStyle: widget.textStyle,
+              activeColor: widget.groupStyle?.activeColor ?? widget.activeColor,
+              textStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
+                      color: item.checked!
+                          ? widget.groupStyle?.activeColor ?? widget.activeColor
+                          : widget.groupStyle?.itemTitleStyle?.color) ??
+                  widget.textStyle,
             );
           },
         );
@@ -202,14 +210,7 @@ class _SwitchListItem extends StatelessWidget {
       value: item.checked!,
       title: Text(
         "${item.title}",
-        style: textStyle?.copyWith(
-          color: item.checked!
-              ? activeColor
-              : (textStyle?.color ??
-                      Theme.of(context).textTheme.headline6!.color) ??
-                  Theme.of(context).textTheme.headline6!.getTextStyle()
-                      as Color?,
-        ),
+        style: textStyle,
       ),
     );
   }

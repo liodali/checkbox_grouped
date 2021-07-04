@@ -1,3 +1,9 @@
+## [1.5.0] - add styles for SimpleGroupedCheckbox,SimpleGroupedChips,SimpleGroupedSwitch 
+*  create new generic `GroupedStyle` to manage style of simple_grouped_checkbox 
+*  deprecate `backgroundColorItem`,`selectedColorItem`,`textColor`,`selectedTextColor`,`selectedIcon`,`disabledColor` 
+*  add `chipGroupStyle` in SimpleGroupedChips 
+*  add `SwitchGroupStyle` style for SimpleGroupedSwitch 
+*  add `SwitchGroupStyle` style for SimpleGroupedSwitch 
 ## [1.4.2] - fix bugs 
 *  fix bugs in helper expandable simple grouped 
 ## [1.4.1] - fix bugs 
