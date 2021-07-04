@@ -5,27 +5,48 @@ import '../common/item.dart';
 import '../common/state_group.dart';
 import 'simple_grouped_checkbox.dart';
 
-///  [controller] : A list of values that you want to be initially selected.
-///  [isScrolling] : enable horizontal scrolling
-///  [backgroundColorItem] : the background color for each item
-///  [selectedColorItem] : the background color to use when item is  selected
-///  [textColor] : the color to use for each text of item
-///  [selectedTextColor] :the selected color to use for each text of item
-///  [selectedIcon] :the selected icon to use for each selected  item
-///  [values] :(required) Values contains in each element.
+///
+///  [controller]            : A list of values that you want to be initially selected.
+///
+///  [isScrolling]           : enable horizontal scrolling
+///
+///  [backgroundColorItem]   : the background color for each item
+///
+///  [selectedColorItem]     : the background color to use when item is  selected
+///
+///  [textColor]            : the color to use for each text of item
+///
+///  [selectedTextColor]    : the selected color to use for each text of item
+///
+///  [selectedIcon]         : the selected icon to use for each selected  item
+///
+/// [disabledColor]         : (Color) the Color that uses when the item is disabled
+///
+/// [chipGroupStyle]
+///
+///  [values]               :(required) Values contains in each element.
+///
 ///  [itemTitle] :(required) A list of strings that describes each chip button
+///
 ///  [onItemSelected] : callback listener when item is selected
+///
 ///  [disabledItems] : Specifies which item should be disabled
-
 class SimpleGroupedChips<T> extends StatefulWidget {
   final GroupController controller;
   final bool isScrolling;
+  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
   final Color backgroundColorItem;
+  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
   final Color? disabledColor;
+  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
   final Color selectedColorItem;
+  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
   final Color textColor;
+  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
   final Color selectedTextColor;
+  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
   final IconData? selectedIcon;
+  final ChipGroupStyle chipGroupStyle;
   final List<T> values;
   final List<String> itemTitle;
   final List<String>? disabledItems;
@@ -44,6 +65,7 @@ class SimpleGroupedChips<T> extends StatefulWidget {
     this.selectedTextColor = Colors.white,
     this.textColor = Colors.black,
     this.selectedIcon = Icons.done,
+    this.chipGroupStyle = const ChipGroupStyle.minimize(),
     this.isScrolling = false,
   })  : assert(
             disabledItems == null ||
@@ -73,9 +95,24 @@ class SimpleGroupedChips<T> extends StatefulWidget {
 }
 
 class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
+  late final ChipGroupStyle groupStyle;
+
   @override
   void initState() {
     super.initState();
+    groupStyle = ChipGroupStyle(
+      backgroundColorItem: widget.chipGroupStyle.backgroundColorItem ??
+          widget.backgroundColorItem,
+      selectedColorItem:
+          widget.chipGroupStyle.selectedColorItem ?? widget.selectedColorItem,
+      textColor: widget.chipGroupStyle.textColor ?? widget.textColor,
+      selectedTextColor:
+          widget.chipGroupStyle.selectedTextColor ?? widget.selectedTextColor,
+      disabledColor:
+          widget.chipGroupStyle.disabledColor ?? widget.disabledColor,
+      selectedIcon: widget.chipGroupStyle.selectedIcon ?? widget.selectedIcon,
+      itemTitleStyle: widget.chipGroupStyle.itemTitleStyle,
+    );
     init(
       values: widget.values as List<T>,
       checkFirstElement: false,
@@ -118,43 +155,50 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
 
   @override
   Widget build(BuildContext context) {
+    final childrens = [
+      for (int i = 0; i < notifierItems.length; i++) ...[
+        ValueListenableBuilder(
+          valueListenable: notifierItems[i],
+          builder: (ctx, dynamic item, child) {
+            return _ChoiceChipsWidget(
+              onSelection: (v) {
+                changeSelection(i, v);
+              },
+              selectedIcon: groupStyle.selectedIcon != null
+                  ? Icon(
+                      groupStyle.selectedIcon,
+                      color: groupStyle.selectedTextColor,
+                    )
+                  : null,
+              isSelected: item.checked,
+              label: Text(
+                "${item.title}",
+                style: groupStyle.itemTitleStyle?.copyWith(
+                      color: item.checked
+                          ? groupStyle.selectedTextColor
+                          : groupStyle.textColor,
+                    ) ??
+                    TextStyle(
+                      color: item.checked
+                          ? groupStyle.selectedTextColor
+                          : groupStyle.textColor,
+                    ),
+              ),
+              backgroundColorItem: widget.chipGroupStyle.backgroundColorItem ??
+                  groupStyle.backgroundColorItem,
+              disabledColor: groupStyle.disabledColor,
+              selectedColorItem: groupStyle.selectedColorItem,
+            );
+          },
+        ),
+      ],
+    ];
     if (widget.isScrolling) {
       return SingleChildScrollView(
         child: Wrap(
           spacing: 15.0,
           direction: Axis.horizontal,
-          children: [
-            for (int i = 0; i < notifierItems.length; i++) ...[
-              ValueListenableBuilder(
-                valueListenable: notifierItems[i],
-                builder: (ctx, dynamic item, child) {
-                  return _ChoiceChipsWidget(
-                    onSelection: (v) {
-                      changeSelection(i, v);
-                    },
-                    selectedIcon: widget.selectedIcon != null
-                        ? Icon(
-                            widget.selectedIcon,
-                            color: widget.selectedTextColor,
-                          )
-                        : null,
-                    isSelected: item.checked,
-                    label: Text(
-                      "${item.title}",
-                      style: TextStyle(
-                        color: item.checked
-                            ? widget.selectedTextColor
-                            : widget.textColor,
-                      ),
-                    ),
-                    backgroundColorItem: widget.backgroundColorItem,
-                    disabledColor: widget.disabledColor,
-                    selectedColorItem: widget.selectedColorItem,
-                  );
-                },
-              ),
-            ],
-          ],
+          children: childrens,
         ),
         scrollDirection: Axis.horizontal,
       );
@@ -163,38 +207,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
       spacing: 5.0,
       direction: Axis.horizontal,
       verticalDirection: VerticalDirection.down,
-      children: [
-        for (int i = 0; i < notifierItems.length; i++) ...[
-          ValueListenableBuilder(
-            valueListenable: notifierItems[i],
-            builder: (ctx, dynamic item, child) {
-              return _ChoiceChipsWidget(
-                onSelection: (v) {
-                  changeSelection(i, v);
-                },
-                selectedIcon: widget.selectedIcon != null
-                    ? Icon(
-                        widget.selectedIcon,
-                        color: widget.selectedTextColor,
-                      )
-                    : null,
-                isSelected: item.checked,
-                label: Text(
-                  "${item.title}",
-                  style: TextStyle(
-                    color: item.checked
-                        ? widget.selectedTextColor
-                        : widget.textColor,
-                  ),
-                ),
-                backgroundColorItem: widget.backgroundColorItem,
-                disabledColor: widget.disabledColor,
-                selectedColorItem: widget.selectedColorItem,
-              );
-            },
-          ),
-        ],
-      ],
+      children: childrens,
     );
   }
 
