@@ -29,7 +29,7 @@ class SimpleGroupedChips<T> extends StatefulWidget {
   final List<T> values;
   final List<String> itemTitle;
   final List<String>? disabledItems;
-  final onChanged? onItemSelected;
+  final OnChanged? onItemSelected;
 
   SimpleGroupedChips({
     Key? key,

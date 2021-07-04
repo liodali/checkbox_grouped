@@ -19,7 +19,7 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final List<T> values;
   final GroupController controller;
   final List<T> disableItems;
-  final onChanged? onItemSelected;
+  final OnChanged? onItemSelected;
   final Color? activeColor;
   final TextStyle? textStyle;
 
