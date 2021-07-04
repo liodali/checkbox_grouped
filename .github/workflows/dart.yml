@@ -8,7 +8,10 @@ jobs:
     container:
       image:  google/dart:latest
     steps:
-      - uses: actions/checkout@v1
+      - name: export tag
+        run: echo "RELEASE_VERSION=v${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: preparation
+        uses: actions/checkout@v1
       - name: Setup credentials
         run: |
           mkdir -p ~/.pub-cache
@@ -23,3 +26,9 @@ jobs:
           EOF
       - name: Publish package
         run: pub publish -f
+      - name: release version
+        uses: ncipollo/release-action@v1
+        with:
+            tag: {{ env.RELEASE_VERSION }}
+            name: {{ env.RELEASE_VERSION }}
+            token: ${{ secrets.GITHUB_TOKEN }}
