@@ -54,7 +54,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final List<String> itemsSubTitle;
   @Deprecated("should use `groupStyle`,will be remove in next version")
   final Color? activeColor;
-  final GroupedStyle? groupStyle;
+  final GroupStyle? groupStyle;
   final List<T> values;
   final List<String> disableItems;
   final bool checkFirstElement;
@@ -176,7 +176,10 @@ class SimpleGroupedCheckboxState<T>
               selectedValue: selectedValue.value,
               value: widget.values[i],
               activeColor: widget.groupStyle?.activeColor ?? widget.activeColor,
-              itemStyle: widget.groupStyle?.itemTitleStyle,
+              itemStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
+                  color: item.checked!
+                      ? widget.groupStyle?.activeColor ?? widget.activeColor
+                      : widget.groupStyle?.itemTitleStyle?.color),
               isLeading: widget.isLeading,
               itemSubTitle: widget.itemsSubTitle.isNotEmpty
                   ? widget.itemsSubTitle[i]

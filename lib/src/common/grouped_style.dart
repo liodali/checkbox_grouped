@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 /// [itemTitleStyle]     : (TextStyle) Text Style  that describe style of title of each item in  group checkbox
 ///
 /// [subItemTitleStyle]  : (TextStyle) Text Style  that describe style of subtitle of each item in  group checkbox
-class _BaseGroupedStyle {
+class _BaseGroupStyle {
   final Color? activeColor;
   final TextStyle? groupTitleStyle;
   final TextStyle? itemTitleStyle;
   final TextStyle? subItemTitleStyle;
 
-  _BaseGroupedStyle({
+  _BaseGroupStyle({
     this.activeColor,
     this.groupTitleStyle,
     this.itemTitleStyle,
@@ -22,8 +22,8 @@ class _BaseGroupedStyle {
   });
 }
 
-class GroupedStyle extends _BaseGroupedStyle {
-  GroupedStyle({
+class GroupStyle extends _BaseGroupStyle {
+  GroupStyle({
     Color? activeColor,
     TextStyle? groupTitleStyle,
     TextStyle? itemTitleStyle,
