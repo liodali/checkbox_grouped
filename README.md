@@ -121,7 +121,7 @@ controller.listen((v) {
 |`groupTitleStyle`      | (deprecated) `TextStyle of title for group checkbox`.  |
 |`helperGroupTitle`     | `(bool) hide/show checkbox in title to help all selection or de-selection,use it when you want to disable checkbox in groupTitle default:true `.  |
 |`groupTitleAlignment`  | `(Alignment) alignment of group title in group checkbox`.  |
-|`groupStyle`           | `(GroupStyle)  (GroupStyle) the style that should be applied on GroupedTitle,ItemTile,SubTitle`.  |
+|`groupStyle`           | `(GroupStyle) the style that should be applied on GroupedTitle,ItemTile,SubTitle`.  |
 
 ## Customisable Checkbox Grouped
 
