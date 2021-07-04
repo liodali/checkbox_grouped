@@ -92,3 +92,14 @@ class ChipGroupStyle extends _BaseGroupStyle {
           subItemTitleStyle: null,
         );
 }
+///
+/// class [SwitchGroupStyle]   for style text in  [SimpleGroupedSwitch]
+class SwitchGroupStyle extends _BaseGroupStyle {
+  SwitchGroupStyle({
+    Color? activeColor,
+    TextStyle? itemTitleStyle,
+  }) : super(
+    activeColor: activeColor,
+    itemTitleStyle: itemTitleStyle,
+  );
+}
