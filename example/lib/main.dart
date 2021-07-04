@@ -60,7 +60,6 @@ class _MainExampleState extends State<MainExample>
     current.value = tabController.index;
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -172,7 +171,10 @@ class _SimpleGrouped extends StatelessWidget {
             disableItems: ["5"],
             itemsTitle: ["1", "2", "4", "5"],
             values: [1, 2, 4, 5],
-            activeColor: Colors.red,
+            groupStyle: GroupStyle(
+                activeColor: Colors.red,
+                itemTitleStyle: TextStyle(fontSize: 13)),
+
             checkFirstElement: false,
           ),
           SimpleGroupedCheckbox<int>(
@@ -196,6 +198,12 @@ class _SimpleGrouped extends StatelessWidget {
             itemTitle: List.generate(7, (index) => "chip_text_$index"),
             backgroundColorItem: Colors.black26,
             isScrolling: false,
+            chipGroupStyle: ChipGroupStyle.minimize(
+              backgroundColorItem: Colors.red[400],
+              itemTitleStyle: TextStyle(
+                fontSize: 14,
+              ),
+            ),
             onItemSelected: (values) {
               print(values);
             },
@@ -207,8 +215,13 @@ class _SimpleGrouped extends StatelessWidget {
             itemsTitle: List.generate(10, (index) => "$index"),
             values: List.generate(10, (index) => index),
             disableItems: [2],
-            textStyle: TextStyle(fontSize: 16),
-            activeColor: Colors.red,
+            groupStyle: SwitchGroupStyle(
+              itemTitleStyle: TextStyle(
+                fontSize: 16,
+                color: Colors.blue,
+              ),
+              activeColor: Colors.red,
+            ),
             onItemSelected: (values) {
               print(values);
             },

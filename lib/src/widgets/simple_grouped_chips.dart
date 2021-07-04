@@ -22,11 +22,11 @@ import 'simple_grouped_checkbox.dart';
 ///
 /// [disabledColor]         : (Color) the Color that uses when the item is disabled
 ///
-/// [chipGroupStyle]
+/// [chipGroupStyle]        :  (ChipGroupStyle) the style that will customize  SimpleGroupedChips
 ///
-///  [values]               :(required) Values contains in each element.
+///  [values]               : (required) Values contains in each element.
 ///
-///  [itemTitle] :(required) A list of strings that describes each chip button
+///  [itemTitle]            : (required) A list of strings that describes each chip button
 ///
 ///  [onItemSelected] : callback listener when item is selected
 ///

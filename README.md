@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.4.2-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.5.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -19,7 +19,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.4.2
+		checkbox_grouped: ^1.5.0
 
 
 
@@ -31,7 +31,12 @@ Add the following to your `pubspec.yaml` file:
                     controller: controller,
                     itemsTitle: ["1" ,"2","4","5"],
                     values: [1,2,4,5],
-                    activeColor: Colors.red,
+                    groupStyle: GroupStyle(
+                          activeColor: Colors.red,
+                          itemTitleStyle: TextStyle(
+                          fontSize: 13
+                       )
+                    ),
                     checkFirstElement: false,
                     multiSelection: false,
                   )
@@ -104,7 +109,7 @@ controller.listen((v) {
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required)  Group Controller to recuperate selectionItems and disable or enableItems.  |
-|`activeColor`          | The color to use when a CheckBox is checked.  |
+|`activeColor`          | (deprecated) The color to use when a CheckBox is checked.  |
 |`itemsTitle`           | (required) A list of strings that describes each checkbox button. Each label must be distinct.   |
 |`itemsSubTitle`        | A list of strings that describes second Text.   |
 |`onItemSelected`       | Callback fire when the user make  selection    |
@@ -113,9 +118,10 @@ controller.listen((v) {
 |`checkFirstElement`    | `make first element in list checked`.  |
 |`isExpandableTitle`    | `enable group checkbox to be expandable `.  |
 |`groupTitle`           | `Text title for group checkbox`.  |
-|`groupTitleStyle`      | `TextStyle of title for group checkbox`.  |
+|`groupTitleStyle`      | (deprecated) `TextStyle of title for group checkbox`.  |
 |`helperGroupTitle`     | `(bool) hide/show checkbox in title to help all selection or de-selection,use it when you want to disable checkbox in groupTitle default:true `.  |
 |`groupTitleAlignment`  | `(Alignment) alignment of group title in group checkbox`.  |
+|`groupStyle`           | `(GroupStyle)  (GroupStyle) the style that should be applied on GroupedTitle,ItemTile,SubTitle`.  |
 
 ## Customisable Checkbox Grouped
 
@@ -214,7 +220,12 @@ SimpleGroupedChips<int>(
                     controller: controller,
                     values: [1,2,3,4,5,6,7],
                     itemTitle: ["1" ,"2","4","5","6","7"],
-                    backgroundColorItem: Colors.black26,
+                    chipGroupStyle: ChipGroupStyle.minimize(
+                         backgroundColorItem: Colors.red[400],
+                         itemTitleStyle: TextStyle(
+                         fontSize: 14,
+                      ),
+                    ),
                   )
 ```
 ### Declare GroupController to get selection and enabled/disabled Items
@@ -228,6 +239,7 @@ GroupController controller = GroupController();
 |-----------------------|--------------|
 |`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
 |`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
+|`chipGroupStyle`       | (ChipGroupStyle) A Initialize list of values that will be selected in grouped.   |
 
 
 ### Get current selection
@@ -258,17 +270,19 @@ controller.disabledItemsByTitles(List<String> items)
 ####  `SimpleGroupedChip`
 |   Properties          |  Description |
 |-----------------------|--------------|
-|`controller`           | (required) Group Controller to recuperate selectionItems and disable or enableItems.  |
-|`itemsTitle`           | (required) A list of strings that describes each chip button. Each label must be distinct.   |
-|`disabledItems`        | Specifies which item should be disabled. The strings passed to this must match the Titles  |
+|`controller`           | (required) `controller to recuperate selectionItems and disable or enableItems.`  |
+|`itemsTitle`           | (required) `A list of strings that describes each chip button. Each label must be distinct.`   |
+|`disabledItems`        | `Specifies which item should be disabled. The strings passed to this must match the Titles`  |
 |`values`               | (required) Values contains in each element.   |
-|`onItemSelected`       | Callback when users make  selection  or deselection  |
-|`backgroundColorItem`  |`the background color for each item`.  |
-|`selectedColorItem`    |`the background color to use when item is  selected`.  |
-|`textColor`            |`the color to use for each text of item `.  |
-|`selectedTextColor`    |`the color to use for the selected text of item`.  |
-|`selectedIcon`         |`the icon to use when item is selected`.  |
+|`onItemSelected`       | `Callback when users make  selection  or deselection`  |
+|`backgroundColorItem`  | (deprecated) `the background color for each item`.  |
+|`selectedColorItem`    | (deprecated) `the background color to use when item is  selected`.  |
+|`textColor`            | (deprecated) `the color to use for each text of item `.  |
+|`selectedTextColor`    | (deprecated) `the color to use for the selected text of item`.  |
+|`selectedIcon`         | (deprecated) `the icon to use when item is selected`.  |
+|`disabledColor`         | (deprecated) `the Color that uses when the item is disabled`  |
 |`isScrolling`          |`enable horizontal scrolling`.  |
+|`chipGroupStyle`       | (ChipGroupStyle) `the style that uses to customize  item chip `  |
 			     
 ## Switch grouped Usage
 
@@ -279,8 +293,14 @@ SimpleGroupedSwitch<int>(
                     controller: controller,
                     values: [1,2,4,5],
                     itemsTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
-                    isMutlipleSelection: false,
-                  )
+                    groupStyle: SwitchGroupStyle(
+                        itemTitleStyle: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blue,
+                       ),
+                     activeColor: Colors.red,
+                  ),  
+             )
 ```
 ### Declare GroupController to get selection and enabled/disabled Items
 
@@ -328,6 +348,7 @@ controller.disabledItemsByTitles(List<String> items)
 |`values`               | (required) Values contains in each element.   |
 |`disableItems`         | Specifies which item should be disabled. The value passed to this must match the values list |
 |`onItemSelected`       | Call when users make  selection  or deselection  |
+|`groupStyle`           | (SwitchGroupStyle) the style that will customize text,switch  |
 
 
 ## showDialogGroupedCheckbox
