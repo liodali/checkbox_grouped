@@ -275,4 +275,34 @@ void main() {
     controllerValues.sort();
     expect(controllerValues, values);
   });
+
+  testWidgets("test select some values in multiple selection  SimpleGroupedCheckbox",
+          (tester) async {
+        GroupController controller =
+        GroupController(isMultipleSelection: true, initSelectedItem: [1, 2]);
+        final values = List.generate(10, (index) => index);
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: SimpleGroupedCheckbox<int>(
+              controller: controller,
+              itemsTitle: List.generate(10, (index) => "$index"),
+              values: values,
+              activeColor: Colors.green,
+              checkFirstElement: false,
+              onItemSelected: (data) {
+                print(data);
+              },
+              isExpandableTitle: false,
+            ),
+          ),
+        ));
+        await tester.pump();
+        //tester.allElements;
+        expect(controller.selectedItem, [1, 2]);
+        controller.selectItems([3,5]);
+        await tester.pump();
+        final controllerValues = List.from(controller.selectedItem);
+        controllerValues.sort();
+        expect(controllerValues, [1,2,3,5]);
+      });
 }
