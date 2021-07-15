@@ -73,6 +73,8 @@ class GroupController implements BaseController {
 
   @override
   void select<k>(k value) {
+    assert(!(value is List),
+        "you should use `selectItems` instead of select is only for one value");
     assert(_widgetState.values.contains(value),
         "you cannot select  item that doesn't exist");
     final index = _widgetState.values.indexOf(value);
