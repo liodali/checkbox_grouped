@@ -105,6 +105,16 @@ class GroupController implements BaseController {
       isMultipleSelection,
       "you cannot use selectAll in single selection group checkbox",
     );
-    _widgetState.selectAll();
+    _widgetState.selectValues(_widgetState.values);
+  }
+
+  @override
+  void selectItems<k>(List<k> values) {
+    assert(isMultipleSelection,
+        "you cannot select multiple items in single selection group");
+    if (values.length == 1) {
+      select(values.first);
+    }
+    _widgetState.selectValues(values);
   }
 }

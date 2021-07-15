@@ -216,11 +216,14 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     });
   }
 
-  void selectAll() {
-    notifierItems.asMap().forEach((key, notifierItem) {
-      notifierItems[key].value = notifierItem.value.copy(
-        checked: true,
-      );
+
+
+  void selectValues(List<K> values) {
+    values.forEach((value) {
+      final key = values.indexOf(value);
+      notifierItems[key].value = notifierItems[key].value.copy(
+            checked: true,
+          );
     });
     selectionsValue.value = List.from(selectionsValue.value)
       ..addAll(values

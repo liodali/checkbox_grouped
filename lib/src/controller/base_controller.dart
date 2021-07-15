@@ -28,6 +28,8 @@ abstract class BaseController {
   void select<K>(K value);
 
   void selectAll();
+
+  void selectItems<k>(List<k> values);
 }
 
 abstract class BaseListController {
