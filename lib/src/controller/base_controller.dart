@@ -24,6 +24,10 @@ abstract class BaseController {
   ///
   /// [itemsValues] : (List) values that will be disabled
   void disabledItemsByValues(List<dynamic> itemsValues);
+
+  void select<K>(K value);
+
+  void selectAll();
 }
 
 abstract class BaseListController {

@@ -1,3 +1,5 @@
+import 'package:flutter/src/foundation/change_notifier.dart';
+
 import '../common/state_group.dart';
 import '../common/utilities.dart';
 import 'base_controller.dart';
@@ -69,5 +71,36 @@ class GroupController implements BaseController {
   @override
   void enableAll() {
     _widgetState.enableAll();
+  }
+
+  @override
+  void select<k>(k value) {
+    assert(_widgetState.values.contains(value),
+        "you cannot select  item that doesn't exist");
+    final index = _widgetState.values.indexOf(value);
+    _widgetState.notifierItems[index].value =
+        _widgetState.notifierItems[index].value.copy(
+          checked: true,
+        );
+    switch (isMultipleSelection) {
+      case true:
+
+        _widgetState.selectionsValue.value = List.from(_widgetState.selectionsValue.value)
+          ..add(value);
+        break;
+      case false:
+        final indexOld = _widgetState.values.indexOf(_widgetState.selectedValue.value);
+        _widgetState.notifierItems[indexOld].value =
+            _widgetState.notifierItems[indexOld].value.copy(
+              checked: false,
+            );
+        _widgetState.selectedValue.value = value;
+        break;
+    }
+  }
+
+  @override
+  void selectAll() {
+    // TODO: implement selectAll
   }
 }
