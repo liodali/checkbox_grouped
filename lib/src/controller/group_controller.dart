@@ -1,5 +1,3 @@
-import 'package:flutter/src/foundation/change_notifier.dart';
-
 import '../common/state_group.dart';
 import '../common/utilities.dart';
 import 'base_controller.dart';
@@ -80,20 +78,20 @@ class GroupController implements BaseController {
     final index = _widgetState.values.indexOf(value);
     _widgetState.notifierItems[index].value =
         _widgetState.notifierItems[index].value.copy(
-          checked: true,
-        );
+      checked: true,
+    );
     switch (isMultipleSelection) {
       case true:
-
-        _widgetState.selectionsValue.value = List.from(_widgetState.selectionsValue.value)
-          ..add(value);
+        _widgetState.selectionsValue.value =
+            List.from(_widgetState.selectionsValue.value)..add(value);
         break;
       case false:
-        final indexOld = _widgetState.values.indexOf(_widgetState.selectedValue.value);
+        final indexOld =
+            _widgetState.values.indexOf(_widgetState.selectedValue.value);
         _widgetState.notifierItems[indexOld].value =
             _widgetState.notifierItems[indexOld].value.copy(
-              checked: false,
-            );
+          checked: false,
+        );
         _widgetState.selectedValue.value = value;
         break;
     }
@@ -101,6 +99,10 @@ class GroupController implements BaseController {
 
   @override
   void selectAll() {
-    // TODO: implement selectAll
+    assert(
+      isMultipleSelection,
+      "you cannot use selectAll in single selection group checkbox",
+    );
+    _widgetState.selectAll();
   }
 }
