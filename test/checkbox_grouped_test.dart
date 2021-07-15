@@ -215,4 +215,32 @@ void main() {
     await tester.pump();
     expect(controller.selectedItem, 3);
   });
+
+  testWidgets("test Select GroupController single selection", (tester) async {
+    GroupController controller = GroupController();
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SimpleGroupedCheckbox<int>(
+          controller: controller,
+          itemsTitle: List.generate(10, (index) => "${index + 1}"),
+          values: List.generate(10, (index) => index + 1),
+          activeColor: Colors.red,
+          checkFirstElement: true,
+          isLeading: true,
+        ),
+      ),
+    ));
+    //await tester.pump(Duration(seconds: 5));
+    await tester.pump();
+    //await tester.tap(find.byType(RadioListTile).first);
+    //var rb0 = tester.widget(find.byElementType(RadioListTile).first) as RadioListTile<int>;
+    expect(controller.selectedItem, 1);
+    await tester.pump();
+    controller.select(3);
+    await tester.pump();
+    expect(controller.selectedItem, 3);
+    controller.select(4);
+    await tester.pump();
+    expect(controller.selectedItem, 4);
+  });
 }
