@@ -88,12 +88,16 @@ class GroupController implements BaseController {
             _widgetState.notifierItems[index].value.copy(
           checked: true,
         );
-        final indexOld =
-            _widgetState.values.indexOf(_widgetState.selectedValue.value);
-        _widgetState.notifierItems[indexOld].value =
-            _widgetState.notifierItems[indexOld].value.copy(
-          checked: false,
-        );
+        if(_widgetState.selectedValue.value != null) {
+          final indexOld =
+          _widgetState.values.indexOf(_widgetState.selectedValue.value);
+          if (indexOld != -1) {
+            _widgetState.notifierItems[indexOld].value =
+                _widgetState.notifierItems[indexOld].value.copy(
+                  checked: false,
+                );
+          }
+        }
         _widgetState.selectedValue.value = value;
         break;
     }
@@ -120,6 +124,15 @@ class GroupController implements BaseController {
 
   @override
   void deselectValues<k>(List<k> values) {
+    assert(isMultipleSelection,
+        "you cannot deselect multiple items in single selection group");
     _widgetState.deselectValues(values);
+  }
+
+  @override
+  void deselectAll() {
+    assert(isMultipleSelection,
+        "you cannot deselect all items in single selection group");
+    _widgetState.deselectValues(_widgetState.values);
   }
 }
