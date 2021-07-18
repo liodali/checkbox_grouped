@@ -77,17 +77,17 @@ class GroupController implements BaseController {
         "you should use `selectItems` instead of select is only for one value");
     assert(_widgetState.values.contains(value),
         "you cannot select  item that doesn't exist");
-    final index = _widgetState.values.indexOf(value);
-    _widgetState.notifierItems[index].value =
-        _widgetState.notifierItems[index].value.copy(
-      checked: true,
-    );
+
     switch (isMultipleSelection) {
       case true:
-        _widgetState.selectionsValue.value =
-            List.from(_widgetState.selectionsValue.value)..add(value);
+        _widgetState.selectValues(List.filled(1, value) as List<k>);
         break;
       case false:
+        final index = _widgetState.values.indexOf(value);
+        _widgetState.notifierItems[index].value =
+            _widgetState.notifierItems[index].value.copy(
+          checked: true,
+        );
         final indexOld =
             _widgetState.values.indexOf(_widgetState.selectedValue.value);
         _widgetState.notifierItems[indexOld].value =
@@ -116,5 +116,10 @@ class GroupController implements BaseController {
       select(values.first);
     }
     _widgetState.selectValues(values);
+  }
+
+  @override
+  void deselectValues<k>(List<k> values) {
+    _widgetState.deselectValues(values);
   }
 }

@@ -30,6 +30,8 @@ abstract class BaseController {
   void selectAll();
 
   void selectItems<k>(List<k> values);
+
+  void deselectValues<k>(List<k> values);
 }
 
 abstract class BaseListController {
