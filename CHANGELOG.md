@@ -1,3 +1,5 @@
+## [1.6.0] - add styles for SimpleGroupedCheckbox,SimpleGroupedChips,SimpleGroupedSwitch 
+* create new methods in GroupController :`select`,`selectValues`,`selectAll`,`deselectValues` and `deselectAll`
 ## [1.5.0] - add styles for SimpleGroupedCheckbox,SimpleGroupedChips,SimpleGroupedSwitch 
 *  create new generic `GroupedStyle` to manage style of simple_grouped_checkbox 
 *  deprecate `backgroundColorItem`,`selectedColorItem`,`textColor`,`selectedTextColor`,`selectedIcon`,`disabledColor` 
