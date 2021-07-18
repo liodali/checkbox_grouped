@@ -24,9 +24,11 @@ abstract class BaseController {
   ///
   /// [itemsValues] : (List) values that will be disabled
   void disabledItemsByValues(List<dynamic> itemsValues);
+
   /// select one item in group ( singeSelection/multiple selection)
   /// [value] : (dynamic) value of item that should selected
   void select<K>(K value);
+
   /// select all items in group
   void selectAll();
 

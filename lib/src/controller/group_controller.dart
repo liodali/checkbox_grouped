@@ -88,14 +88,14 @@ class GroupController implements BaseController {
             _widgetState.notifierItems[index].value.copy(
           checked: true,
         );
-        if(_widgetState.selectedValue.value != null) {
+        if (_widgetState.selectedValue.value != null) {
           final indexOld =
-          _widgetState.values.indexOf(_widgetState.selectedValue.value);
+              _widgetState.values.indexOf(_widgetState.selectedValue.value);
           if (indexOld != -1) {
             _widgetState.notifierItems[indexOld].value =
                 _widgetState.notifierItems[indexOld].value.copy(
-                  checked: false,
-                );
+              checked: false,
+            );
           }
         }
         _widgetState.selectedValue.value = value;

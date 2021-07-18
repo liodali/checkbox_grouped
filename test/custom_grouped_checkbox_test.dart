@@ -28,11 +28,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(Key("1")),warnIfMissed: false);
+    await tester.tap(find.byKey(Key("1")), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(controller.selectedItem, 1);
 
-    await tester.tap(find.byKey(Key("2")),warnIfMissed: false);
+    await tester.tap(find.byKey(Key("2")), warnIfMissed: false);
     await tester.pump();
     expect(controller.selectedItem, 2);
   });
@@ -59,10 +59,10 @@ void main() {
     );
 
     await tester.pump();
-    await tester.tap(find.byType(Text).at(4),warnIfMissed: false);
+    await tester.tap(find.byType(Text).at(4), warnIfMissed: false);
     await tester.pump();
     expect(controller.selectedItem, [5]);
-    await tester.tap(find.byType(Text).at(5),warnIfMissed: false);
+    await tester.tap(find.byType(Text).at(5), warnIfMissed: false);
     await tester.pump();
     expect(controller.selectedItem, [5, 6]);
   });
@@ -95,15 +95,15 @@ void main() {
     );
 
     await tester.pump();
-    await tester.tap(find.byType(Text).at(4),warnIfMissed: false);
+    await tester.tap(find.byType(Text).at(4), warnIfMissed: false);
     await tester.pump();
     expect(controller.selectedItem, [User("name5")]);
     controller.disabledItems([User("name6")]);
-    await tester.tap(find.byType(Text).at(5),warnIfMissed: false);
+    await tester.tap(find.byType(Text).at(5), warnIfMissed: false);
     await tester.pump();
     expect(controller.selectedItem, [User("name5")]);
     controller.enabledItems([User("name6")]);
-    await tester.tap(find.byType(Text).at(5),warnIfMissed: false);
+    await tester.tap(find.byType(Text).at(5), warnIfMissed: false);
     await tester.pump();
     expect(controller.selectedItem, [User("name5"), User("name6")]);
   });

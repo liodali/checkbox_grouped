@@ -216,8 +216,6 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     });
   }
 
-
-
   void selectValues(List<K> values) {
     values.forEach((value) {
       final key = values.indexOf(value);
@@ -230,14 +228,15 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
           .where((element) => !selectionsValue.value.contains(element))
           .toList());
   }
+
   void deselectValues(List<K> values) {
     values.forEach((value) {
       final key = values.indexOf(value);
       notifierItems[key].value = notifierItems[key].value.copy(
-        checked: false,
-      );
+            checked: false,
+          );
     });
     selectionsValue.value = List.from(selectionsValue.value)
-      ..removeWhere((ele)=>values.contains(ele));
+      ..removeWhere((ele) => values.contains(ele));
   }
 }

@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.5.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.6.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -9,6 +9,7 @@
     * make multiple selection
     * dialogGroupedCheckbox
     * list of groupedCheckbox
+    * select/deselect items pragrammatically
 
 ## Getting Started
 <img src="https://github.com/liodali/checkbox_grouped/blob/master/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
@@ -19,7 +20,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.5.0
+		checkbox_grouped: ^1.6.0
 
 
 
@@ -38,7 +39,6 @@ Add the following to your `pubspec.yaml` file:
                        )
                     ),
                     checkFirstElement: false,
-                    multiSelection: false,
                   )
 ```
 ### Declare GroupController to get selection and enabled/disabled Items
@@ -97,6 +97,31 @@ controller.disabledItemsByTitles(List<String> items)
 controller.listen((v) {
       print("$v");
     });
+```
+### select/selectValues
+> select one item in single selection or multiple selection
+
+> selectValues work only in group when isMultiSelection is true
+
+```dart
+controller.select(value);
+or
+controller.selectValues([value]);
+```
+
+### selectAll/selectValues
+> select all or some items in multiple selection group
+```dart
+controller.selectAll();
+or
+controller.selectValues([values]);
+```
+### deselectAll/deselectValues
+> deselect all or some items in multiple selection group
+```dart
+controller.deselectAll();
+or
+controller.deselectValues([values]);
 ```
 
 

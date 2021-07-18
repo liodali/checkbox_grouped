@@ -420,6 +420,5 @@ void main() {
     expect(controller.selectedItem, 1);
     await tester.pump();
     expect(() => controller.deselectAll(), throwsA(isA<AssertionError>()));
-
   });
 }
