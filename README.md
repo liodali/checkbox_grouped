@@ -1,4 +1,5 @@
 # checkbox_grouped
+
 ![pub](https://img.shields.io/badge/pub-v1.6.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
@@ -12,8 +13,8 @@
     * select/deselect items pragrammatically
 
 ## Getting Started
-<img src="https://github.com/liodali/checkbox_grouped/blob/master/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
 
+<img src="https://github.com/liodali/checkbox_grouped/blob/master/exampleCheckbox.gif?raw=true" alt="checkboxGrouped examples"><br>
 
 ## Installing
 
@@ -22,48 +23,62 @@ Add the following to your `pubspec.yaml` file:
     dependencies:
 		checkbox_grouped: ^1.6.0
 
-
-
 ## Simple Usage
+
 #### Creating a basic `SimpleGroupedCheckbox`
 
 ```dart
-    SimpleGroupedCheckbox<int>(
-                    controller: controller,
-                    itemsTitle: ["1" ,"2","4","5"],
-                    values: [1,2,4,5],
-                    groupStyle: GroupStyle(
-                          activeColor: Colors.red,
-                          itemTitleStyle: TextStyle(
-                          fontSize: 13
-                       )
-                    ),
-                    checkFirstElement: false,
-                  )
+    SimpleGroupedCheckbox<int>
+(
+controller: controller,itemsTitle: ["1" ,"2","4
+"
+,
+"
+5
+"
+]
+,
+values: [1,2,4,5],
+groupStyle: GroupStyle
+(
+activeColor: Colors.red,itemTitleStyle: TextStyle
+(
+fontSize: 13
+)
+)
+,
+checkFirstElement: false
+,
+)
 ```
+
 ### Declare GroupController to get selection and enabled/disabled Items
 
 ```dart
+
 GroupController controller = GroupController();
 ```
 
-####  `GroupController`
+#### `GroupController`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
 |`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
 
-
 ### Get current selection
 
 ```dart
+
 final selectedItems = controller.selectedItem;
 ```
+
 ### enable items
 
 ```dart
     controller.enableAll();
 ```
+
 ### disable all items
 
 ```dart
@@ -73,32 +88,50 @@ final selectedItems = controller.selectedItem;
 ### enabled items
 
 ```dart
-controller.enabledItemsByValues(List<T> values); 
+controller.enabledItemsByValues(
+
+List<T> values
+); 
 ```
+
 ----------
+
 ```dart
-controller.enabledItemsByTitles(List<String> itemsTitles); 
+controller.enabledItemsByTitles(
+
+List<String> itemsTitles
+); 
 ```
 
 ### disable item
 
 ```dart
-controller.disabledItemsByValues(List<T> values);
+controller.disabledItemsByValues(
+
+List<T> values
+);
 ```
 
 ```dart
-controller.disabledItemsByTitles(List<String> items)
+controller.disabledItemsByTitles(
+
+List<String> items
+)
 ```
 
 ### listener to changed values
+
 > listener will be removed automatically when widget call dispose
 
 ```dart
-controller.listen((v) {
-      print("$v");
-    });
+controller.listen((
+v) {
+print("$v");
+});
 ```
+
 ### select/selectValues
+
 > select one item in single selection or multiple selection
 
 > selectValues work only in group when isMultiSelection is true
@@ -106,31 +139,39 @@ controller.listen((v) {
 ```dart
 controller.select(value);
 or
-controller.selectValues([value]);
+controller.selectValues([
+value]);
 ```
 
 ### selectAll/selectValues
+
 > select all or some items in multiple selection group
+
 ```dart
 controller.selectAll();
 or
-controller.selectValues([values]);
+controller.selectValues([
+values]);
 ```
+
 ### deselectAll/deselectValues
+
 > deselect all or some items in multiple selection group
+
 ```dart
 controller.deselectAll();
 or
-controller.deselectValues([values]);
+controller.deselectValues([
+values]);
 ```
-
 
 #### NOTICE
 
 * those method `disabledItems` and `enabledItems` has been removed
 * if you are using complex object in values , you need to implement operator == and hashcode
 
-####  `SimpleGroupedCheckbox`
+#### `SimpleGroupedCheckbox`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required)  Group Controller to recuperate selectionItems and disable or enableItems.  |
@@ -153,68 +194,84 @@ controller.deselectValues([values]);
 #### Creating a basic `CustomGroupedCheckbox`
 
 ```dart
-    CustomGroupedCheckbox<int>(
-            controller:customController,
-            groupTitle: "Custom GroupedCheckbox",
-            itemBuilder: (ctx,index,value,isDisabled){
-            return Card(
-                child: Row(
-                    children: <Widget>[
-                        Expanded(
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text("$index"),
-                            ),
-                        ),
-                        Opacity(
-                              opacity: v?1:0,
-                              child: Icon(Icons.check,
-                                color: Colors.green,
-                                size: 24,
-                              ),
-                         ),
-                      ],
-                   ),
-                );
-            },
-            itemCount: 10,
-            values: List<int>.generate(10, (i)=>i),
-        )
+    CustomGroupedCheckbox<int>
+(
+controller:customController,groupTitle: "
+Custom GroupedCheckbox
+"
+,
+itemBuilder: (
+ctx,index,value,isDisabled){
+return Card(
+child: Row(
+children: <Widget>[
+Expanded(
+child: Align(
+alignment: Alignment.centerLeft,
+child: Text("$index"),
+),
+),
+Opacity(
+opacity: v?1:0,
+child: Icon(Icons.check,
+color: Colors.green,
+size: 24,
+),
+),
+],
+),
+);
+},
+itemCount: 10
+,
+values: List<int>.generate
+(10,
+(
+i)=>
+i),
+)
 ```
 
 ### Declare CustomGroupController to get selection ,enabled/disable items
 
 ```dart
- CustomGroupController controller = CustomGroupController();
+
+CustomGroupController controller = CustomGroupController();
 ```
 
 ### Get current selection
 
 ```dart
+
 final selectedItem = controller.selectedItem;
 ```
 
 ### enable items
 
 ```dart
-    controller.enabledItems([value]);
+    controller.enabledItems([
+value]);
 ```
 
 ### disable items
 
 ```dart
-    controller.disabledItems([value]);
+    controller.disabledItems([
+value]);
 
 ```
-### listen to changed values 
+
+### listen to changed values
 
 ```dart
-controller.listen((value){
- print(value);
+controller.listen((
+value){
+print(value);
 })
 ```
 
-####  `CustomGroupedCheckbox`
+#### `CustomGroupedCheckbox`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Custom Group Controller to recuperate selectionItems and disable or enableItems.  |
@@ -224,8 +281,8 @@ controller.listen((value){
 |`itemExtent`           | ` The extent the children are forced to have in the main axis`  |
 |`isScroll`             | (bool) ` To make list of item scrollable `  |
 
+#### `CustomGroupedCheckbox.grid`
 
-####  `CustomGroupedCheckbox.grid` 
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Custom Group Controller to recuperate selectionItems and disable or enableItems.  |
@@ -235,64 +292,97 @@ controller.listen((value){
 |`isScroll`             | (bool) ` To indicate that the  list of children scrollable `  |
 |`gridDelegate`         | (SliverGridDelegate) `a delegate that controls the layout of the children`   | 
 
-
 ## Chip grouped Usage
 
 #### Creating a basic `SimpleGroupedChips`
 
 ```dart
-SimpleGroupedChips<int>(
-                    controller: controller,
-                    values: [1,2,3,4,5,6,7],
-                    itemTitle: ["1" ,"2","4","5","6","7"],
-                    chipGroupStyle: ChipGroupStyle.minimize(
-                         backgroundColorItem: Colors.red[400],
-                         itemTitleStyle: TextStyle(
-                         fontSize: 14,
-                      ),
-                    ),
-                  )
+SimpleGroupedChips<int>
+(
+controller: controller,values: [1,2,3,4,5,
+6
+,
+7
+]
+,
+itemTitle: ["1" ,"2","4","5","6",
+"
+7
+"
+]
+,
+chipGroupStyle: ChipGroupStyle.minimize(backgroundColorItem: Colors.red[400
+]
+,
+itemTitleStyle: TextStyle
+(
+fontSize: 14
+,
+)
+,
+)
+,
+)
 ```
+
 ### Declare GroupController to get selection and enabled/disabled Items
 
 ```dart
+
 GroupController controller = GroupController();
 ```
 
-####  `GroupController`
+#### `GroupController`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
 |`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
 |`chipGroupStyle`       | (ChipGroupStyle) A Initialize list of values that will be selected in grouped.   |
 
-
 ### Get current selection
 
 ```dart
+
 final selectedItems = controller.selectedItem;
 ```
+
 ### enabled items
 
 ```dart
-controller.enabledItemsByValues(List<T> values); 
+controller.enabledItemsByValues(
+
+List<T> values
+); 
 ```
+
 ----------
+
 ```dart
-controller.enabledItemsByTitles(List<String> itemsTitles); 
+controller.enabledItemsByTitles(
+
+List<String> itemsTitles
+); 
 ```
 
 ### disable item
 
 ```dart
-controller.disabledItemsByValues(List<T> values);
+controller.disabledItemsByValues(
+
+List<T> values
+);
 ```
 
 ```dart
-controller.disabledItemsByTitles(List<String> items)
+controller.disabledItemsByTitles(
+
+List<String> items
+)
 ```
 
-####  `SimpleGroupedChip`
+#### `SimpleGroupedChip`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) `controller to recuperate selectionItems and disable or enableItems.`  |
@@ -308,64 +398,91 @@ controller.disabledItemsByTitles(List<String> items)
 |`disabledColor`         | (deprecated) `the Color that uses when the item is disabled`  |
 |`isScrolling`          |`enable horizontal scrolling`.  |
 |`chipGroupStyle`       | (ChipGroupStyle) `the style that uses to customize  item chip `  |
-			     
+
 ## Switch grouped Usage
 
 #### Creating a basic `SimpleGroupedSwitch`
 
 ```dart
-SimpleGroupedSwitch<int>(
-                    controller: controller,
-                    values: [1,2,4,5],
-                    itemsTitle: ["1 " ,"2 ","4 ","5 ","6","7"],
-                    groupStyle: SwitchGroupStyle(
-                        itemTitleStyle: TextStyle(
-                          fontSize: 16,
-                          color: Colors.blue,
-                       ),
-                     activeColor: Colors.red,
-                  ),  
-             )
+SimpleGroupedSwitch<int>
+(
+controller: controller,values: [1,2,4,5],
+itemsTitle: ["1 " ,"2 ","4 ","5 ","6",
+"
+7
+"
+]
+,
+groupStyle: SwitchGroupStyle
+(
+itemTitleStyle: TextStyle
+(
+fontSize: 16
+,
+color: Colors.blue,)
+,
+activeColor: Colors.red,)
+,
+)
 ```
+
 ### Declare GroupController to get selection and enabled/disabled Items
 
 ```dart
+
 GroupController controller = GroupController();
 ```
 
-####  `GroupController`
+#### `GroupController`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`isMultipleSelection`  | (bool) enable multiple selection  in grouped checkbox (default:false).  |
 |`initSelectedItem`     | (List) A Initialize list of values that will be selected in grouped.   |
 
-
 ### Get current selection
 
 ```dart
+
 final selectedItems = controller.selectedItem;
 ```
+
 ### enabled items
 
 ```dart
-controller.enabledItemsByValues(List<T> values); 
+controller.enabledItemsByValues(
+
+List<T> values
+); 
 ```
+
 ----------
+
 ```dart
-controller.enabledItemsByTitles(List<String> itemsTitles); 
+controller.enabledItemsByTitles(
+
+List<String> itemsTitles
+); 
 ```
 
 ### disable item
 
 ```dart
-controller.disabledItemsByValues(List<T> values);
+controller.disabledItemsByValues(
+
+List<T> values
+);
 ```
 
 ```dart
-controller.disabledItemsByTitles(List<String> items)
+controller.disabledItemsByTitles(
+
+List<String> items
+)
 ```
 
-####  `SimpleGroupedSwitch`
+#### `SimpleGroupedSwitch`
+
 |   Properties          |  Description |
 |-----------------------|--------------|
 |`controller`           | (required) Group Controller to recuperate selectionItems and disable or enableItems.  |
@@ -375,7 +492,6 @@ controller.disabledItemsByTitles(List<String> items)
 |`onItemSelected`       | Call when users make  selection  or deselection  |
 |`groupStyle`           | (SwitchGroupStyle) the style that will customize text,switch  |
 
-
 ## showDialogGroupedCheckbox
 
 > display  groupedCheckbox inside dialog
@@ -384,19 +500,40 @@ controller.disabledItemsByTitles(List<String> items)
 #### Creating a basic `showDialogGroupedCheckbox`
 
 ```dart
-showDialogGroupedCheckbox(
-                        context: context,
-                        cancelDialogText: "cancel",
-                        isMultiSelection: true,
-                        itemsTitle: List.generate(15, (index) => "$index"),
-                        submitDialogText: "select",
-                        dialogTitle:Text("example dialog") ,
-                        values: List.generate(15, (index) => index)
-                      )
+showDialogGroupedCheckbox
+(
+context: context,cancelDialogText: "
+cancel
+"
+,
+isMultiSelection: true
+,
+itemsTitle: List.generate(15
+,
+(
+index) =>
+"
+$
+index")
+,
+submitDialogText: "
+select
+"
+,
+dialogTitle:Text
+("example dialog
+"
+)
+,
+values: List.generate(15
+,
+(
+index) =>
+index))
 ```
 
+#### `showDialogGroupedCheckbox`
 
-####  `showDialogGroupedCheckbox`
 |   Properties                  |  Description |
 |-------------------------------|--------------|
 |`dialogTitle`                  | `(required) Text Widget that describe Title of dialog`.  |
@@ -408,98 +545,166 @@ showDialogGroupedCheckbox(
 |`submitDialogText`             |`(string) label for submitButton`.  |
 |`isMultiSelection`             |`enable multiple selection`.  |
 
-## ListGroupedCheckbox  
+## ListGroupedCheckbox
 
 > display  list of groupedCheckbox
 > return all values selected
 >
+
 ### Declare ListGroupController to get all item selected or get item selected by group index
 
 ```dart
+
 ListGroupController controller = ListGroupController();
 ```
 
-####  `ListGroupController`
+#### `ListGroupController`
+
 |   Properties                  |  Description |
 |------------------------------ |--------------|
 |`isMultipleSelectionPerGroup`  | (List<bool>)  enable multiple selection  in each grouped checkbox. |
 |`initSelectedValues`           | (List) A Initialize list of values on each group of checkbox that will be selected in group.   |
 
-
 ### Get current selection
+
 * get all selection
 
 ```dart
+
 final selectedItems = controller.allSelectedItems;
 ```
+
 * get all selection by group
 
 ```dart
+
 final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
 ```
+
 ### enable items
 
 ```dart
-    controller.enableAll(int indexGroup);
+    controller.enableAll(
+
+int indexGroup
+);
 ```
+
 ### disable all items
 
 ```dart
-    controller.disableAll(int indexGroup);
+    controller.disableAll(
+
+int indexGroup
+);
 ```
+
 ### enabled items
 
 ```dart
-controller.enabledItemsByValues(int indexGroup,List<T> values); 
+controller.enabledItemsByValues(
+
+int indexGroup, List
+<
+T> values); 
 ```
+
 ----------
+
 ```dart
-controller.enabledItemsByTitles(int indexGroup,List<String> itemsTitles); 
+controller.enabledItemsByTitles(
+
+int indexGroup, List
+<
+String> itemsTitles); 
 ```
 
 ### disable item
 
 ```dart
-controller.disabledItemsByValues(int indexGroup,List<T> values);
+controller.disabledItemsByValues(
+
+int indexGroup, List
+<
+T> values);
 ```
 
 ```dart
-controller.disabledItemsByTitles(int indexGroup,List<String> items)
+controller.disabledItemsByTitles(
+
+int indexGroup, List
+<
+String> items)
 ```
-
-
 
 #### Creating a basic `ListGroupedCheckbox`
 
-     
 ```dart
-                ListGroupedCheckbox(
-                        controller: listController,
-                        groupTitles: List.generate(3, (index) => "groupe $index"),
-                        values: List.generate(
-                          3,
-                          (i) =>
-                              List.generate(5, (j) => "${(i + Random().nextInt(100)) * j}"),
-                        ),
-                        titles: List.generate(
-                          3,
-                          (i) => List.generate(5, (j) => "Title:$i-$j"),
-                        ),
-                        mapItemGroupedType: {
-                          1: GroupedType.Chips,
-                        },
-                      )
+                ListGroupedCheckbox
+(
+controller: listController,groupTitles: List.generate(3
+,
+(
+index) =>
+"
+groupe 
+$
+index")
+,
+values: List.generate(3
+,
+(
+i) =>
+List.generate(5
+,
+(
+j) =>
+"
+${
+(
+i + Random
+(
+).nextInt
+(100)
+)
+*
+j}"
+)
+,
+)
+,
+titles: List.generate(3
+,
+(
+i) =>
+List.generate(5
+,
+(
+j) =>
+"
+Title:
+$
+i-$
+j")
+,
+)
+,
+mapItemGroupedType: {
+1: GroupedType.Chips,
+},
+)
 ```
 
+#### `ListGroupedCheckbox`
 
-####  `ListGroupedCheckbox`
 |   Properties                        |  Description |
 |-------------------------------------|--------------------------------------------------------------------------------------------------|
 |`controller`                         | (required) manage the ListGroupedCheckbox.  |
-|`groupTitles`                        | (required)Text title for group checkbox in each groupedCheckbox.  |
+|`groupTitles`                        | (required) Text title for group checkbox in each groupedCheckbox.  |
 |`titles`                             | (required) A list of list of strings that describes each checkbox button. Each label must be distinct in groupedCheckbox.   |
 |`values`                             | (required) Values contains in each element in each groupedCheckbox.   |
 |`subTitles`                          | A list of list strings that describes second Text in each groupedChckbox.   |
+|`isScrollable`                       | (bool) make the parent widget scrollable or disable it (default:true)    |
 |`onSelectedGroupChanged`             | CallBack to get all selected items when users  make select new items or deselect items  |
 |`disabledValues`                     | A nested list of string ,specifies which item should be disabled in each groupedCheckbox. The strings passed to this must match the Titles  |
 |`titleGroupedAlignment`              | (Alignment) align text title of each group of checkbox  |
