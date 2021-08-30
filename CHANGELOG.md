@@ -1,3 +1,4 @@
+## [1.6.1+1] - fix  readme
 ## [1.6.1] - fix  bug [#55]
 * add new attribute `isScrollable` to make widget scrollable or not (default:true)
 ## [1.6.0] - add styles for SimpleGroupedCheckbox,SimpleGroupedChips,SimpleGroupedSwitch 
