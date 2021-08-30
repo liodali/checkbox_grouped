@@ -28,6 +28,7 @@ import 'simple_grouped_checkbox.dart';
 /// [mapItemGroupedType]      : (Map) to define type each item in list (chip,switch,default)
 class ListGroupedCheckbox<T> extends StatefulWidget {
   final ListGroupController controller;
+  final bool isScrollable;
   final List<List<T>> values;
   final List<List<String>> titles;
   final List<String> groupTitles;
@@ -44,6 +45,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
     required this.titles,
     required this.groupTitles,
     required this.values,
+    this.isScrollable = true,
     this.titleGroupedTextStyle,
     this.titleGroupedAlignment = Alignment.centerLeft,
     this.chipsStyle = const ChipsStyle(),
@@ -133,7 +135,9 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
     return ListView.builder(
       shrinkWrap: true,
       addAutomaticKeepAlives: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: widget.isScrollable
+          ? AlwaysScrollableScrollPhysics()
+          : NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
         if (widget.mapItemGroupedType != null &&
             widget.mapItemGroupedType!.isNotEmpty) {

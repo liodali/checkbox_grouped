@@ -29,20 +29,25 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListGroupedCheckbox<String>(
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 64,
+          child: ListGroupedCheckbox<String>(
             controller: controller,
+            isScrollable: true,
             groupTitles: List.generate(5, (index) => "groupe $index"),
             values: List.generate(
               5,
-              (i) =>
-                  List.generate(5, (j) => "${(i + Random().nextInt(100)) * j}"),
+                  (i) => List.generate(
+                  5, (j) => "${(i + Random().nextInt(100)) * j}"),
             ),
             titles: List.generate(
               5,
-              (i) => List.generate(5, (j) => "Title:$i-$j"),
+                  (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
             mapItemGroupedType: {
               1: GroupedType.Chips,
@@ -52,15 +57,18 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               print(list);
             },
           ),
-          ElevatedButton(
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: ElevatedButton(
             onPressed: () async {
               final list = await controller.allSelectedItems;
               print(list);
             },
             child: Text("see data"),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
