@@ -181,9 +181,13 @@ class _SimpleGrouped extends StatelessWidget {
             controller: multipleCheckController,
             itemsTitle: List.generate(10, (index) => "$index"),
             values: List.generate(10, (index) => index),
-            activeColor: Colors.green,
+            groupStyle: GroupStyle(
+              activeColor: Colors.green,
+              groupTitleStyle: TextStyle(
+                color: Colors.orange,
+              ),
+            ),
             groupTitle: "expanded multiple checkbox selection",
-            groupTitleStyle: TextStyle(color: Colors.orange),
             checkFirstElement: false,
             helperGroupTitle: true,
             onItemSelected: (data) {

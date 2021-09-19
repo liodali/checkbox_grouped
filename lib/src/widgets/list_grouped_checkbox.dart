@@ -60,19 +60,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
             controller.isMultipleSelectionPerGroup.length == titles.length),
         super(key: key);
 
-  static ListGroupedCheckboxState? of<T>(BuildContext context,
-      {bool nullOk = false}) {
-    final ListGroupedCheckboxState<T>? result =
-        context.findAncestorStateOfType<ListGroupedCheckboxState<T>>();
-    if (nullOk || result != null) return result;
-    throw FlutterError.fromParts(<DiagnosticsNode>[
-      ErrorSummary(
-          'ListGroupedCheckboxState.of() called with a context that does not contain an CustomGroupedCheckbox.'),
-      ErrorDescription(
-          'No ListGroupedCheckboxState ancestor could be found starting from the context that was passed to CustomGroupedCheckbox.of().'),
-      context.describeElement('The context used was')
-    ]);
-  }
+
 
   @override
   ListGroupedCheckboxState<T> createState() => ListGroupedCheckboxState<T>();
