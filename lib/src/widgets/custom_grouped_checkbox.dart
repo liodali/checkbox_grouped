@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
+import '../common/utilities.dart';
 import '../common/custom_state_group.dart';
 import '../common/item.dart';
 import '../controller/custom_group_controller.dart';
 
-/// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
-/// list.
-typedef CustomIndexedWidgetBuilder = Widget Function(
-  BuildContext builder,
-  int index,
-  bool? checked,
-  bool? isDisabled,
-);
+
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
+///
 /// [controller] : Text Widget that describe Title of group checkbox
+///
 /// [groupTitle] : Text Widget that describe Title of group checkbox
+///
 /// [itemBuilder] :  builder function  takes an index and checked state of widget
+///
 /// [values] : list of values
+///
 /// [itemExtent] : same as [itemExtent] of [ListView]
+///
 class CustomGroupedCheckbox<T> extends StatefulWidget {
   final CustomGroupController controller;
   final Widget? groupTitle;
