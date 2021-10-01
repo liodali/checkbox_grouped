@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_grouped_example.dart';
 import 'grid_of_grouped_checkbox.dart';
+import 'list_custom_group.dart';
 import 'list_of_grouped.dart';
 
 void main() => runApp(MyApp());
@@ -54,6 +55,7 @@ class _MainExampleState extends State<MainExample>
     "dialog",
     "list of group",
     "more example",
+    "list of custom group",
   ];
 
   void tabChanged() {
@@ -131,6 +133,7 @@ class _MainExampleState extends State<MainExample>
           _DialogExample(),
           ListOfGrouped(),
           GridOfListGroupedCheckbox(),
+          ListCustomGroup(),
         ],
       ),
     );

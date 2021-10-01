@@ -37,7 +37,7 @@ packages:
     source: hosted
     version: "1.3.1"
   checkbox_grouped:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: ".."
       relative: true
