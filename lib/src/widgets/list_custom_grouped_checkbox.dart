@@ -42,7 +42,8 @@ class ListCustomGroupedCheckbox extends StatefulWidget {
     this.titleGroupedAlignment = Alignment.centerLeft,
     this.onSelectedGroupChanged,
     Key? key,
-  })  : assert(controller.isMultipleSelectionPerGroup.isEmpty),
+  })  :
+        //assert(controller.isMultipleSelectionPerGroup.isEmpty),
         assert((groupTitles == null &&
                 (groupTitlesWidget != null && groupTitlesWidget.isNotEmpty)) ||
             (groupTitlesWidget == null &&
@@ -76,15 +77,21 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
 
   late Map<int, List<ValueNotifier<CustomItem<dynamic>>>> mapItems;
 
+  late List<bool> isMultipleSelections;
+
   @override
   void initState() {
     super.initState();
     len = widget.children.length;
+    isMultipleSelections = List.generate(len, (index) => false);
+    if (widget.controller.isMultipleSelectionPerGroup.isNotEmpty) {
+      isMultipleSelections = widget.controller.isMultipleSelectionPerGroup;
+    }
     widget.controller.init(this);
     listControllers.addAll(
       List.generate(
         len,
-        (index) => widget.controller.isMultipleSelectionPerGroup[index]
+        (index) => isMultipleSelections[index]
             ? CustomGroupController.multiple(
                 initSelectedItem: widget
                         .controller.initSelectedValuesByGroup.isNotEmpty
@@ -95,13 +102,15 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
                         : []
                     : [],
               )
-            : CustomGroupController(
-                initSelectedItem:
-                    widget.controller.initSelectedValuesByGroup.isNotEmpty
-                        ? widget.controller.initSelectedValuesByGroup[index]
-                        : [],
-                isMultipleSelection: false,
-              ),
+            : widget.controller.initSelectedValuesByGroup.containsKey(index) &&
+                    widget
+                        .controller.initSelectedValuesByGroup[index]!.isNotEmpty
+                ? CustomGroupController(
+                    initSelectedItem: widget
+                        .controller.initSelectedValuesByGroup[index]!.first,
+                    isMultipleSelection: false,
+                  )
+                : CustomGroupController(),
       ),
     );
   }
@@ -145,33 +154,22 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
           ? AlwaysScrollableScrollPhysics()
           : NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
-        Widget child = CustomGroupedCheckbox(
-          controller: listControllers[index],
-          isScroll: false,
-          groupTitle: widget.groupTitles != null
-              ? Text(widget.groupTitles![index])
-              : null,
-          itemBuilder: (innerCtx, index, check, disabled) {
-            return widget.children[index](
-              innerCtx,
-              index,
-              check,
-              disabled,
-            );
-          },
-          values: widget.listValuesByGroup[index],
-        );
-        if (widget.groupTitlesWidget != null) {
-          return Column(
-            children: [
-              widget.groupTitlesWidget![index],
-              Expanded(
-                child: child,
-              ),
-            ],
+        return CustomGroupedCheckbox(
+            controller: listControllers[index],
+            isScroll: false,
+            groupTitle: widget.groupTitles != null && widget.groupTitles!.isNotEmpty
+                ? Text(widget.groupTitles![index])
+                : null,
+            itemBuilder: (innerCtx, indexInner, check, disabled) {
+              return widget.children[index](
+                innerCtx,
+                indexInner,
+                check,
+                disabled,
+              );
+            },
+            values: widget.listValuesByGroup[index],
           );
-        }
-        return child;
       },
       itemCount: len,
     );

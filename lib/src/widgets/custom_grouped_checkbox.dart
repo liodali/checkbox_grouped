@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../common/utilities.dart';
 import '../common/custom_state_group.dart';
 import '../common/item.dart';
+import '../common/utilities.dart';
 import '../controller/custom_group_controller.dart';
-
-
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
 ///
@@ -170,37 +168,43 @@ class CustomGroupedCheckboxState<T>
       );
     };
     Widget child = ListView.builder(
-      physics: widget.isScroll
-          ? AlwaysScrollableScrollPhysics()
-          : NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       itemBuilder: builder,
       itemCount: items.length,
       itemExtent: widget.itemExtent,
     );
+    Axis axisScroll = Axis.vertical;
     if (widget._isGrid) {
       child = GridView.builder(
-        physics: widget.isScroll
-            ? AlwaysScrollableScrollPhysics()
-            : NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         gridDelegate: widget.gridDelegate!,
         itemBuilder: builder,
         itemCount: items.length,
         shrinkWrap: true,
       );
+      //axisScroll = Axis.horizontal;
     }
-    return Column(
-      children: <Widget>[
-        widget.groupTitle ?? Container(),
-        Expanded(
-          child: ScrollConfiguration(
-            behavior: ScrollBehavior(),
-            child: child,
-          ),
-        ),
-      ],
+    final customWidget = ScrollConfiguration(
+      behavior: ScrollBehavior(),
+      child: child,
     );
+    return widget.groupTitle != null
+        ? SingleChildScrollView(
+            scrollDirection: axisScroll,
+            physics: widget.isScroll
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                widget.groupTitle!,
+                customWidget,
+              ],
+            ),
+          )
+        : customWidget;
   }
 
   @override
