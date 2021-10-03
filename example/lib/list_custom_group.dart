@@ -45,6 +45,9 @@ class ListCustomGroup extends StatelessWidget {
     ];
     return ListCustomGroupedCheckbox(
       controller: controller,
+      onSelectedGroupChanged: (values){
+        print(values);
+      },
       isScrollable: true,
       groupTitles: ["Users", "Names"],
       children: [
