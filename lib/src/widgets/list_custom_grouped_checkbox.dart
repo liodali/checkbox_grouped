@@ -91,28 +91,51 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
     listControllers.addAll(
       List.generate(
         len,
-        (index) => isMultipleSelections[index]
-            ? CustomGroupController.multiple(
-                initSelectedItem: widget
-                        .controller.initSelectedValuesByGroup.isNotEmpty
-                    ? widget.controller.initSelectedValuesByGroup
-                            .containsKey(index)
-                        ? widget.controller.initSelectedValuesByGroup[index]!
-                            .toList()
-                        : []
-                    : [],
-              )
-            : widget.controller.initSelectedValuesByGroup.containsKey(index) &&
-                    widget
-                        .controller.initSelectedValuesByGroup[index]!.isNotEmpty
-                ? CustomGroupController(
-                    initSelectedItem: widget
-                        .controller.initSelectedValuesByGroup[index]!.first,
-                    isMultipleSelection: false,
-                  )
-                : CustomGroupController(),
+        (index) {
+          late CustomGroupController customGroupController;
+          if (isMultipleSelections[index]) {
+            customGroupController = CustomGroupController.multiple(
+              initSelectedItem:
+                  widget.controller.initSelectedValuesByGroup.isNotEmpty
+                      ? widget.controller.initSelectedValuesByGroup
+                              .containsKey(index)
+                          ? widget.controller.initSelectedValuesByGroup[index]!
+                              .toList()
+                          : []
+                      : [],
+            )..listen((_) => _onSelected());
+          } else {
+            if (widget.controller.initSelectedValuesByGroup
+                    .containsKey(index) &&
+                widget
+                    .controller.initSelectedValuesByGroup[index]!.isNotEmpty) {
+              customGroupController = CustomGroupController(
+                initSelectedItem:
+                    widget.controller.initSelectedValuesByGroup[index]!.first,
+                isMultipleSelection: false,
+              )..listen((_) => _onSelected());
+            } else {
+              customGroupController = CustomGroupController()
+                ..listen((_) => _onSelected());
+            }
+          }
+
+          return customGroupController;
+        },
       ),
     );
+  }
+
+  void _onSelected() async {
+    final list = await getAllValues();
+    if (widget.onSelectedGroupChanged != null) {
+      widget.onSelectedGroupChanged!(list);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<List> getAllValues() async {
@@ -155,21 +178,22 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
           : NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
         return CustomGroupedCheckbox(
-            controller: listControllers[index],
-            isScroll: false,
-            groupTitle: widget.groupTitles != null && widget.groupTitles!.isNotEmpty
-                ? Text(widget.groupTitles![index])
-                : null,
-            itemBuilder: (innerCtx, indexInner, check, disabled) {
-              return widget.children[index](
-                innerCtx,
-                indexInner,
-                check,
-                disabled,
-              );
-            },
-            values: widget.listValuesByGroup[index],
-          );
+          controller: listControllers[index],
+          isScroll: false,
+          groupTitle:
+              widget.groupTitles != null && widget.groupTitles!.isNotEmpty
+                  ? Text(widget.groupTitles![index])
+                  : null,
+          itemBuilder: (innerCtx, indexInner, check, disabled) {
+            return widget.children[index](
+              innerCtx,
+              indexInner,
+              check,
+              disabled,
+            );
+          },
+          values: widget.listValuesByGroup[index],
+        );
       },
       itemCount: len,
     );

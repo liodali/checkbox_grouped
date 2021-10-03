@@ -37,7 +37,7 @@ class CustomGroupController {
   void listen(void Function(dynamic) listener) {
     try {
       _addListener(listener);
-    } catch (LateInitializationError) {
+    } catch (e) {
       _listeners.add(listener);
     }
   }
