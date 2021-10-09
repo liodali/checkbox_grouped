@@ -10,18 +10,6 @@ import 'simple_grouped_checkbox.dart';
 ///
 ///  [isScrolling]           : enable horizontal scrolling
 ///
-///  [backgroundColorItem]   : the background color for each item
-///
-///  [selectedColorItem]     : the background color to use when item is  selected
-///
-///  [textColor]            : the color to use for each text of item
-///
-///  [selectedTextColor]    : the selected color to use for each text of item
-///
-///  [selectedIcon]         : the selected icon to use for each selected  item
-///
-/// [disabledColor]         : (Color) the Color that uses when the item is disabled
-///
 /// [chipGroupStyle]        :  (ChipGroupStyle) the style that will customize  SimpleGroupedChips
 ///
 ///  [values]               : (required) Values contains in each element.
@@ -101,16 +89,15 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   void initState() {
     super.initState();
     groupStyle = ChipGroupStyle(
-      backgroundColorItem: widget.chipGroupStyle.backgroundColorItem ??
-          widget.backgroundColorItem,
+      backgroundColorItem: widget.chipGroupStyle.backgroundColorItem,
       selectedColorItem:
-          widget.chipGroupStyle.selectedColorItem ?? widget.selectedColorItem,
-      textColor: widget.chipGroupStyle.textColor ?? widget.textColor,
+          widget.chipGroupStyle.selectedColorItem ,
+      textColor: widget.chipGroupStyle.textColor ,
       selectedTextColor:
-          widget.chipGroupStyle.selectedTextColor ?? widget.selectedTextColor,
+          widget.chipGroupStyle.selectedTextColor ,
       disabledColor:
-          widget.chipGroupStyle.disabledColor ?? widget.disabledColor,
-      selectedIcon: widget.chipGroupStyle.selectedIcon ?? widget.selectedIcon,
+          widget.chipGroupStyle.disabledColor,
+      selectedIcon: widget.chipGroupStyle.selectedIcon,
       itemTitleStyle: widget.chipGroupStyle.itemTitleStyle,
     );
     init(

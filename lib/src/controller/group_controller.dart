@@ -32,7 +32,7 @@ class GroupController implements BaseController {
   void listen(void Function(dynamic) listener) {
     try {
       _addListener(listener);
-    } catch (LateInitializationError) {
+    } on Exception {
       _listeners.add(listener);
     }
   }
@@ -80,7 +80,7 @@ class GroupController implements BaseController {
 
     switch (isMultipleSelection) {
       case true:
-        _widgetState.selectValues(List.filled(1, value) as List<k>);
+        _widgetState.selectValues(List.filled(1, value));
         break;
       case false:
         final index = _widgetState.values.indexOf(value);

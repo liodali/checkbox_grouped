@@ -35,7 +35,6 @@ class ListCustomGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller =
         ListCustomGroupController(isMultipleSelectionPerGroup: [true, false]);
-    final len = 2;
     final datas = [
       List<_User>.generate(
         10,

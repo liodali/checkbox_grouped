@@ -30,7 +30,7 @@ class ListCustomGroupedCheckbox extends StatefulWidget {
   final List<Widget>? groupTitlesWidget;
   final TextStyle? titleGroupedTextStyle;
   final Alignment titleGroupedAlignment;
-  final OnGroupChanged? onSelectedGroupChanged;
+  final OnCustomGroupChanged? onSelectedGroupChanged;
 
   ListCustomGroupedCheckbox({
     required this.controller,
@@ -129,9 +129,9 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
   }
 
   void _onSelected() async {
-    final list = await getAllValues();
+    final map = await getMapValues();
     if (widget.onSelectedGroupChanged != null) {
-      widget.onSelectedGroupChanged!(list);
+      widget.onSelectedGroupChanged!(map);
     }
   }
 
@@ -163,10 +163,18 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
     return resultList;
   }
 
-  Future<List> getValuesByIndex(int index) async {
+  Future<Map<int, dynamic>> getMapValues() async {
+    Map<int, dynamic> resultList = Map();
+    listControllers.asMap().forEach((key, controller) {
+      resultList.putIfAbsent(key, () => controller.selectedItem ?? null);
+    });
+    return resultList;
+  }
+
+  Future<List> getListValuesByIndex(int index) async {
     assert(index < len);
     List resultList = List.empty();
-    resultList.addAll(listControllers[index].selectedItem);
+    resultList.addAll(listControllers[index].selectedItem ?? null);
     return resultList;
   }
 

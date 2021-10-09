@@ -12,8 +12,11 @@ class ListCustomGroupController {
   Future<List<dynamic>> get allSelectedItems async =>
       await _state.getAllValues();
 
+  Future<Map<int, dynamic>> get mapSelectedItems async =>
+      await _state.getMapValues();
+
   Future<List<dynamic>> selectedItemsByGroupIndex(int index) async =>
-      await _state.getValuesByIndex(index);
+      await _state.getListValuesByIndex(index);
 
   ListCustomGroupController({
     this.initSelectedValuesByGroup = const {},
