@@ -26,6 +26,7 @@ class ListCustomGroupedCheckbox extends StatefulWidget {
   final List<CustomIndexedWidgetBuilder> children;
   final List<List<dynamic>> listValuesByGroup;
   final List<String>? groupTitles;
+  final EdgeInsets titlePadding;
   final List<Widget>? groupTitlesWidget;
   final TextStyle? titleGroupedTextStyle;
   final Alignment titleGroupedAlignment;
@@ -38,6 +39,7 @@ class ListCustomGroupedCheckbox extends StatefulWidget {
     required this.children,
     required this.listValuesByGroup,
     this.isScrollable = true,
+    this.titlePadding = const EdgeInsets.all(5.0),
     this.titleGroupedTextStyle,
     this.titleGroupedAlignment = Alignment.centerLeft,
     this.onSelectedGroupChanged,
@@ -177,15 +179,53 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
           ? AlwaysScrollableScrollPhysics()
           : NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
+        if (widget.children[index] is CustomGridIndexedWidgetBuilder) {
+          return CustomGroupedCheckbox.grid(
+            controller: listControllers[index],
+            isScroll: false,
+            groupTitle:
+                widget.groupTitles != null && widget.groupTitles!.isNotEmpty
+                    ? Container(
+                        alignment: widget.titleGroupedAlignment,
+                        padding: widget.titlePadding,
+                        child: Text(
+                          widget.groupTitles![index],
+                          style: widget.titleGroupedTextStyle ??
+                              Theme.of(context).textTheme.headline6,
+                        ),
+                      )
+                    : null,
+            itemBuilder: (innerCtx, indexInner, check, disabled) {
+              return widget.children[index].itemBuilder(
+                innerCtx,
+                indexInner,
+                check,
+                disabled,
+              );
+            },
+            values: widget.listValuesByGroup[index],
+            gridDelegate:
+                (widget.children[index] as CustomGridIndexedWidgetBuilder)
+                    .gridDelegate,
+          );
+        }
         return CustomGroupedCheckbox(
           controller: listControllers[index],
           isScroll: false,
           groupTitle:
               widget.groupTitles != null && widget.groupTitles!.isNotEmpty
-                  ? Text(widget.groupTitles![index])
+                  ? Container(
+                      alignment: widget.titleGroupedAlignment,
+                      padding: widget.titlePadding,
+                      child: Text(
+                        widget.groupTitles![index],
+                        style: widget.titleGroupedTextStyle ??
+                            Theme.of(context).textTheme.headline6,
+                      ),
+                    )
                   : null,
           itemBuilder: (innerCtx, indexInner, check, disabled) {
-            return widget.children[index](
+            return widget.children[index].itemBuilder(
               innerCtx,
               indexInner,
               check,
@@ -198,4 +238,25 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
       itemCount: len,
     );
   }
+}
+
+class CustomIndexedWidgetBuilder {
+  final CustomItemIndexedWidgetBuilder itemBuilder;
+
+  CustomIndexedWidgetBuilder({
+    required this.itemBuilder,
+  });
+}
+
+class CustomGridIndexedWidgetBuilder extends CustomIndexedWidgetBuilder {
+  final SliverGridDelegate gridDelegate;
+
+  CustomGridIndexedWidgetBuilder({
+    required CustomItemIndexedWidgetBuilder itemBuilder,
+    this.gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+    ),
+  }) : super(
+          itemBuilder: itemBuilder,
+        );
 }

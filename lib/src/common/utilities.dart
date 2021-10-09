@@ -6,7 +6,7 @@ typedef OnGroupChanged<T> = void Function(dynamic selected);
 
 /// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
 /// list.
-typedef CustomIndexedWidgetBuilder = Widget Function(
+typedef CustomItemIndexedWidgetBuilder = Widget Function(
   BuildContext builder,
   int index,
   bool? checked,

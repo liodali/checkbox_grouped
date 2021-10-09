@@ -20,7 +20,7 @@ import '../controller/custom_group_controller.dart';
 class CustomGroupedCheckbox<T> extends StatefulWidget {
   final CustomGroupController controller;
   final Widget? groupTitle;
-  final CustomIndexedWidgetBuilder itemBuilder;
+  final CustomItemIndexedWidgetBuilder itemBuilder;
   final double? itemExtent;
   final List<T> values;
   final bool _isGrid;
