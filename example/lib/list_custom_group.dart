@@ -21,6 +21,11 @@ class _User {
 
   @override
   int get hashCode => name.hashCode ^ email.hashCode;
+
+  @override
+  String toString() {
+    return "{$name,$email}";
+  }
 }
 
 class ListCustomGroup extends StatelessWidget {
@@ -28,7 +33,8 @@ class ListCustomGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = ListCustomGroupController();
+    final controller =
+        ListCustomGroupController(isMultipleSelectionPerGroup: [true, false]);
     final len = 2;
     final datas = [
       List<_User>.generate(
@@ -45,13 +51,15 @@ class ListCustomGroup extends StatelessWidget {
     ];
     return ListCustomGroupedCheckbox(
       controller: controller,
-      onSelectedGroupChanged: (values){
+      onSelectedGroupChanged: (values) {
         print(values);
       },
       isScrollable: true,
+      titleGroupedAlignment: Alignment.centerLeft,
       groupTitles: ["Users", "Names"],
       children: [
-        (ctx, index, selected, isDisabled) {
+        CustomIndexedWidgetBuilder(
+            itemBuilder: (ctx, index, selected, isDisabled) {
           return Card(
             margin: EdgeInsets.only(
               top: 5.0,
@@ -75,36 +83,47 @@ class ListCustomGroup extends StatelessWidget {
               ),
             ),
           );
-        },
-        (ctx, index, selected, isDisabled) {
-          return Card(
-            color: selected ? Colors.green[300] : Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                12.0,
-              ),
-            ),
-            margin: EdgeInsets.only(
-              top: 5.0,
-              bottom: 5.0,
-            ),
-            child: Row(
-              children: [
-                Text(
-                  datas[1][index],
-                ),
-                Opacity(
-                  opacity: selected ? 1 : 0,
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 24,
+        }),
+        CustomGridIndexedWidgetBuilder(
+            itemBuilder: (ctx, index, selected, isDisabled) {
+              return Card(
+                color: selected ? Colors.green[300] : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12.0,
                   ),
-                )
-              ],
-            ),
-          );
-        }
+                ),
+                margin: EdgeInsets.only(
+                  top: 5.0,
+                  bottom: 5.0,
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        datas[1][index],
+                        maxLines: 3,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ),
+                    Positioned(
+                      top: 5,
+                      right: 8,
+                      child: Opacity(
+                        opacity: selected ? 1 : 0,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, crossAxisSpacing: 5.0)),
       ],
       listValuesByGroup: datas,
     );
