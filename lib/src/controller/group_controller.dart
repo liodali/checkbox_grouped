@@ -80,7 +80,7 @@ class GroupController implements BaseController {
 
     switch (isMultipleSelection) {
       case true:
-        _widgetState.selectValues(List.filled(1, value));
+        _widgetState.selectValues(List.filled(1, value).cast<k>().toList());
         break;
       case false:
         final index = _widgetState.values.indexOf(value);
