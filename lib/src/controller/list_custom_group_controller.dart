@@ -10,7 +10,10 @@ class ListCustomGroupController {
   late ListCustomGroupedCheckboxState _state;
 
   Future<List<dynamic>> get allSelectedItems async =>
-      await _state.getAllValues();
+      await _state.getAllValues(byGroup: false);
+
+  Future<List<dynamic>> get allSelectedItemsGrouped async =>
+      await _state.getAllValues(byGroup: true);
 
   Future<Map<int, dynamic>> get mapSelectedItems async =>
       await _state.getMapValues();

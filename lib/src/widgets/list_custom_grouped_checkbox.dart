@@ -140,9 +140,16 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
     super.dispose();
   }
 
-  Future<List> getAllValues() async {
+  Future<List> getAllValues({bool byGroup = true}) async {
     List resultList = List.empty(growable: true);
-    var values = listControllers.map((e) => e.selectedItem).where((v) {
+    var values = listControllers.map((e) {
+      switch (e.isMultipleSelection && byGroup) {
+        case true:
+          return [e.selectedItem];
+        default:
+          return e.selectedItem;
+      }
+    }).where((v) {
       if (v != null) {
         if (v is List && v.isNotEmpty) {
           return true;

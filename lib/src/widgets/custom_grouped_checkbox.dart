@@ -152,11 +152,11 @@ class CustomGroupedCheckboxState<T>
       return ValueListenableBuilder<CustomItem<T?>>(
         valueListenable: items[index],
         builder: (ctx, value, child) {
-          return _ItemWidget(
+          return ItemWidget(
             child: widget.itemBuilder(
               context,
               index,
-              items[index].value.checked,
+              items[index].value.checked!,
               items[index].value.isDisabled,
             ),
             value: items[index].value.checked,
@@ -249,12 +249,13 @@ class CustomGroupedCheckboxState<T>
   }
 }
 
-class _ItemWidget extends StatelessWidget {
+@visibleForTesting
+class ItemWidget extends StatelessWidget {
   final Widget? child;
   final Function(bool)? callback;
   final bool? value;
 
-  _ItemWidget({
+  ItemWidget({
     this.child,
     this.callback,
     this.value,

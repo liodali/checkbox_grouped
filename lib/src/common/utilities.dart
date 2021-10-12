@@ -10,8 +10,8 @@ typedef OnCustomGroupChanged<T> = void Function(Map<int,dynamic> selected);
 typedef CustomItemIndexedWidgetBuilder = Widget Function(
   BuildContext builder,
   int index,
-  bool? checked,
-  bool? isDisabled,
+  bool checked,
+  bool isDisabled,
 );
 
 enum GroupedType { Chips, Switch, Default }
