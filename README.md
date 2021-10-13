@@ -9,6 +9,7 @@
     * make multiple selection
     * dialogGroupedCheckbox
     * list of groupedCheckbox
+    * list of customisable groupedCheckbox
     * select/deselect items pragrammatically
 
 ## Getting Started
