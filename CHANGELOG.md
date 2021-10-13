@@ -1,3 +1,7 @@
+## [1.7.0] - add new widget ListCustomGroupedCheckbox 
+*  * create ListCustomGroupedCheckbox to manage multiple custom grouped in list  
+*  * create ListCustomController to get selected item 
+*  * remove deprecated attributes  
 ## [1.6.1+1] - fix  readme
 ## [1.6.1] - fix  bug [#55]
 * add new attribute `isScrollable` to make widget scrollable or not (default:true)

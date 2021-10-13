@@ -6,8 +6,6 @@ import '../common/item.dart';
 import '../common/state_group.dart';
 import 'simple_grouped_checkbox.dart';
 
-///  [textStyle] : the style to use for each text of item
-///  [activeColor] :the selected color to use for each switch item
 ///  [controller] :(required) GroupController to recuperate selectedItems.
 ///  [values] :(required) Values contains in each element.
 ///  [itemsTitle] :(required) A list of strings that describes each chip button
@@ -118,12 +116,11 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
               indexItem: index,
               onItemChanged: changeSelection,
               item: item,
-              activeColor: widget.groupStyle?.activeColor ?? widget.activeColor,
+              activeColor: widget.groupStyle?.activeColor,
               textStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
-                      color: item.checked!
-                          ? widget.groupStyle?.activeColor ?? widget.activeColor
-                          : widget.groupStyle?.itemTitleStyle?.color) ??
-                  widget.textStyle,
+                  color: item.checked!
+                      ? widget.groupStyle?.activeColor
+                      : widget.groupStyle?.itemTitleStyle?.color),
             );
           },
         );

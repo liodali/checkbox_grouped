@@ -2,27 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../common/custom_state_group.dart';
 import '../common/item.dart';
+import '../common/utilities.dart';
 import '../controller/custom_group_controller.dart';
 
-/// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
-/// list.
-typedef CustomIndexedWidgetBuilder = Widget Function(
-  BuildContext builder,
-  int index,
-  bool? checked,
-  bool? isDisabled,
-);
-
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
+///
 /// [controller] : Text Widget that describe Title of group checkbox
+///
 /// [groupTitle] : Text Widget that describe Title of group checkbox
+///
 /// [itemBuilder] :  builder function  takes an index and checked state of widget
+///
 /// [values] : list of values
+///
 /// [itemExtent] : same as [itemExtent] of [ListView]
+///
 class CustomGroupedCheckbox<T> extends StatefulWidget {
   final CustomGroupController controller;
   final Widget? groupTitle;
-  final CustomIndexedWidgetBuilder itemBuilder;
+  final CustomItemIndexedWidgetBuilder itemBuilder;
   final double? itemExtent;
   final List<T> values;
   final bool _isGrid;
@@ -154,11 +152,11 @@ class CustomGroupedCheckboxState<T>
       return ValueListenableBuilder<CustomItem<T?>>(
         valueListenable: items[index],
         builder: (ctx, value, child) {
-          return _ItemWidget(
+          return ItemWidget(
             child: widget.itemBuilder(
               context,
               index,
-              items[index].value.checked,
+              items[index].value.checked!,
               items[index].value.isDisabled,
             ),
             value: items[index].value.checked,
@@ -170,37 +168,43 @@ class CustomGroupedCheckboxState<T>
       );
     };
     Widget child = ListView.builder(
-      physics: widget.isScroll
-          ? AlwaysScrollableScrollPhysics()
-          : NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       itemBuilder: builder,
       itemCount: items.length,
       itemExtent: widget.itemExtent,
     );
+    Axis axisScroll = Axis.vertical;
     if (widget._isGrid) {
       child = GridView.builder(
-        physics: widget.isScroll
-            ? AlwaysScrollableScrollPhysics()
-            : NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         gridDelegate: widget.gridDelegate!,
         itemBuilder: builder,
         itemCount: items.length,
         shrinkWrap: true,
       );
+      //axisScroll = Axis.horizontal;
     }
-    return Column(
-      children: <Widget>[
-        widget.groupTitle ?? Container(),
-        Expanded(
-          child: ScrollConfiguration(
-            behavior: ScrollBehavior(),
-            child: child,
-          ),
-        ),
-      ],
+    final customWidget = ScrollConfiguration(
+      behavior: ScrollBehavior(),
+      child: child,
     );
+    return widget.groupTitle != null
+        ? SingleChildScrollView(
+            scrollDirection: axisScroll,
+            physics: widget.isScroll
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                widget.groupTitle!,
+                customWidget,
+              ],
+            ),
+          )
+        : customWidget;
   }
 
   @override
@@ -245,12 +249,13 @@ class CustomGroupedCheckboxState<T>
   }
 }
 
-class _ItemWidget extends StatelessWidget {
+@visibleForTesting
+class ItemWidget extends StatelessWidget {
   final Widget? child;
   final Function(bool)? callback;
   final bool? value;
 
-  _ItemWidget({
+  ItemWidget({
     this.child,
     this.callback,
     this.value,

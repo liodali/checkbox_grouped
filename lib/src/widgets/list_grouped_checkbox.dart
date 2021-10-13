@@ -36,7 +36,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final List<List<T>> disabledValues;
   final TextStyle? titleGroupedTextStyle;
   final Alignment titleGroupedAlignment;
-  final onGroupChanged<T>? onSelectedGroupChanged;
+  final OnGroupChanged<T>? onSelectedGroupChanged;
   final Map<int, GroupedType>? mapItemGroupedType;
   final ChipsStyle chipsStyle;
 
@@ -60,20 +60,6 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
             controller.isMultipleSelectionPerGroup.length == titles.length),
         super(key: key);
 
-  static ListGroupedCheckboxState? of<T>(BuildContext context,
-      {bool nullOk = false}) {
-    final ListGroupedCheckboxState<T>? result =
-        context.findAncestorStateOfType<ListGroupedCheckboxState<T>>();
-    if (nullOk || result != null) return result;
-    throw FlutterError.fromParts(<DiagnosticsNode>[
-      ErrorSummary(
-          'ListGroupedCheckboxState.of() called with a context that does not contain an CustomGroupedCheckbox.'),
-      ErrorDescription(
-          'No ListGroupedCheckboxState ancestor could be found starting from the context that was passed to CustomGroupedCheckbox.of().'),
-      context.describeElement('The context used was')
-    ]);
-  }
-
   @override
   ListGroupedCheckboxState<T> createState() => ListGroupedCheckboxState<T>();
 }
@@ -87,17 +73,20 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
     super.initState();
     len = widget.values.length;
     widget.controller.init(this);
-    listControllers.addAll(List.generate(
+    listControllers.addAll(
+      List.generate(
         widget.values.length,
         (index) => GroupController(
-              initSelectedItem: widget.controller.initSelectedValues.isNotEmpty
-                  ? widget.controller.initSelectedValues[index]
-                  : [],
-              isMultipleSelection:
-                  widget.controller.isMultipleSelectionPerGroup.isNotEmpty
-                      ? widget.controller.isMultipleSelectionPerGroup[index]
-                      : false,
-            )));
+          initSelectedItem: widget.controller.initSelectedValues.isNotEmpty
+              ? widget.controller.initSelectedValues[index]
+              : [],
+          isMultipleSelection:
+              widget.controller.isMultipleSelectionPerGroup.isNotEmpty
+                  ? widget.controller.isMultipleSelectionPerGroup[index]
+                  : false,
+        ),
+      ),
+    );
   }
 
   Future<List<T>> getAllValues() async {

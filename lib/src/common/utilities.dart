@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 
 typedef CustomListener = void Function(dynamic);
 
-typedef onGroupChanged<T> = void Function(dynamic selected);
+typedef OnGroupChanged<T> = void Function(dynamic selected);
+typedef OnCustomGroupChanged<T> = void Function(Map<int, dynamic> selected);
+
+/// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
+/// list.
+typedef CustomItemIndexedWidgetBuilder = Widget Function(
+  BuildContext builder,
+  int index,
+  bool checked,
+  bool isDisabled,
+);
 
 enum GroupedType { Chips, Switch, Default }
 

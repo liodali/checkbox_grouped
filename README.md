@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.6.1%2B1-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.7.0-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -9,6 +9,7 @@
     * make multiple selection
     * dialogGroupedCheckbox
     * list of groupedCheckbox
+    * list of customisable groupedCheckbox
     * select/deselect items pragrammatically
 
 ## Getting Started
@@ -20,7 +21,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.6.1+1
+		checkbox_grouped: ^1.7.0
 
 
 
@@ -508,4 +509,154 @@ controller.disabledItemsByTitles(int indexGroup,List<String> items)
 |`mapItemGroupedType`                 | (Map) define type of each group can be chips/switch/(checkbox or radio)  |
 
 ------------------
+
+##ListCustomGroupedCheckbox
+> display  list of groupedCheckbox
+> return all values selected
+>
+### Declare ListGroupController to get all item selected or get item selected by group index
+
+```dart
+ListGroupController controller = ListGroupController();
+```
+
+####  `ListCustomGroupController`
+|   Properties                  |  Description |
+|------------------------------ |--------------|
+|`isMultipleSelectionPerGroup`  | (List<bool>)  enable multiple selection  in each grouped checkbox. |
+|`initSelectedValuesByGroup`    | (List) A Initialize list of values on each group of checkbox that will be selected in group.   |
+
+
+### Get current selection
+* get all selection
+1) list
+```dart
+final selectedItems = controller.allSelectedItems;
+```
+2) map
+```dart
+final selectedItems = controller.mapSelectedItems;
+```
+* get all selection by group
+
+```dart
+final selectedItems = controller.selectedItemsByGroupIndex(indexGroup);
+```
+
+####  `ListCustomGroupedCheckbox`
+|   Properties                        |  Description |
+|-------------------------------------|--------------------------------------------------------------------------------------------------|
+|`controller`                         | (required) manage the ListGroupedCheckbox.  |
+|`children`                           | (required) list of CustomIndexedWidgetBuilder to return widget of items for each group,should be non null widgets  |
+|`groupTitles`                        | A list of String for group checkbox in each CustomGrouped.  |
+|`groupTitlesWidget`                  | A list of list of widgets that describes custom Title for each group.   |
+|`listValuesByGroup`                  | (required) Values contains in each element in each CustomGroupedCheckbox.   |
+|`isScrollable`                       | (bool) make the parent widget scrollable or disable it (default:true).   |
+|`onSelectedGroupChanged`             | CallBack to get all selected items when one of item hit it make select new items or deselect items  |
+|`titleGroupedAlignment`              | (Alignment) align text title of each group  |
+|`titleGroupedTextStyle`              | (TextStyle) style text for title of each group   |
+
+
+### basic example 
+```dart
+final controller =
+ListCustomGroupController(isMultipleSelectionPerGroup: [true, false]);
+final data = [
+  List<_User>.generate(
+    10,
+        (i) => _User(
+      name: faker.person.name(),
+      email: faker.internet.email(),
+    ),
+  ),
+  List<String>.generate(
+    10,
+        (i) => faker.person.name(),
+  )
+]
+ListCustomGroupedCheckbox(
+      controller: controller,
+      onSelectedGroupChanged: (values) {
+        print(values);
+      },
+      isScrollable: true,
+      titleGroupedAlignment: Alignment.centerLeft,
+      groupTitles: ["Users", "Names"],
+      children: [
+        CustomIndexedWidgetBuilder(
+            itemBuilder: (ctx, index, selected, isDisabled) {
+          return Card(
+            margin: EdgeInsets.only(
+              top: 5.0,
+              bottom: 5.0,
+            ),
+            child: ListTile(
+              tileColor: selected ? Colors.green[300] : Colors.white,
+              title: Text(
+                (data[0][index] as _User).name,
+              ),
+              subtitle: Text(
+                (data[0][index] as _User).email,
+              ),
+              trailing: Opacity(
+                opacity: selected ? 1 : 0,
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
+          );
+        }),
+        CustomGridIndexedWidgetBuilder(
+            itemBuilder: (ctx, index, selected, isDisabled) {
+              return Card(
+                color: selected ? Colors.green[300] : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12.0,
+                  ),
+                ),
+                margin: EdgeInsets.only(
+                  top: 5.0,
+                  bottom: 5.0,
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        data[1][index],
+                        maxLines: 3,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ),
+                    Positioned(
+                      top: 5,
+                      right: 8,
+                      child: Opacity(
+                        opacity: selected ? 1 : 0,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, 
+                      crossAxisSpacing: 5.0,
+                  )
+              ),
+      ],
+      listValuesByGroup: data,
+    )
+
+
+```
+
 MIT Licences

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_grouped_example.dart';
 import 'grid_of_grouped_checkbox.dart';
+import 'list_custom_group.dart';
 import 'list_of_grouped.dart';
 
 void main() => runApp(MyApp());
@@ -54,6 +55,7 @@ class _MainExampleState extends State<MainExample>
     "dialog",
     "list of group",
     "more example",
+    "list of custom group",
   ];
 
   void tabChanged() {
@@ -131,6 +133,7 @@ class _MainExampleState extends State<MainExample>
           _DialogExample(),
           ListOfGrouped(),
           GridOfListGroupedCheckbox(),
+          ListCustomGroup(),
         ],
       ),
     );
@@ -181,9 +184,13 @@ class _SimpleGrouped extends StatelessWidget {
             controller: multipleCheckController,
             itemsTitle: List.generate(10, (index) => "$index"),
             values: List.generate(10, (index) => index),
-            activeColor: Colors.green,
+            groupStyle: GroupStyle(
+              activeColor: Colors.green,
+              groupTitleStyle: TextStyle(
+                color: Colors.orange,
+              ),
+            ),
             groupTitle: "expanded multiple checkbox selection",
-            groupTitleStyle: TextStyle(color: Colors.orange),
             checkFirstElement: false,
             helperGroupTitle: true,
             onItemSelected: (data) {

@@ -49,11 +49,7 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
   final OnChanged? onItemSelected;
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
-  @Deprecated("should use `groupStyle`,will be remove in next version")
-  final TextStyle? groupTitleStyle;
   final List<String> itemsSubTitle;
-  @Deprecated("should use `groupStyle`,will be remove in next version")
-  final Color? activeColor;
   final GroupStyle? groupStyle;
   final List<T> values;
   final List<String> disableItems;
@@ -71,10 +67,8 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
     this.groupTitle,
     this.groupTitleAlignment = Alignment.center,
     this.groupStyle,
-    this.groupTitleStyle,
     this.itemsSubTitle = const [],
     this.disableItems = const [],
-    this.activeColor,
     this.checkFirstElement = false,
     this.isLeading = false,
     this.isExpandableTitle = false,
@@ -100,11 +94,10 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
             "you cannot disable items doesn't exist in itemsTitle"),
         super(key: key);
 
-  static SimpleGroupedCheckboxState? of<T>(BuildContext context,
-      {bool nullOk = false}) {
+  static GroupController? of<T>(BuildContext context, {bool nullOk = false}) {
     final SimpleGroupedCheckboxState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedCheckboxState<T>>();
-    if (nullOk || result != null) return result;
+    if (nullOk || result != null) return result!.widget.controller;
     throw FlutterError.fromParts(<DiagnosticsNode>[
       ErrorSummary(
           'SimpleGroupedCheckbox.of() called with a context that does not contain an SimpleGroupedCheckbox.'),
@@ -175,10 +168,10 @@ class SimpleGroupedCheckboxState<T>
               },
               selectedValue: selectedValue.value,
               value: widget.values[i],
-              activeColor: widget.groupStyle?.activeColor ?? widget.activeColor,
+              activeColor: widget.groupStyle?.activeColor,
               itemStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
                   color: item.checked!
-                      ? widget.groupStyle?.activeColor ?? widget.activeColor
+                      ? widget.groupStyle?.activeColor
                       : widget.groupStyle?.itemTitleStyle?.color),
               isLeading: widget.isLeading,
               itemSubTitle: widget.itemsSubTitle.isNotEmpty
@@ -195,7 +188,7 @@ class SimpleGroupedCheckboxState<T>
         listChild: childListChecks,
         titleWidget: _TitleGroupedCheckbox(
           title: widget.groupTitle,
-          titleStyle: widget.groupTitleStyle,
+          titleStyle: widget.groupStyle?.groupTitleStyle,
           isMultiSelection: widget.controller.isMultipleSelection,
           alignment: widget.groupTitleAlignment,
           checkboxTitle: widget.helperGroupTitle
@@ -205,7 +198,7 @@ class SimpleGroupedCheckboxState<T>
                     return Checkbox(
                       tristate: true,
                       value: selected,
-                      activeColor: widget.activeColor,
+                      activeColor: widget.groupStyle?.activeColor,
                       onChanged: (v) {
                         setState(() {
                           if (v != null) valueTitle.value = v;
@@ -225,7 +218,7 @@ class SimpleGroupedCheckboxState<T>
         children: <Widget>[
           _TitleGroupedCheckbox(
             title: widget.groupTitle,
-            titleStyle: widget.groupTitleStyle,
+            titleStyle: widget.groupStyle?.groupTitleStyle,
             isMultiSelection: widget.controller.isMultipleSelection,
             alignment: widget.groupTitleAlignment,
             checkboxTitle: widget.helperGroupTitle
@@ -235,7 +228,7 @@ class SimpleGroupedCheckboxState<T>
                       return Checkbox(
                         tristate: true,
                         value: selected,
-                        activeColor: widget.activeColor,
+                        activeColor: widget.groupStyle?.activeColor,
                         onChanged: (v) {
                           if (v != null) valueTitle.value = v;
                         },

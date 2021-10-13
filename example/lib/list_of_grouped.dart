@@ -42,12 +42,12 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
             groupTitles: List.generate(5, (index) => "groupe $index"),
             values: List.generate(
               5,
-                  (i) => List.generate(
-                  5, (j) => "${(i + Random().nextInt(100)) * j}"),
+              (i) =>
+                  List.generate(5, (j) => "${(i + Random().nextInt(100)) * j}"),
             ),
             titles: List.generate(
               5,
-                  (i) => List.generate(5, (j) => "Title:$i-$j"),
+              (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
             mapItemGroupedType: {
               1: GroupedType.Chips,

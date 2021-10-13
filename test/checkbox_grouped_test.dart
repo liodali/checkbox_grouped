@@ -17,7 +17,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "$index"),
           values: List.generate(10, (index) => index),
-          activeColor: Colors.green,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
@@ -51,7 +53,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "${index + 1}"),
           values: List.generate(10, (index) => index + 1),
-          activeColor: Colors.red,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           isLeading: true,
         ),
@@ -75,7 +79,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "${index + 1}"),
           values: List.generate(10, (index) => index + 1),
-          activeColor: Colors.red,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           isLeading: true,
         ),
@@ -107,7 +113,9 @@ void main() {
             itemsTitle: List.generate(5, (index) => "name $index"),
             values: listValues,
             groupTitle: "group test",
-            activeColor: Colors.green,
+            groupStyle: GroupStyle(
+              activeColor: Colors.green,
+            ),
             checkFirstElement: false,
             helperGroupTitle: false,
             isExpandableTitle: false,
@@ -138,7 +146,9 @@ void main() {
             itemsTitle: List.generate(5, (index) => "$index"),
             values: listValues,
             groupTitle: "group test",
-            activeColor: Colors.green,
+            groupStyle: GroupStyle(
+              activeColor: Colors.green,
+            ),
             checkFirstElement: false,
             helperGroupTitle: true,
             isExpandableTitle: false,
@@ -164,7 +174,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "${index + 1}"),
           values: List.generate(10, (index) => index + 1),
-          activeColor: Colors.red,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: true,
           isLeading: true,
         ),
@@ -189,7 +201,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "${index + 1}"),
           values: List.generate(10, (index) => index + 1),
-          activeColor: Colors.red,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           isLeading: true,
         ),
@@ -225,7 +239,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "${index + 1}"),
           values: List.generate(10, (index) => index + 1),
-          activeColor: Colors.red,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: true,
           isLeading: true,
         ),
@@ -257,7 +273,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "${index + 1}"),
           values: List.generate(10, (index) => index + 1),
-          activeColor: Colors.red,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: true,
           isLeading: true,
         ),
@@ -288,7 +306,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "$index"),
           values: values,
-          activeColor: Colors.green,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
@@ -319,7 +339,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "$index"),
           values: values,
-          activeColor: Colors.green,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
@@ -349,7 +371,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "$index"),
           values: values,
-          activeColor: Colors.green,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
@@ -377,7 +401,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "$index"),
           values: values,
-          activeColor: Colors.green,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
@@ -405,7 +431,9 @@ void main() {
           controller: controller,
           itemsTitle: List.generate(10, (index) => "$index"),
           values: values,
-          activeColor: Colors.green,
+          groupStyle: GroupStyle(
+            activeColor: Colors.green,
+          ),
           checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
