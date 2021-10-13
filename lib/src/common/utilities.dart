@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 typedef CustomListener = void Function(dynamic);
 
 typedef OnGroupChanged<T> = void Function(dynamic selected);
-typedef OnCustomGroupChanged<T> = void Function(Map<int,dynamic> selected);
+typedef OnCustomGroupChanged<T> = void Function(Map<int, dynamic> selected);
 
 /// Signature for a function that creates a widget for a given index,isChecked and disabled, e.g., in a
 /// list.

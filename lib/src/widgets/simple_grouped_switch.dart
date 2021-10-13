@@ -116,11 +116,11 @@ class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
               indexItem: index,
               onItemChanged: changeSelection,
               item: item,
-              activeColor: widget.groupStyle?.activeColor ,
+              activeColor: widget.groupStyle?.activeColor,
               textStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
-                      color: item.checked!
-                          ? widget.groupStyle?.activeColor
-                          : widget.groupStyle?.itemTitleStyle?.color) ,
+                  color: item.checked!
+                      ? widget.groupStyle?.activeColor
+                      : widget.groupStyle?.itemTitleStyle?.color),
             );
           },
         );

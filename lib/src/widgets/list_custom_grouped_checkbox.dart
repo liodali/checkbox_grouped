@@ -44,8 +44,7 @@ class ListCustomGroupedCheckbox extends StatefulWidget {
     this.titleGroupedAlignment = Alignment.centerLeft,
     this.onSelectedGroupChanged,
     Key? key,
-  })  :
-        //assert(controller.isMultipleSelectionPerGroup.isEmpty),
+  })  : assert(children.isNotEmpty),
         assert((groupTitles == null &&
                 (groupTitlesWidget != null && groupTitlesWidget.isNotEmpty)) ||
             (groupTitlesWidget == null &&

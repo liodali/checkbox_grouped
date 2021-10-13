@@ -90,13 +90,10 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
     super.initState();
     groupStyle = ChipGroupStyle(
       backgroundColorItem: widget.chipGroupStyle.backgroundColorItem,
-      selectedColorItem:
-          widget.chipGroupStyle.selectedColorItem ,
-      textColor: widget.chipGroupStyle.textColor ,
-      selectedTextColor:
-          widget.chipGroupStyle.selectedTextColor ,
-      disabledColor:
-          widget.chipGroupStyle.disabledColor,
+      selectedColorItem: widget.chipGroupStyle.selectedColorItem,
+      textColor: widget.chipGroupStyle.textColor,
+      selectedTextColor: widget.chipGroupStyle.selectedTextColor,
+      disabledColor: widget.chipGroupStyle.disabledColor,
       selectedIcon: widget.chipGroupStyle.selectedIcon,
       itemTitleStyle: widget.chipGroupStyle.itemTitleStyle,
     );
