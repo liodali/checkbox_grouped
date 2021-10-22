@@ -166,13 +166,15 @@ class SimpleGroupedCheckboxState<T>
               value: widget.values[i],
               activeColor: widget.groupStyle?.activeColor,
               itemStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
-                  color: item.checked!
-                      ? widget.groupStyle?.activeColor
-                      : widget.groupStyle?.itemTitleStyle?.color),
+                color: item.checked!
+                    ? widget.groupStyle?.activeColor
+                    : widget.groupStyle?.itemTitleStyle?.color,
+              ),
               isLeading: widget.isLeading,
               itemSubTitle: widget.itemsSubTitle.isNotEmpty
                   ? widget.itemsSubTitle[i]
                   : null,
+              itemSubStyle: widget.groupStyle?.subItemTitleStyle,
               isMultipleSelection: widget.controller.isMultipleSelection,
             );
           },
