@@ -25,10 +25,6 @@ typedef OnChanged = Function(dynamic selected);
 ///
 /// [groupTitle] : Text Widget that describe Title of group checkbox
 ///
-/// [groupTitleStyle] : Text Style  that describe style of title of group checkbox
-///
-/// [activeColor] : (Color) the color to use when this checkbox button is selected (deprecated)
-///
 /// [groupStyle] : (GroupStyle) the style that should be applied on GroupedTitle,ItemTile,SubTitle
 ///
 /// [disableItems] : specifies which item should be disabled
@@ -412,6 +408,7 @@ class _CheckboxItem<T> extends StatelessWidget {
   final int index;
   final Color? activeColor;
   final TextStyle? itemStyle;
+  final TextStyle? itemSubStyle;
   final Function(int i, dynamic v) onChangedCheckBox;
 
   _CheckboxItem({
@@ -419,6 +416,7 @@ class _CheckboxItem<T> extends StatelessWidget {
     this.isLeading = false,
     this.activeColor,
     this.itemStyle,
+    this.itemSubStyle,
     required this.item,
     this.itemSubTitle,
     required this.value,
@@ -446,6 +444,7 @@ class _CheckboxItem<T> extends StatelessWidget {
         subtitle: itemSubTitle != null
             ? AutoSizeText(
                 itemSubTitle!,
+                style: itemSubStyle,
                 minFontSize: 11,
               )
             : null,
@@ -476,6 +475,7 @@ class _CheckboxItem<T> extends StatelessWidget {
       subtitle: itemSubTitle != null
           ? AutoSizeText(
               itemSubTitle!,
+              style: itemSubStyle,
               minFontSize: 11,
             )
           : null,
