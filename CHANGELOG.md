@@ -1,3 +1,5 @@
+## [1.7.1] - fix bug
+* fix subItem style of the groupStyle doesn't applied correctly (#59)
 ## [1.7.0] - add new widget ListCustomGroupedCheckbox 
 *  * create ListCustomGroupedCheckbox to manage multiple custom grouped in list  
 *  * create ListCustomController to get selected item 
