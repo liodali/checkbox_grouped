@@ -18,7 +18,7 @@ abstract class _CustomGroupInterface<T> {
   /// recuperate list of selection value if is multi selection
   dynamic selection();
 
-  void changeSelection(int index, dynamic value);
+  void changeSelection(int index, bool value);
 }
 
 abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
@@ -98,4 +98,6 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
       items[index].value = item as CustomItem<K>;
     });
   }
+
+  void reset();
 }

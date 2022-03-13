@@ -126,13 +126,15 @@ class GroupController implements BaseController {
   void deselectValues<k>(List<k> values) {
     assert(isMultipleSelection,
         "you cannot deselect multiple items in single selection group");
+    if(!isMultipleSelection){
+      throw Exception("you cannot deselect multiple items in single selection group");
+    }
     _widgetState.deselectValues(values);
   }
 
   @override
   void deselectAll() {
-    assert(isMultipleSelection,
-        "you cannot deselect all items in single selection group");
+    //assert(isMultipleSelection, "you cannot deselect all items in single selection group");
     _widgetState.deselectValues(_widgetState.values);
   }
 }

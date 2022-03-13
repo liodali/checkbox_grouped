@@ -43,8 +43,7 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
     Key? key,
     required this.controller,
     this.groupTitle,
-    SliverGridDelegate gridDelegate =
-        const SliverGridDelegateWithFixedCrossAxisCount(
+    SliverGridDelegate gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
     ),
     this.isScroll = false,
@@ -75,8 +74,7 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   }
 }
 
-class CustomGroupedCheckboxState<T>
-    extends CustomStateGroup<T?, CustomGroupedCheckbox> {
+class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCheckbox> {
   SliverChildBuilderDelegate? childrenDelegate;
 
   @override
@@ -102,8 +100,7 @@ class CustomGroupedCheckboxState<T>
         itemSelected.value = widget.controller.initSelectedItem.first;
     } else {
       if (widget.controller.initSelectedItem.isNotEmpty) {
-        itemsSelections.value =
-            List.castFrom(widget.controller.initSelectedItem);
+        itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
       }
     }
   }
@@ -130,8 +127,7 @@ class CustomGroupedCheckboxState<T>
       if (!widget.controller.isMultipleSelection) {
         itemSelected.value = widget.controller.initSelectedItem.first;
       } else {
-        itemsSelections.value =
-            List.castFrom(widget.controller.initSelectedItem);
+        itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
       }
     }
   }
@@ -193,9 +189,8 @@ class CustomGroupedCheckboxState<T>
     return widget.groupTitle != null
         ? SingleChildScrollView(
             scrollDirection: axisScroll,
-            physics: widget.isScroll
-                ? AlwaysScrollableScrollPhysics()
-                : NeverScrollableScrollPhysics(),
+            physics:
+                widget.isScroll ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -208,29 +203,25 @@ class CustomGroupedCheckboxState<T>
   }
 
   @override
-  void changeSelection(int index, dynamic value) {
+  void changeSelection(int index, bool value) {
     if (widget.controller.isMultipleSelection) {
       if (!itemsSelections.value.contains(widget.values[index])) {
         if (value) {
-          itemsSelections.value = List.from(itemsSelections.value)
-            ..add(widget.values[index]);
+          itemsSelections.value = List.from(itemsSelections.value)..add(widget.values[index]);
         }
       } else {
         if (!value) {
-          itemsSelections.value = List.from(itemsSelections.value)
-            ..remove(widget.values[index]);
+          itemsSelections.value = List.from(itemsSelections.value)..remove(widget.values[index]);
         }
       }
       items[index].value = items[index].value.copy(checked: value);
-      if (streamListValues.hasListener)
-        streamListValues.add(itemsSelections.value);
+      if (streamListValues.hasListener) streamListValues.add(itemsSelections.value);
     } else {
       if (value) {
         if (itemSelected.value != null) {
           if (itemSelected.value != items[index].value.data) {
             int indexPrevious = widget.values.indexOf(itemSelected.value);
-            items[indexPrevious].value =
-                items[indexPrevious].value.copy(checked: false);
+            items[indexPrevious].value = items[indexPrevious].value.copy(checked: false);
           }
         }
         itemSelected.value = widget.values[index];
@@ -246,6 +237,22 @@ class CustomGroupedCheckboxState<T>
       return itemsSelections.value;
     }
     return itemSelected.value;
+  }
+
+  @override
+  void reset() {
+    items.forEach((element) {
+      final item = element;
+      item.value = element.value.copy(checked: false);
+    });
+    if (widget.controller.isMultipleSelection) {
+      itemsSelections.value.clear();
+
+      if (streamOneValue.hasListener) streamListValues.add(itemsSelections.value);
+    } else {
+      itemSelected.value = null;
+      if (streamOneValue.hasListener) streamOneValue.add(itemSelected.value);
+    }
   }
 }
 
@@ -264,9 +271,7 @@ class ItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        callback!(!value!);
-      },
+      onTap: () => callback!(!value!),
       child: AbsorbPointer(
         absorbing: true,
         child: child,

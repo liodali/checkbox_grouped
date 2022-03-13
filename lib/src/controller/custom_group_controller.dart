@@ -61,4 +61,9 @@ class CustomGroupController {
   /// [items] : (list) list of items that will be disabled
   void disabledItems(List<dynamic> items) =>
       _customStateGroup.disabledItemsByValues(items);
+
+
+  void clearSelection(){
+    _customStateGroup.reset();
+  }
 }
