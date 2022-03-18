@@ -79,14 +79,26 @@ class CustomGroupedExample extends StatelessWidget {
             values: users,
           ),
         ),
-        Builder(builder: (ctx) {
-          return ElevatedButton(
-            onPressed: () {
-              print(controller.selectedItem);
-            },
-            child: Text("selection"),
-          );
-        })
+        Row(
+          children: [
+            Builder(builder: (ctx) {
+              return ElevatedButton(
+                onPressed: () {
+                  print(controller.selectedItem);
+                },
+                child: Text("selection"),
+              );
+            }),
+            Builder(builder: (ctx) {
+              return ElevatedButton(
+                onPressed: () {
+                  controller.clearSelection();
+                },
+                child: Text("DeselectAll"),
+              );
+            })
+          ],
+        ),
       ],
     );
   }
