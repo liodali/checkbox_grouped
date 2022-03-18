@@ -1,3 +1,5 @@
+## [1.8.0] - 
+* add new method in custom_group to clear all selection items
 ## [1.7.1] - fix bug
 * fix subItem style of the groupStyle doesn't applied correctly (#59)
 ## [1.7.0] - add new widget ListCustomGroupedCheckbox 
