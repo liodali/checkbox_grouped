@@ -1,3 +1,5 @@
+## [1.8.1] - fix bug 
+* groupTitlesWidget not taking in consideration in list custom group
 ## [1.8.0] - 
 * add new method in custom_group to clear all selection items
 ## [1.7.1] - fix bug
