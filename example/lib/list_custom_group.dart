@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +35,12 @@ class ListCustomGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-        ListCustomGroupController(isMultipleSelectionPerGroup: [true, false]);
+    final controller = ListCustomGroupController(
+      isMultipleSelectionPerGroup: [
+        true,
+        false,
+      ],
+    );
     final datas = [
       List<_User>.generate(
         10,
@@ -55,7 +61,36 @@ class ListCustomGroup extends StatelessWidget {
       },
       isScrollable: true,
       titleGroupedAlignment: Alignment.centerLeft,
-      groupTitles: ["Users", "Names"],
+      //groupTitles: ["Users", "Names"],
+      groupTitlesWidget: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Card(
+            color: Colors.amber[700],
+            elevation: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                "Users",
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              "Names",
+              style: TextStyle(
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ),
+      ],
       children: [
         CustomIndexedWidgetBuilder(
             itemBuilder: (ctx, index, selected, isDisabled) {
