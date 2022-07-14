@@ -193,22 +193,18 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
           ? AlwaysScrollableScrollPhysics()
           : NeverScrollableScrollPhysics(),
       itemBuilder: (ctx, index) {
+        final titleWidget = _TitleGroup(
+          title: widget.groupTitles?[index],
+          titleWidget: widget.groupTitlesWidget?[index],
+          titleGroupedAlignment: widget.titleGroupedAlignment,
+          titlePadding: widget.titlePadding,
+          titleGroupedTextStyle: widget.titleGroupedTextStyle,
+        );
         if (widget.children[index] is CustomGridIndexedWidgetBuilder) {
           return CustomGroupedCheckbox.grid(
             controller: listControllers[index],
             isScroll: false,
-            groupTitle:
-                widget.groupTitles != null && widget.groupTitles!.isNotEmpty
-                    ? Container(
-                        alignment: widget.titleGroupedAlignment,
-                        padding: widget.titlePadding,
-                        child: Text(
-                          widget.groupTitles![index],
-                          style: widget.titleGroupedTextStyle ??
-                              Theme.of(context).textTheme.headline6,
-                        ),
-                      )
-                    : null,
+            groupTitle: titleWidget,
             itemBuilder: (innerCtx, indexInner, check, disabled) {
               return widget.children[index].itemBuilder(
                 innerCtx,
@@ -226,18 +222,7 @@ class ListCustomGroupedCheckboxState extends State<ListCustomGroupedCheckbox> {
         return CustomGroupedCheckbox(
           controller: listControllers[index],
           isScroll: false,
-          groupTitle:
-              widget.groupTitles != null && widget.groupTitles!.isNotEmpty
-                  ? Container(
-                      alignment: widget.titleGroupedAlignment,
-                      padding: widget.titlePadding,
-                      child: Text(
-                        widget.groupTitles![index],
-                        style: widget.titleGroupedTextStyle ??
-                            Theme.of(context).textTheme.headline6,
-                      ),
-                    )
-                  : null,
+          groupTitle: titleWidget,
           itemBuilder: (innerCtx, indexInner, check, disabled) {
             return widget.children[index].itemBuilder(
               innerCtx,
@@ -273,4 +258,34 @@ class CustomGridIndexedWidgetBuilder extends CustomIndexedWidgetBuilder {
   }) : super(
           itemBuilder: itemBuilder,
         );
+}
+
+class _TitleGroup extends StatelessWidget {
+  final String? title;
+  final Widget? titleWidget;
+  final AlignmentGeometry titleGroupedAlignment;
+  final EdgeInsets titlePadding;
+  final TextStyle? titleGroupedTextStyle;
+  const _TitleGroup({
+    Key? key,
+    this.title,
+    this.titleWidget,
+    this.titleGroupedTextStyle,
+    required this.titleGroupedAlignment,
+    required this.titlePadding,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return title != null
+        ? Container(
+            alignment: titleGroupedAlignment,
+            padding: titlePadding,
+            child: Text(
+              title!,
+              style: titleGroupedTextStyle ??
+                  Theme.of(context).textTheme.headline6,
+            ),
+          )
+        : titleWidget ?? SizedBox.fromSize();
+  }
 }
