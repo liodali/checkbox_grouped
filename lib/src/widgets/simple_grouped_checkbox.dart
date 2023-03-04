@@ -27,7 +27,7 @@ typedef OnChanged = Function(dynamic selected);
 ///
 /// [groupStyle] : (GroupStyle) the style that should be applied on GroupedTitle,ItemTile,SubTitle
 ///
-/// [disableItems] : specifies which item should be disabled
+/// [disableItems] : specifies which item should be disabled, we use title to disable items, if items are not in [itemsTitle], will be ignored
 ///
 /// [checkFirstElement] : make first element in list checked
 ///
@@ -82,12 +82,6 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
                         groupTitle.isNotEmpty &&
                         !isExpandableTitle),
             "you cannot make isExpandable without textTitle"),
-        assert(
-            disableItems.isEmpty ||
-                disableItems
-                    .takeWhile((c) => itemsTitle.contains(c))
-                    .isNotEmpty,
-            "you cannot disable items doesn't exist in itemsTitle"),
         super(key: key);
 
   static GroupController? of<T>(BuildContext context, {bool nullOk = false}) {

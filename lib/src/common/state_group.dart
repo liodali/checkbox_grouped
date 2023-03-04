@@ -77,14 +77,14 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   }) {
     this.values = values;
     selectedValue = ValueNotifier(null);
-    if (preSelection.isNotEmpty) {
-      final cacheSelection = preSelection.toList();
-      cacheSelection.removeWhere((e) => values.contains(e));
-      if (cacheSelection.isNotEmpty) {
-        assert(values.contains(cacheSelection),
-            "you want to activate selection of value doesn't exist");
-      }
-    }
+    // if (preSelection.isNotEmpty) {
+    //   final cacheSelection = preSelection.toList();
+    //   cacheSelection.removeWhere((e) => values.contains(e));
+    //   if (cacheSelection.isNotEmpty) {
+    //     assert(values.contains(cacheSelection),
+    //         "you want to activate selection of value doesn't exist");
+    //   }
+    // }
     itemsTitle.asMap().forEach((key, title) {
       bool checked = false;
       if (key == 0) {
@@ -95,7 +95,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
         }
       }
       if (multiSelection && preSelection.length > 0) {
-        valueTitle.value = null;
+        //valueTitle.value = null;
         if (preSelection.contains(values[key])) {
           checked = true;
           selectionsValue.value = List.from(selectionsValue.value)
