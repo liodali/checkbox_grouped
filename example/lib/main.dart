@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        useMaterial3: true,
         primaryColor: Colors.blue,
       ),
       home: MainExample(),
@@ -55,7 +56,7 @@ class _MainExampleState extends State<MainExample>
     "dialog",
     "list of group",
     "more example",
-    "list of custom group",
+    "list of custom group"
   ];
 
   void tabChanged() {

@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.8.1-orange) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v1.8.2-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -21,7 +21,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.8.1
+		checkbox_grouped: ^1.8.2
 
 
 
@@ -30,17 +30,17 @@ Add the following to your `pubspec.yaml` file:
 
 ```dart
     SimpleGroupedCheckbox<int>(
-                    controller: controller,
-                    itemsTitle: ["1" ,"2","4","5"],
-                    values: [1,2,4,5],
-                    groupStyle: GroupStyle(
-                          activeColor: Colors.red,
-                          itemTitleStyle: TextStyle(
-                          fontSize: 13
-                       )
-                    ),
-                    checkFirstElement: false,
-                  )
+            controller: controller,
+            itemsTitle: ["1" ,"2","4","5"],
+            values: [1,2,4,5],
+            groupStyle: GroupStyle(
+                  activeColor: Colors.red,
+                  itemTitleStyle: TextStyle(
+                  fontSize: 13
+                 )
+               ),
+            checkFirstElement: false,
+    )
 ```
 ### Declare GroupController to get selection and enabled/disabled Items
 
