@@ -1,3 +1,6 @@
+## [1.8.2] - fix bug #67
+* ignore pre-selection if not exist in list of values
+* replace listView.builder in lisg_group by SingleChildScrollView
 ## [1.8.1] - fix bug 
 * groupTitlesWidget not taking in consideration in list custom group
 ## [1.8.0] - 
