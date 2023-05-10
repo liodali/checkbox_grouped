@@ -2,9 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:checkbox_grouped/src/common/grouped_style.dart';
 import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../common/item.dart';
 import '../common/state_group.dart';

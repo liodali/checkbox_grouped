@@ -11,7 +11,7 @@ class ListOfGrouped extends StatefulWidget {
 }
 
 class _ListOfGroupedState extends State<ListOfGrouped> {
-  ListGroupController controller;
+ late ListGroupController controller;
 
   @override
   void initState() {

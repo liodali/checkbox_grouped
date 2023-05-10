@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:faker/faker.dart';
@@ -9,8 +8,8 @@ class _User {
   final String email;
 
   _User({
-    this.name,
-    this.email,
+    required this.name,
+    required this.email,
   });
 
   @override
@@ -31,7 +30,7 @@ class _User {
 }
 
 class ListCustomGroup extends StatelessWidget {
-  const ListCustomGroup({Key key}) : super(key: key);
+  const ListCustomGroup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +134,7 @@ class ListCustomGroup extends StatelessWidget {
                   children: [
                     Center(
                       child: Text(
-                        datas[1][index],
+                        datas[1][index].toString(),
                         maxLines: 3,
                         overflow: TextOverflow.fade,
                       ),

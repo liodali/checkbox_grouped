@@ -43,7 +43,7 @@ class MainExample extends StatefulWidget {
 
 class _MainExampleState extends State<MainExample>
     with TickerProviderStateMixin {
-  TabController tabController;
+ late TabController tabController;
   ValueNotifier<int> current = ValueNotifier(0);
   final customController = CustomGroupController(
     isMultipleSelection: false,

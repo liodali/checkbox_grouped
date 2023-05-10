@@ -1,9 +1,10 @@
+import 'package:checkbox_grouped/src/common/grouped_style.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 
-import '../../checkbox_grouped.dart';
-import '../common/item.dart';
-import '../common/state_group.dart';
-import 'simple_grouped_checkbox.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
+import 'package:checkbox_grouped/src/common/state_group.dart';
 
 ///
 ///  [controller]            : A list of values that you want to be initially selected.

@@ -1,10 +1,10 @@
+import 'package:checkbox_grouped/src/common/utilities.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
+import 'package:checkbox_grouped/src/controller/list_group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_checkbox.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_chips.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_switch.dart';
 import 'package:flutter/material.dart';
-
-import '../../checkbox_grouped.dart';
-import '../common/utilities.dart';
-import '../controller/group_controller.dart';
-import '../controller/list_group_controller.dart';
-import 'simple_grouped_checkbox.dart';
 
 /// display  simple groupedCheckbox
 /// [controller]              :  (required) List Group Controller to recuperate selection

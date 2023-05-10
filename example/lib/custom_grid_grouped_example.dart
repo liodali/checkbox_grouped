@@ -7,8 +7,8 @@ class _User {
   final String email;
 
   _User({
-    this.name,
-    this.email,
+    required this.name,
+    required this.email,
   });
 
   @override
@@ -26,7 +26,7 @@ class _User {
 class CustomGridGroupedExample extends StatelessWidget {
   final faker = Faker();
 
-  CustomGridGroupedExample({Key key}) : super(key: key);
+  CustomGridGroupedExample({super.key});
 
   @override
   Widget build(BuildContext context) {
