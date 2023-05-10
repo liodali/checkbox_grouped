@@ -218,7 +218,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
 
   void selectValues(List<K> values) {
     values.forEach((value) {
-      final key = values.indexOf(value);
+      final key = this.values.indexOf(value);
       notifierItems[key].value = notifierItems[key].value.copy(
             checked: true,
           );
@@ -231,7 +231,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
 
   void deselectValues(List<K> values) {
     values.forEach((value) {
-      final key = values.indexOf(value);
+      final key = this.values.indexOf(value);
       notifierItems[key].value = notifierItems[key].value.copy(
             checked: false,
           );
