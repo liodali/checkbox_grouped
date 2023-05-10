@@ -1,12 +1,16 @@
-import '../common/custom_state_group.dart';
-import '../common/utilities.dart';
 
-/// CustomStateGroup to manage custom selection grouped
+import 'package:checkbox_grouped/src/common/custom_state_group.dart';
+import 'package:checkbox_grouped/src/common/utilities.dart';
+
+/// [CustomStateGroup] 
+/// 
+/// this controller  manage a custom selection grouped 
+/// here UI of group item will be customized as developer want
 ///
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
 ///
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.
-class CustomGroupController {
+final class CustomGroupController {
   late CustomStateGroup _customStateGroup;
 
   final List<dynamic> initSelectedItem;

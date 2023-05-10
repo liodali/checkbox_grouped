@@ -6,7 +6,12 @@ import 'package:checkbox_grouped/src/widgets/simple_grouped_chips.dart';
 import 'package:checkbox_grouped/src/widgets/simple_grouped_switch.dart';
 import 'package:flutter/material.dart';
 
-/// display  simple groupedCheckbox
+/// [ListGroupedCheckbox]
+/// 
+/// 
+/// this widget display list of simple widget of groupedCheckbox
+/// 
+/// 
 /// [controller]              :  (required) List Group Controller to recuperate selection
 ///
 /// [titles]                  :  (required) A list of strings that describes each checkbox group

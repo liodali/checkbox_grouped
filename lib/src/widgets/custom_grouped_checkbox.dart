@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../common/custom_state_group.dart';
-import '../common/item.dart';
-import '../common/utilities.dart';
-import '../controller/custom_group_controller.dart';
+import 'package:checkbox_grouped/src/common/custom_state_group.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
+import 'package:checkbox_grouped/src/common/utilities.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
 ///

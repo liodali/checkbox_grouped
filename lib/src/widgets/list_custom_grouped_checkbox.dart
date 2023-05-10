@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 
 import 'package:checkbox_grouped/src/common/item.dart';
 
-/// display  simple groupedCheckbox
+/// [ListCustomGroupedCheckbox]
+/// 
+/// this wudget display list of custom groupedCheckbox that use [ListCustomGroupController]
+/// where each [CustomGroupedCheckbox] has own widget that associated to single [groupTitle] of [groupTitles]
+/// 
+/// 
 /// [controller]              :  (required) List Group Controller to recuperate selection
 ///
 /// [children]                  : list of widget for each group

@@ -9,7 +9,10 @@ import '../common/state_group.dart';
 
 typedef OnChanged = Function(dynamic selected);
 
-/// display  simple groupedCheckbox
+/// [SimpleGroupedCheckbox]
+/// 
+/// 
+/// this widget display  simple grouped of Checkboxs UI
 ///
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
 ///

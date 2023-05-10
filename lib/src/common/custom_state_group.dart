@@ -22,7 +22,7 @@ abstract class _CustomGroupInterface<T> {
 }
 
 abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
-    with _CustomGroupInterface<K> {
+    implements _CustomGroupInterface<K> {
   ValueNotifier<K?> itemSelected = ValueNotifier(null);
 
   ValueNotifier<List<K>> itemsSelections = ValueNotifier([]);

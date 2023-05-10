@@ -30,7 +30,7 @@ abstract class _GroupInterface {
 }
 
 abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
-    with _GroupInterface {
+    implements _GroupInterface {
   late ValueNotifier<K?> selectedValue;
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
