@@ -1,3 +1,6 @@
+## [1.9.0] - fix bug #53
+* migrate to latest flutter version and support only null safety
+* fix bug in base stateGroup
 ## [1.8.2] - fix bug #67
 * ignore pre-selection if not exist in list of values
 * replace listView.builder in lisg_group by SingleChildScrollView
