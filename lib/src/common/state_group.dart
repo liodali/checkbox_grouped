@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'item.dart';
@@ -29,7 +31,7 @@ abstract class _GroupInterface {
   void changeSelection(int index, dynamic value);
 }
 
-abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
+abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
     implements _GroupInterface {
   late ValueNotifier<K?> selectedValue;
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
@@ -69,11 +71,11 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   @protected
   void init({
     required List<K> values,
-    bool checkFirstElement = false,
+    // bool checkFirstElement = false,
     List<K> preSelection = const [],
     bool multiSelection = false,
     required List<String> itemsTitle,
-    List<String>? disableItems,
+    List<K>? disableItems,
   }) {
     this.values = values;
     selectedValue = ValueNotifier(null);
@@ -87,13 +89,13 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     // }
     itemsTitle.asMap().forEach((key, title) {
       bool checked = false;
-      if (key == 0) {
-        if (multiSelection && checkFirstElement) {
-          selectionsValue.value = List.from(selectionsValue.value)
-            ..add(values[0]);
-          checked = true;
-        }
-      }
+      // if (key == 0) {
+      //   if (multiSelection && checkFirstElement) {
+      //     selectionsValue.value = List.from(selectionsValue.value)
+      //       ..add(values[0]);
+      //     checked = true;
+      //   }
+      // }
       if (multiSelection && preSelection.length > 0) {
         //valueTitle.value = null;
         if (preSelection.contains(values[key])) {
@@ -105,7 +107,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
           valueTitle.value = true;
         }
       } else {
-        if (!multiSelection && !checkFirstElement && preSelection.length == 1) {
+        if (!multiSelection && preSelection.length == 1) {
           valueTitle.value = null;
           if (preSelection.contains(values[key])) {
             checked = true;
@@ -121,15 +123,53 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
       notifierItems.add(ValueNotifier(item));
     });
 
-    if (checkFirstElement) {
-      items[0].checked = true;
-      notifierItems[0].value = Item(
-        isDisabled: items[0].isDisabled,
-        checked: items[0].checked,
-        title: items[0].title,
+    // if (checkFirstElement) {
+    //   items[0].checked = true;
+    //   notifierItems[0].value = Item(
+    //     isDisabled: items[0].isDisabled,
+    //     checked: items[0].checked,
+    //     title: items[0].title,
+    //   );
+    //   //_previousActive = _items[0];
+    //   selectedValue.value = values[0];
+    // }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init(
+      values: widget.values as List<K>,
+      //checkFirstElement: widget.checkFirstElement,
+      disableItems: List.from(widget.disableItems),
+      itemsTitle: widget.itemsTitle,
+      multiSelection: widget.controller.isMultipleSelection,
+      preSelection: widget.controller.initSelectedItem?.cast<K>(),
+    );
+    widget.controller.init(this);
+  }
+
+  @override
+  void didUpdateWidget(covariant T oldWidget) {
+    final oldSelectedValues = oldWidget.controller.state.selectionsValue.value;
+    final oldNotifierItems = oldWidget.controller.state.notifierItems;
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      selectionsValue = ValueNotifier([]);
+      notifierItems = oldNotifierItems;
+      items = [];
+      valueTitle = ValueNotifier(false);
+      values = [];
+      final initSelection = oldSelectedValues;
+      init(
+        values: widget.values as List<K>,
+        //checkFirstElement: false,
+        disableItems: List.from(widget.disableItems),
+        itemsTitle: widget.itemsTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        preSelection: List.from(initSelection),
       );
-      //_previousActive = _items[0];
-      selectedValue.value = values[0];
+      widget.controller.init(this);
     }
   }
 

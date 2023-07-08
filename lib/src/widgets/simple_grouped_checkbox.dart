@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
 import 'package:checkbox_grouped/src/common/grouped_style.dart';
 import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -10,8 +11,8 @@ import '../common/state_group.dart';
 typedef OnChanged = Function(dynamic selected);
 
 /// [SimpleGroupedCheckbox]
-/// 
-/// 
+///
+///
 /// this widget display  simple grouped of Checkboxs UI
 ///
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
@@ -40,16 +41,12 @@ typedef OnChanged = Function(dynamic selected);
 ///
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
 ///
-class SimpleGroupedCheckbox<T> extends StatefulWidget {
-  final GroupController controller;
-  final List<String> itemsTitle;
+class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
   final OnChanged? onItemSelected;
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
   final List<String> itemsSubTitle;
   final GroupStyle? groupStyle;
-  final List<T> values;
-  final List<String> disableItems;
   final bool checkFirstElement;
   final bool isLeading;
   final bool isExpandableTitle;
@@ -57,15 +54,15 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 
   SimpleGroupedCheckbox({
     Key? key,
-    required this.controller,
-    required this.itemsTitle,
-    required this.values,
+    required super.controller,
+    required super.itemsTitle,
+    required super.values,
     this.onItemSelected,
     this.groupTitle,
     this.groupTitleAlignment = Alignment.center,
     this.groupStyle,
     this.itemsSubTitle = const [],
-    this.disableItems = const [],
+    super.disableItems = const [],
     this.checkFirstElement = false,
     this.isLeading = false,
     this.isExpandableTitle = false,
@@ -105,39 +102,29 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 
 class SimpleGroupedCheckboxState<T>
     extends StateGroup<T, SimpleGroupedCheckbox> {
+  // @override
+  // void didUpdateWidget(covariant SimpleGroupedCheckbox oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (oldWidget.controller != widget.controller) {
+  //     selectionsValue = ValueNotifier([]);
+  //     notifierItems = [];
+  //     items = [];
+  //     valueTitle = ValueNotifier(false);
+  //     values = [];
+  //     init(
+  //       values: widget.values as List<T>,
+  //       checkFirstElement: widget.checkFirstElement,
+  //       disableItems: widget.disableItems,
+  //       itemsTitle: widget.itemsTitle,
+  //       multiSelection: widget.controller.isMultipleSelection,
+  //       preSelection: widget.controller.initSelectedItem?.cast<T>(),
+  //     );
+  //     widget.controller.init(this);
+  //   }
+  // }
   @override
   void initState() {
     super.initState();
-    init(
-      values: widget.values as List<T>,
-      checkFirstElement: widget.checkFirstElement,
-      disableItems: widget.disableItems,
-      itemsTitle: widget.itemsTitle,
-      multiSelection: widget.controller.isMultipleSelection,
-      preSelection: widget.controller.initSelectedItem?.cast<T>(),
-    );
-    widget.controller.init(this);
-  }
-
-  @override
-  void didUpdateWidget(covariant SimpleGroupedCheckbox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      selectionsValue = ValueNotifier([]);
-      notifierItems = [];
-      items = [];
-      valueTitle = ValueNotifier(false);
-      values = [];
-      init(
-        values: widget.values as List<T>,
-        checkFirstElement: widget.checkFirstElement,
-        disableItems: widget.disableItems,
-        itemsTitle: widget.itemsTitle,
-        multiSelection: widget.controller.isMultipleSelection,
-        preSelection: widget.controller.initSelectedItem?.cast<T>(),
-      );
-      widget.controller.init(this);
-    }
   }
 
   @override

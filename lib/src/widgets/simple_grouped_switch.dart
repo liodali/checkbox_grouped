@@ -1,22 +1,20 @@
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
 import 'package:checkbox_grouped/src/common/grouped_style.dart';
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:checkbox_grouped/src/common/item.dart';
 import 'package:checkbox_grouped/src/common/state_group.dart';
 import 'package:checkbox_grouped/src/widgets/simple_grouped_checkbox.dart';
 
+/// [SimpleGroupedSwitch]
+///
+///
 ///  [controller] :(required) GroupController to recuperate selectedItems.
 ///  [values] :(required) Values contains in each element.
 ///  [itemsTitle] :(required) A list of strings that describes each chip button
 ///  [onItemSelected] : callback listner when item is selected
 ///  [disableItems] : Specifies which item should be disabled
-
-class SimpleGroupedSwitch<T> extends StatefulWidget {
-  final List<String> itemsTitle;
-  final List<T> values;
-  final GroupController controller;
-  final List<T> disableItems;
+class SimpleGroupedSwitch<T> extends BaseSimpleGrouped<T> {
   final OnChanged? onItemSelected;
   @Deprecated("should use `groupStyle`,will be remove in next version")
   final Color? activeColor;
@@ -25,12 +23,12 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
   final SwitchGroupStyle? groupStyle;
 
   SimpleGroupedSwitch({
-    Key? key,
-    required this.itemsTitle,
-    required this.values,
-    required this.controller,
+    super.key,
+    required super.itemsTitle,
+    required super.values,
+    required super.controller,
     this.groupStyle,
-    this.disableItems = const [],
+    super.disableItems = const [],
     this.activeColor,
     this.textStyle,
     this.onItemSelected,
@@ -39,11 +37,12 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
           disableItems.isEmpty ||
               disableItems.takeWhile((c) => values.contains(c)).isNotEmpty,
           "you cannot disable item doesn't exist",
-        ),
-        super(key: key);
+        );
 
-  static SimpleGroupedSwitchState? of<T>(BuildContext context,
-      {bool nullOk = false}) {
+  static SimpleGroupedSwitchState? of<T>(
+    BuildContext context, {
+    bool nullOk = false,
+  }) {
     final SimpleGroupedSwitchState<T>? result =
         context.findAncestorStateOfType<SimpleGroupedSwitchState<T>>();
     if (nullOk || result != null) return result;
@@ -61,46 +60,22 @@ class SimpleGroupedSwitch<T> extends StatefulWidget {
 }
 
 class SimpleGroupedSwitchState<T> extends StateGroup<T, SimpleGroupedSwitch> {
-  @override
-  void initState() {
-    super.initState();
-    init(
-      values: widget.values.cast<T>(),
-      itemsTitle: widget.itemsTitle,
-      preSelection: widget.controller.initSelectedItem.cast<T>(),
-      multiSelection: widget.controller.isMultipleSelection,
-      disableItems: widget.itemsTitle
-          .where((element) => widget.disableItems
-              .contains(widget.values[widget.itemsTitle.indexOf(element)]))
-          .toList(),
-      checkFirstElement: false,
-    );
-    widget.controller.init(this);
-  }
-
-  @override
-  void didUpdateWidget(covariant SimpleGroupedSwitch oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      selectionsValue = ValueNotifier([]);
-      notifierItems = [];
-      items = [];
-      valueTitle = ValueNotifier(false);
-      values = [];
-      init(
-        values: widget.values as List<T>,
-        checkFirstElement: false,
-        disableItems: widget.itemsTitle
-            .where((element) => widget.disableItems
-                .contains(widget.values[widget.itemsTitle.indexOf(element)]))
-            .toList(),
-        itemsTitle: widget.itemsTitle,
-        multiSelection: widget.controller.isMultipleSelection,
-        preSelection: widget.controller.initSelectedItem?.cast<T>(),
-      );
-      widget.controller.init(this);
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   init(
+  //     values: widget.values.cast<T>(),
+  //     itemsTitle: widget.itemsTitle,
+  //     preSelection: widget.controller.initSelectedItem.cast<T>(),
+  //     multiSelection: widget.controller.isMultipleSelection,
+  //     disableItems: widget.itemsTitle
+  //         .where((element) => widget.disableItems
+  //             .contains(widget.values[widget.itemsTitle.indexOf(element)]))
+  //         .toList(),
+  //     checkFirstElement: false,
+  //   );
+  //   widget.controller.init(this);
+  // }
 
   @override
   Widget build(BuildContext context) {
