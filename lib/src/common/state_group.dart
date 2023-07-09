@@ -118,7 +118,7 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
       Item item = Item(
           title: title,
           checked: checked,
-          isDisabled: disableItems?.contains(title) ?? false);
+          isDisabled: disableItems?.contains(values[key]) ?? false);
       items.add(item);
       notifierItems.add(ValueNotifier(item));
     });
@@ -270,13 +270,17 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
   }
 
   void deselectValues(List<K> values) {
-    values.forEach((value) {
-      final key = this.values.indexOf(value);
-      notifierItems[key].value = notifierItems[key].value.copy(
-            checked: false,
-          );
-    });
-    selectionsValue.value = List.from(selectionsValue.value)
-      ..removeWhere((ele) => values.contains(ele));
+    if (widget.controller.isMultipleSelection) {
+      values.forEach((value) {
+        final key = this.values.indexOf(value);
+        notifierItems[key].value = notifierItems[key].value.copy(
+              checked: false,
+            );
+      });
+      selectionsValue.value = List.from(selectionsValue.value)
+        ..removeWhere((ele) => values.contains(ele));
+    } else {
+      selectedValue.value = null;
+    }
   }
 }
