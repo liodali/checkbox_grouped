@@ -26,19 +26,21 @@ void main() {
     GroupController controller = GroupController(
       isMultipleSelection: true,
     );
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: SimpleGroupedSwitch<int>(
-          controller: controller,
-          itemsTitle: ["1", "2", "4", "5"],
-          disableItems: [2, 4],
-          values: [1, 2, 4, 5],
-          textStyle: TextStyle(color: Colors.black),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SimpleGroupedSwitch<int>(
+            controller: controller,
+            itemsTitle: ["1", "2", "4", "5"],
+            disableItems: [2, 4],
+            values: [1, 2, 4, 5],
+            textStyle: TextStyle(color: Colors.black),
+          ),
         ),
       ),
-    ));
+    );
 
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byType(SwitchListTile).at(1));
     await tester.pump();

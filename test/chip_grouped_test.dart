@@ -10,9 +10,9 @@ void main() {
       home: Scaffold(
         body: SimpleGroupedChips<int>(
           controller: controller,
-          itemTitle: ["1", "2", "4", "5"],
+          itemsTitle: ["1", "2", "4", "5"],
           values: [1, 2, 4, 5],
-          disabledItems: ["2"],
+          disableItems: [2],
           selectedColorItem: Colors.red,
           backgroundColorItem: Colors.white,
           textColor: Colors.black,
@@ -31,27 +31,31 @@ void main() {
   });
 
   testWidgets("test multiple selection SimpleGroupedChip", (tester) async {
-    GroupController controller =
-        GroupController(initSelectedItem: [2, 4], isMultipleSelection: true);
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: SimpleGroupedChips<int>(
-          controller: controller,
-          itemTitle: ["1", "2", "4", "5"],
-          values: [1, 2, 4, 5],
-          selectedColorItem: Colors.red,
-          backgroundColorItem: Colors.white,
-          textColor: Colors.black,
-          selectedTextColor: Colors.white,
-          disabledColor: Colors.grey[200],
+    GroupController controller = GroupController(
+      initSelectedItem: [2, 4],
+      isMultipleSelection: true,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SimpleGroupedChips<int>(
+            controller: controller,
+            itemsTitle: ["1", "2", "4", "5"],
+            values: [1, 2, 4, 5],
+            selectedColorItem: Colors.red,
+            backgroundColorItem: Colors.white,
+            textColor: Colors.black,
+            selectedTextColor: Colors.white,
+            disabledColor: Colors.grey[200],
+          ),
         ),
       ),
-    ));
-    await tester.pump();
+    );
+    await tester.pumpAndSettle();
 
     var values = controller.selectedItem;
     expect(values, [2, 4]);
-    ChoiceChip cb = tester.widget(find.byType(ChoiceChip).at(2)) as ChoiceChip;
+    FilterChip cb = tester.widget(find.byType(FilterChip).at(2)) as FilterChip;
     await tester.tap(find.byWidget(cb));
     await tester.pump(Duration(seconds: 1));
     values = controller.selectedItem;
