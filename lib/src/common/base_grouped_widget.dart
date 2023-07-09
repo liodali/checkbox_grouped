@@ -14,15 +14,18 @@ abstract class BaseSimpleGrouped<T> extends StatefulWidget {
     required this.values,
     required this.itemsTitle,
     this.disableItems = const [],
-  });
+  }):super(key: key);
 }
 
 abstract class BaeCustomGrouped<T> extends StatefulWidget {
   final CustomGroupController controller;
+    final List<T> values;
+
   const BaeCustomGrouped({
     Key? key,
     required this.controller,
-  });
+    required this.values,
+  }):super(key: key);
 }
 
 abstract class BaeListGrouped extends StatefulWidget {}

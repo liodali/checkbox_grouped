@@ -1,10 +1,9 @@
-
 import 'package:checkbox_grouped/src/common/custom_state_group.dart';
 import 'package:checkbox_grouped/src/common/utilities.dart';
 
-/// [CustomStateGroup] 
-/// 
-/// this controller  manage a custom selection grouped 
+/// [CustomStateGroup]
+///
+/// this controller  manage a custom selection grouped
 /// here UI of group item will be customized as developer want
 ///
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
@@ -66,8 +65,11 @@ final class CustomGroupController {
   void disabledItems(List<dynamic> items) =>
       _customStateGroup.disabledItemsByValues(items);
 
-
-  void clearSelection(){
+  void clearSelection() {
     _customStateGroup.reset();
   }
+}
+
+extension PrivExtCustomController on CustomGroupController {
+  CustomStateGroup get state => _customStateGroup;
 }
