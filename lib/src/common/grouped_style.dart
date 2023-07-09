@@ -61,7 +61,9 @@ class ChipGroupStyle extends _BaseGroupStyle {
   final Color? textColor;
   final Color? selectedTextColor;
   final IconData? selectedIcon;
-
+  final OutlinedBorder? shape;
+  final OutlinedBorder? checkedShape;
+  
   const ChipGroupStyle({
     required this.backgroundColorItem,
     required this.selectedColorItem,
@@ -69,6 +71,8 @@ class ChipGroupStyle extends _BaseGroupStyle {
     required this.selectedTextColor,
     this.selectedIcon,
     this.disabledColor,
+    this.shape,
+    this.checkedShape,
     TextStyle? itemTitleStyle,
   }) : super(
           activeColor: selectedColorItem,
@@ -84,6 +88,8 @@ class ChipGroupStyle extends _BaseGroupStyle {
     this.selectedTextColor = Colors.white,
     this.selectedIcon = Icons.done,
     this.disabledColor = Colors.grey,
+    this.shape,
+    this.checkedShape,
     TextStyle? itemTitleStyle,
   }) : super(
           activeColor: selectedColorItem,
