@@ -13,7 +13,15 @@ typedef OnChanged = Function(dynamic selected);
 /// [SimpleGroupedCheckbox]
 ///
 ///
-/// this widget display  simple grouped of Checkboxs UI
+/// This widget responsible to display a simple Checkboxs grouped,where [GroupController]
+/// responsible to retrieve the selection 
+/// and configure the grouped is mutliChoice ot single choice.
+/// 
+/// Using [disableItems] we can disable items from beginning 
+/// and we can use API  [GroupController.enabledItemsByValues] 
+/// or [GroupController.enabledItemsByTitles]
+/// to undisable them depend on the use case wanted
+/// 
 ///
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
 ///
@@ -31,8 +39,6 @@ typedef OnChanged = Function(dynamic selected);
 ///
 /// [disableItems] : specifies which item should be disabled, we use title to disable items, if items are not in [itemsTitle], will be ignored
 ///
-/// [checkFirstElement] : make first element in list checked
-///
 /// [isLeading] : (bool) put check zone on left of item
 ///
 /// [isExpandableTitle] :(bool) enable group checkbox to be expandable
@@ -40,14 +46,12 @@ typedef OnChanged = Function(dynamic selected);
 /// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
 ///
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
-///
 class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
   final OnChanged? onItemSelected;
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
   final List<String> itemsSubTitle;
   final GroupStyle? groupStyle;
-  final bool checkFirstElement;
   final bool isLeading;
   final bool isExpandableTitle;
   final bool helperGroupTitle;
@@ -63,7 +67,6 @@ class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
     this.groupStyle,
     this.itemsSubTitle = const [],
     super.disableItems = const [],
-    this.checkFirstElement = false,
     this.isLeading = false,
     this.isExpandableTitle = false,
     this.helperGroupTitle = true,

@@ -1,7 +1,7 @@
 library checkbox_grouped;
 
-export 'src/controller/custom_group_controller.dart';
-export 'src/controller/group_controller.dart';
+export 'src/controller/custom_group_controller.dart' hide PrivExtCustomController;
+export 'src/controller/group_controller.dart' hide PrivExtGroupController;
 export 'src/controller/list_group_controller.dart';
 export 'src/controller/list_custom_group_controller.dart';
 export 'src/widgets/custom_grouped_checkbox.dart'

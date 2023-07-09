@@ -153,7 +153,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                         ),
                         SimpleGroupedChips<T>(
                           controller: listControllers[index],
-                          itemTitle: widget.titles[index],
+                          itemsTitle: widget.titles[index],
                           values: widget.values[index] as List<T>,
                           isScrolling: widget.chipsStyle.isScrolling,
                           backgroundColorItem:
@@ -207,7 +207,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                       itemsTitle: widget.titles[index],
                       values: widget.values[index] as List<T>,
                       disableItems: widget.disabledValues.isNotEmpty
-                          ? widget.disabledValues[index] as List<String>
+                          ? widget.disabledValues[index] as List<T>
                           : [],
                       groupTitle: widget.groupTitles[index],
                       groupTitleAlignment: widget.titleGroupedAlignment,
@@ -225,7 +225,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                   itemsTitle: widget.titles[index],
                   values: widget.values[index] as List<T>,
                   disableItems: widget.disabledValues.isNotEmpty
-                      ? widget.disabledValues[index] as List<String>
+                      ? widget.disabledValues[index] as List<T>
                       : [],
                   groupTitle: widget.groupTitles[index],
                   groupTitleAlignment: widget.titleGroupedAlignment,
@@ -243,7 +243,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                 itemsTitle: widget.titles[index],
                 values: widget.values[index] as List<T>,
                 disableItems: widget.disabledValues.isNotEmpty
-                    ? widget.disabledValues[index] as List<String>
+                    ? widget.disabledValues[index] as List<T>
                     : [],
                 groupTitle: widget.groupTitles[index],
                 groupTitleAlignment: widget.titleGroupedAlignment,
