@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-///
+enum ChipsDirection {
+  horizontal,
+  vertical,
+  wrap,
+}
+
 /// class [_BaseGroupedStyle]  base class for style groupedCheckbox,Switch,Chips
 ///
 /// [activeColor]        : (Color) choose the color to use when this checkbox button is selected
@@ -61,7 +66,10 @@ class ChipGroupStyle extends _BaseGroupStyle {
   final Color? textColor;
   final Color? selectedTextColor;
   final IconData? selectedIcon;
-
+  final OutlinedBorder? shape;
+  final OutlinedBorder? checkedShape;
+  final ChipsDirection direction;
+  final bool isScrolling;
   const ChipGroupStyle({
     required this.backgroundColorItem,
     required this.selectedColorItem,
@@ -69,7 +77,11 @@ class ChipGroupStyle extends _BaseGroupStyle {
     required this.selectedTextColor,
     this.selectedIcon,
     this.disabledColor,
+    this.shape,
+    this.checkedShape,
     TextStyle? itemTitleStyle,
+    this.isScrolling = false,
+    this.direction = ChipsDirection.wrap,
   }) : super(
           activeColor: selectedColorItem,
           groupTitleStyle: null,
@@ -84,7 +96,11 @@ class ChipGroupStyle extends _BaseGroupStyle {
     this.selectedTextColor = Colors.white,
     this.selectedIcon = Icons.done,
     this.disabledColor = Colors.grey,
+    this.shape,
+    this.checkedShape,
     TextStyle? itemTitleStyle,
+    this.isScrolling = false,
+    this.direction = ChipsDirection.wrap,
   }) : super(
           activeColor: selectedColorItem,
           groupTitleStyle: null,

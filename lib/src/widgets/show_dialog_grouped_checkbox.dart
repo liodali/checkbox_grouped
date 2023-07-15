@@ -143,7 +143,7 @@ class _CoreDialogGroupedCheckboxState
                   : null,
               child: child,
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
                 textStyle: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),

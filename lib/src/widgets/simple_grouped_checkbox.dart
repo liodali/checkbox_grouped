@@ -1,17 +1,27 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
 import 'package:checkbox_grouped/src/common/grouped_style.dart';
 import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../common/item.dart';
 import '../common/state_group.dart';
 
 typedef OnChanged = Function(dynamic selected);
 
-/// display  simple groupedCheckbox
+/// [SimpleGroupedCheckbox]
+///
+///
+/// This widget responsible to display a simple Checkboxs grouped,where [GroupController]
+/// responsible to retrieve the selection 
+/// and configure the grouped is mutliChoice ot single choice.
+/// 
+/// Using [disableItems] we can disable items from beginning 
+/// and we can use API  [GroupController.enabledItemsByValues] 
+/// or [GroupController.enabledItemsByTitles]
+/// to undisable them depend on the use case wanted
+/// 
 ///
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
 ///
@@ -29,8 +39,6 @@ typedef OnChanged = Function(dynamic selected);
 ///
 /// [disableItems] : specifies which item should be disabled, we use title to disable items, if items are not in [itemsTitle], will be ignored
 ///
-/// [checkFirstElement] : make first element in list checked
-///
 /// [isLeading] : (bool) put check zone on left of item
 ///
 /// [isExpandableTitle] :(bool) enable group checkbox to be expandable
@@ -38,34 +46,27 @@ typedef OnChanged = Function(dynamic selected);
 /// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
 ///
 /// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
-///
-class SimpleGroupedCheckbox<T> extends StatefulWidget {
-  final GroupController controller;
-  final List<String> itemsTitle;
+class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
   final OnChanged? onItemSelected;
   final String? groupTitle;
   final AlignmentGeometry groupTitleAlignment;
   final List<String> itemsSubTitle;
   final GroupStyle? groupStyle;
-  final List<T> values;
-  final List<String> disableItems;
-  final bool checkFirstElement;
   final bool isLeading;
   final bool isExpandableTitle;
   final bool helperGroupTitle;
 
   SimpleGroupedCheckbox({
     Key? key,
-    required this.controller,
-    required this.itemsTitle,
-    required this.values,
+    required super.controller,
+    required super.itemsTitle,
+    required super.values,
     this.onItemSelected,
     this.groupTitle,
     this.groupTitleAlignment = Alignment.center,
     this.groupStyle,
     this.itemsSubTitle = const [],
-    this.disableItems = const [],
-    this.checkFirstElement = false,
+    super.disableItems = const [],
     this.isLeading = false,
     this.isExpandableTitle = false,
     this.helperGroupTitle = true,
@@ -104,39 +105,29 @@ class SimpleGroupedCheckbox<T> extends StatefulWidget {
 
 class SimpleGroupedCheckboxState<T>
     extends StateGroup<T, SimpleGroupedCheckbox> {
+  // @override
+  // void didUpdateWidget(covariant SimpleGroupedCheckbox oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (oldWidget.controller != widget.controller) {
+  //     selectionsValue = ValueNotifier([]);
+  //     notifierItems = [];
+  //     items = [];
+  //     valueTitle = ValueNotifier(false);
+  //     values = [];
+  //     init(
+  //       values: widget.values as List<T>,
+  //       checkFirstElement: widget.checkFirstElement,
+  //       disableItems: widget.disableItems,
+  //       itemsTitle: widget.itemsTitle,
+  //       multiSelection: widget.controller.isMultipleSelection,
+  //       preSelection: widget.controller.initSelectedItem?.cast<T>(),
+  //     );
+  //     widget.controller.init(this);
+  //   }
+  // }
   @override
   void initState() {
     super.initState();
-    init(
-      values: widget.values as List<T>,
-      checkFirstElement: widget.checkFirstElement,
-      disableItems: widget.disableItems,
-      itemsTitle: widget.itemsTitle,
-      multiSelection: widget.controller.isMultipleSelection,
-      preSelection: widget.controller.initSelectedItem?.cast<T>(),
-    );
-    widget.controller.init(this);
-  }
-
-  @override
-  void didUpdateWidget(covariant SimpleGroupedCheckbox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      selectionsValue = ValueNotifier([]);
-      notifierItems = [];
-      items = [];
-      valueTitle = ValueNotifier(false);
-      values = [];
-      init(
-        values: widget.values as List<T>,
-        checkFirstElement: widget.checkFirstElement,
-        disableItems: widget.disableItems,
-        itemsTitle: widget.itemsTitle,
-        multiSelection: widget.controller.isMultipleSelection,
-        preSelection: widget.controller.initSelectedItem?.cast<T>(),
-      );
-      widget.controller.init(this);
-    }
   }
 
   @override

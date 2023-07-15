@@ -1,9 +1,10 @@
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../common/custom_state_group.dart';
-import '../common/item.dart';
-import '../common/utilities.dart';
-import '../controller/custom_group_controller.dart';
+import 'package:checkbox_grouped/src/common/custom_state_group.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
+import 'package:checkbox_grouped/src/common/utilities.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
 
 /// display  custom groupedCheckbox with your custom check behavior and custom child widget
 ///
@@ -17,42 +18,41 @@ import '../controller/custom_group_controller.dart';
 ///
 /// [itemExtent] : same as [itemExtent] of [ListView]
 ///
-class CustomGroupedCheckbox<T> extends StatefulWidget {
-  final CustomGroupController controller;
+class CustomGroupedCheckbox<T> extends BaeCustomGrouped {
   final Widget? groupTitle;
   final CustomItemIndexedWidgetBuilder itemBuilder;
   final double? itemExtent;
-  final List<T> values;
   final bool _isGrid;
   final bool isScroll;
   final SliverGridDelegate? gridDelegate;
 
   CustomGroupedCheckbox({
-    Key? key,
-    required this.controller,
+    super.key,
+    required super.controller,
     this.groupTitle,
     required this.itemBuilder,
-    required this.values,
+    required super.values,
     this.isScroll = false,
     this.itemExtent,
+    super.disableItems,
   })  : this._isGrid = false,
-        this.gridDelegate = null,
-        super(key: key);
+        this.gridDelegate = null;
 
   CustomGroupedCheckbox.grid({
-    Key? key,
-    required this.controller,
+    super.key,
+    required super.controller,
     this.groupTitle,
-    SliverGridDelegate gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+    SliverGridDelegate gridDelegate =
+        const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
     ),
     this.isScroll = false,
     required this.itemBuilder,
-    required this.values,
+    required super.values,
+    super.disableItems,
   })  : this._isGrid = true,
         this.gridDelegate = gridDelegate,
-        this.itemExtent = 0.0,
-        super(key: key);
+        this.itemExtent = 0.0;
 
   @override
   CustomGroupedCheckboxState createState() => CustomGroupedCheckboxState();
@@ -74,80 +74,16 @@ class CustomGroupedCheckbox<T> extends StatefulWidget {
   }
 }
 
-class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCheckbox> {
+class CustomGroupedCheckboxState<T>
+    extends CustomStateGroup<T?, CustomGroupedCheckbox> {
   SliverChildBuilderDelegate? childrenDelegate;
 
   @override
-  void initState() {
-    super.initState();
-    itemsSelections = ValueNotifier([]);
-    items = [];
-    widget.values.forEach((v) {
-      items.add(
-        ValueNotifier(
-          CustomItem(
-            data: v,
-            checked: widget.controller.initSelectedItem.contains(v),
-            isDisabled: false,
-          ),
-        ),
-      );
-    });
-    widget.controller.init(this);
-    if (!widget.controller.isMultipleSelection) {
-      if (widget.controller.initSelectedItem.isNotEmpty &&
-          widget.controller.initSelectedItem.first != null)
-        itemSelected.value = widget.controller.initSelectedItem.first;
-    } else {
-      if (widget.controller.initSelectedItem.isNotEmpty) {
-        itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
-      }
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant CustomGroupedCheckbox oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      itemsSelections = ValueNotifier([]);
-      items = [];
-      widget.values.forEach((v) {
-        items.add(
-          ValueNotifier(
-            CustomItem(
-              data: v,
-              checked: widget.controller.initSelectedItem.contains(v),
-              isDisabled: false,
-            ),
-          ),
-        );
-      });
-      widget.controller.init(this);
-
-      if (!widget.controller.isMultipleSelection) {
-        itemSelected.value = widget.controller.initSelectedItem.first;
-      } else {
-        itemsSelections.value = List.castFrom(widget.controller.initSelectedItem);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final builder = (ctx, index) {
+    final builder = (context, index) {
       return ValueListenableBuilder<CustomItem<T?>>(
         valueListenable: items[index],
-        builder: (ctx, value, child) {
+        builder: (context, value, child) {
           return ItemWidget(
             child: widget.itemBuilder(
               context,
@@ -189,8 +125,9 @@ class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCh
     return widget.groupTitle != null
         ? SingleChildScrollView(
             scrollDirection: axisScroll,
-            physics:
-                widget.isScroll ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+            physics: widget.isScroll
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -207,21 +144,25 @@ class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCh
     if (widget.controller.isMultipleSelection) {
       if (!itemsSelections.value.contains(widget.values[index])) {
         if (value) {
-          itemsSelections.value = List.from(itemsSelections.value)..add(widget.values[index]);
+          itemsSelections.value = List.from(itemsSelections.value)
+            ..add(widget.values[index]);
         }
       } else {
         if (!value) {
-          itemsSelections.value = List.from(itemsSelections.value)..remove(widget.values[index]);
+          itemsSelections.value = List.from(itemsSelections.value)
+            ..remove(widget.values[index]);
         }
       }
       items[index].value = items[index].value.copy(checked: value);
-      if (streamListValues.hasListener) streamListValues.add(itemsSelections.value);
+      if (streamListValues.hasListener)
+        streamListValues.add(itemsSelections.value);
     } else {
       if (value) {
         if (itemSelected.value != null) {
           if (itemSelected.value != items[index].value.data) {
             int indexPrevious = widget.values.indexOf(itemSelected.value);
-            items[indexPrevious].value = items[indexPrevious].value.copy(checked: false);
+            items[indexPrevious].value =
+                items[indexPrevious].value.copy(checked: false);
           }
         }
         itemSelected.value = widget.values[index];
@@ -243,12 +184,16 @@ class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCh
   void reset() {
     items.forEach((element) {
       final item = element;
-      item.value = element.value.copy(checked: false);
+      item.value = element.value.copy(
+        checked: false,
+        isDisabled: element.value.isDisabled,
+      );
     });
     if (widget.controller.isMultipleSelection) {
       itemsSelections.value.clear();
 
-      if (streamOneValue.hasListener) streamListValues.add(itemsSelections.value);
+      if (streamOneValue.hasListener)
+        streamListValues.add(itemsSelections.value);
     } else {
       itemSelected.value = null;
       if (streamOneValue.hasListener) streamOneValue.add(itemSelected.value);

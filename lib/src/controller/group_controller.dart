@@ -1,11 +1,16 @@
-import '../common/state_group.dart';
-import '../common/utilities.dart';
+import 'package:checkbox_grouped/src/common/state_group.dart';
+import 'package:checkbox_grouped/src/common/utilities.dart';
+
 import 'base_controller.dart';
 
-/// GroupController to manage simple grouped checkbox/chips/switch
+/// [GroupController]
+///
+/// this controller  manage simple grouped checkbox/chips/switch
+///
+///
 /// [isMultipleSelection] : (bool) enable multiple selection  in grouped checkbox (default:false).
 /// [initSelectedItem] : (List) A Initialize list of values that will be selected in group.
-class GroupController implements BaseController {
+final class GroupController implements BaseController {
   dynamic initSelectedItem;
 
   final bool isMultipleSelection;
@@ -126,8 +131,9 @@ class GroupController implements BaseController {
   void deselectValues<k>(List<k> values) {
     assert(isMultipleSelection,
         "you cannot deselect multiple items in single selection group");
-    if(!isMultipleSelection){
-      throw Exception("you cannot deselect multiple items in single selection group");
+    if (!isMultipleSelection) {
+      throw Exception(
+          "you cannot deselect multiple items in single selection group");
     }
     _widgetState.deselectValues(values);
   }
@@ -137,4 +143,8 @@ class GroupController implements BaseController {
     //assert(isMultipleSelection, "you cannot deselect all items in single selection group");
     _widgetState.deselectValues(_widgetState.values);
   }
+}
+
+extension PrivExtGroupController  on GroupController {
+  StateGroup get state => _widgetState;
 }

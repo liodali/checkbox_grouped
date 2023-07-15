@@ -7,8 +7,8 @@ class _User {
   final String email;
 
   _User({
-    this.name,
-    this.email,
+    required this.name,
+    required this.email,
   });
 
   @override
@@ -21,67 +21,91 @@ class _User {
 
   @override
   int get hashCode => name.hashCode ^ email.hashCode;
+  @override
+  String toString() {
+    return 'email:$email,name:$name';
+  }
 }
 
-class CustomGridGroupedExample extends StatelessWidget {
+class CustomGridGroupedExample extends StatefulWidget {
   final faker = Faker();
 
-  CustomGridGroupedExample({Key key}) : super(key: key);
+  CustomGridGroupedExample({super.key});
 
   @override
+  State<StatefulWidget> createState() => CustomGridGroupState();
+}
+
+class CustomGridGroupState extends State<CustomGridGroupedExample> {
+  final users = List<_User>.generate(
+    10,
+    (i) => _User(
+      name: faker.person.firstName(),
+      email: faker.internet.email(),
+    ),
+  );
+  late CustomGroupController constroller = CustomGroupController(
+    isMultipleSelection: true,
+  );
+  @override
   Widget build(BuildContext context) {
-    final users = List<_User>.generate(
-      10,
-      (i) => _User(
-        name: faker.person.firstName(),
-        email: faker.internet.email(),
-      ),
+    final roundedRect = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
     );
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
           fit: FlexFit.loose,
           child: CustomGroupedCheckbox<_User>.grid(
-            controller: CustomGroupController(isMultipleSelection: true),
+            controller: constroller,
             groupTitle: Container(
               padding: EdgeInsets.all(5.0),
               child: Text("Custom GroupedCheckbox"),
             ),
             itemBuilder: (ctx, index, selected, isDisabled) {
-              return Card(
-                margin: EdgeInsets.only(
-                  top: 5.0,
-                  bottom: 5.0,
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 6,
                 ),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: ListTile(
-                        tileColor: Colors.white,
-                        title: Text(
-                          users[index].name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Text(
-                          users[index].email,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  shape: roundedRect,
+                  child: Stack(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: ListTile(
+                          tileColor: Colors.white,
+                          title: Text(
+                            users[index].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            users[index].email,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          shape: roundedRect,
                         ),
                       ),
-                    ),
-                    Positioned(
-                      left: 10,
-                      right: 10,
-                      bottom: 0,
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
-                        color: Colors.green[300],
-                        height: selected ? 5 : 0,
+                      Positioned(
+                        left: 10,
+                        right: 10,
+                        bottom: 0,
+                        child: AnimatedContainer(
+                          duration: Duration(
+                            milliseconds: 300,
+                          ),
+                          color: Colors.green[300],
+                          height: selected ? 8 : 0,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -94,7 +118,7 @@ class CustomGridGroupedExample extends StatelessWidget {
         Builder(builder: (ctx) {
           return ElevatedButton(
             onPressed: () {
-              print(CustomGroupedCheckbox.of(ctx).selectedItem);
+              print(constroller.selectedItem);
             },
             child: Text("selection"),
           );

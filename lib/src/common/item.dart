@@ -9,6 +9,10 @@ abstract class BaseItem {
     required this.checked,
     required this.isDisabled,
   });
+  @override
+  String toString() {
+    return "checked:$checked,isDisabled:$isDisabled";
+  }
 }
 
 /// item class use it to build items in groupedCheckbox
@@ -36,6 +40,11 @@ class Item extends BaseItem {
       isDisabled: isDisabled ?? this.isDisabled,
     );
   }
+
+  @override
+  String toString() {
+    return "title:$title,${super.toString()}";
+  }
 }
 
 /// custom item class use it to build items in custom groupedCheckbox
@@ -62,5 +71,10 @@ class CustomItem<T> extends BaseItem {
       checked: checked ?? this.checked,
       isDisabled: isDisabled ?? this.isDisabled,
     );
+  }
+
+  @override
+  String toString() {
+    return "data:${data.toString()}${super.toString()}";
   }
 }

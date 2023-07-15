@@ -1,5 +1,4 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,7 +19,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
           },
@@ -56,7 +54,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           isLeading: true,
         ),
       ),
@@ -82,7 +79,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           isLeading: true,
         ),
       ),
@@ -116,7 +112,6 @@ void main() {
             groupStyle: GroupStyle(
               activeColor: Colors.green,
             ),
-            checkFirstElement: false,
             helperGroupTitle: false,
             isExpandableTitle: false,
           ),
@@ -149,7 +144,6 @@ void main() {
             groupStyle: GroupStyle(
               activeColor: Colors.green,
             ),
-            checkFirstElement: false,
             helperGroupTitle: true,
             isExpandableTitle: false,
           ),
@@ -167,7 +161,7 @@ void main() {
   });
 
   testWidgets("test GroupController single selection", (tester) async {
-    GroupController controller = GroupController();
+    GroupController controller = GroupController(initSelectedItem: [1]);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedCheckbox<int>(
@@ -177,7 +171,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: true,
           isLeading: true,
         ),
       ),
@@ -204,7 +197,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           isLeading: true,
         ),
       ),
@@ -232,7 +224,9 @@ void main() {
 
   testWidgets("test One Select GroupController single selection",
       (tester) async {
-    GroupController controller = GroupController();
+    GroupController controller = GroupController(
+      initSelectedItem: [1],
+    );
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedCheckbox<int>(
@@ -242,7 +236,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: true,
           isLeading: true,
         ),
       ),
@@ -266,7 +259,10 @@ void main() {
 
   testWidgets("test One Select GroupController multiple selection",
       (tester) async {
-    GroupController controller = GroupController(isMultipleSelection: true);
+    GroupController controller = GroupController(
+      initSelectedItem: [1],
+      isMultipleSelection: true,
+    );
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SimpleGroupedCheckbox<int>(
@@ -276,7 +272,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: true,
           isLeading: true,
         ),
       ),
@@ -297,8 +292,10 @@ void main() {
 
   testWidgets("test select all in multiple selection  SimpleGroupedCheckbox",
       (tester) async {
-    GroupController controller =
-        GroupController(isMultipleSelection: true, initSelectedItem: [1, 2]);
+    GroupController controller = GroupController(
+      isMultipleSelection: true,
+      initSelectedItem: [1, 2],
+    );
     final values = List.generate(10, (index) => index);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
@@ -309,7 +306,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
           },
@@ -342,7 +338,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
           },
@@ -374,7 +369,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
           },
@@ -404,7 +398,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
           },
@@ -434,7 +427,6 @@ void main() {
           groupStyle: GroupStyle(
             activeColor: Colors.green,
           ),
-          checkFirstElement: false,
           onItemSelected: (data) {
             print(data);
           },
@@ -447,6 +439,8 @@ void main() {
     await tester.pump();
     expect(controller.selectedItem, 1);
     await tester.pump();
-    expect(() => controller.deselectAll(), throwsA(isA<AssertionError>()));
+    controller.deselectAll();
+    await tester.pump();
+    expect(controller.selectedItem, null);
   });
 }

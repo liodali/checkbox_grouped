@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'item.dart';
@@ -21,8 +23,8 @@ abstract class _CustomGroupInterface<T> {
   void changeSelection(int index, bool value);
 }
 
-abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
-    with _CustomGroupInterface<K> {
+abstract class CustomStateGroup<K, T extends BaeCustomGrouped> extends State<T>
+    implements _CustomGroupInterface<K> {
   ValueNotifier<K?> itemSelected = ValueNotifier(null);
 
   ValueNotifier<List<K>> itemsSelections = ValueNotifier([]);
@@ -46,6 +48,93 @@ abstract class CustomStateGroup<K, T extends StatefulWidget> extends State<T>
     streamListValues.stream.listen((data) {
       listener(data);
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    itemsSelections = ValueNotifier([]);
+    items = [];
+    widget.values.forEach((v) {
+      items.add(
+        ValueNotifier(
+          CustomItem(
+            data: v,
+            checked: widget.controller.initSelectedItem.contains(v),
+            isDisabled: widget.disableItems.contains(v),
+          ),
+        ),
+      );
+    });
+    widget.controller.init(this);
+    if (!widget.controller.isMultipleSelection) {
+      if (widget.controller.initSelectedItem.isNotEmpty &&
+          widget.controller.initSelectedItem.first != null)
+        itemSelected.value = widget.controller.initSelectedItem.first;
+    } else {
+      if (widget.controller.initSelectedItem.isNotEmpty) {
+        itemsSelections.value =
+            List.castFrom(widget.controller.initSelectedItem);
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant T oldWidget) {
+    final oldSelectedValues = oldWidget.controller.state.itemsSelections.value;
+    final oldNotifierItems = oldWidget.controller.state.items;
+    final oldSelectedValue = oldWidget.controller.state.itemSelected.value;
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      itemsSelections = ValueNotifier(widget.controller.isMultipleSelection
+          ? List.from(oldSelectedValues)
+          : []);
+      items = List.from(oldNotifierItems);
+      // widget.values.forEach((v) {
+      //   items.add(
+      //     ValueNotifier(
+      //       CustomItem(
+      //         data: v,
+      //         checked: widget.controller.initSelectedItem.contains(v),
+      //         isDisabled: false,
+      //       ),
+      //     ),
+      //   );
+      // });
+      widget.controller.init(this);
+
+      if (!widget.controller.isMultipleSelection) {
+        itemSelected.value = oldSelectedValue;
+      } else {
+        itemsSelections.value =
+            List.castFrom(widget.controller.initSelectedItem);
+      }
+    }
+    final nValues = List.from(widget.values);
+    nValues.removeWhere((value) => oldWidget.values.contains(value));
+    if (nValues.isNotEmpty) {
+      itemsSelections = ValueNotifier([]);
+      itemSelected.value = null;
+      items = List.from([]);
+      widget.values.forEach((v) {
+        items.add(
+          ValueNotifier(
+            CustomItem(
+              data: v,
+              checked: widget.controller.initSelectedItem.contains(v),
+              isDisabled: widget.disableItems.contains(v),
+            ),
+          ),
+        );
+      });
+    }
+    final nDisabledItems = List.from(widget.disableItems);
+    nDisabledItems.removeWhere(
+        (disabledItem) => oldWidget.disableItems.contains(disabledItem));
+    if (nDisabledItems.isNotEmpty) {
+      enabledItemsByValues(List.from(widget.values));
+      disabledItemsByValues(List.from(widget.disableItems));
+    }
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:checkbox_grouped/src/common/base_grouped_widget.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'item.dart';
@@ -29,9 +31,9 @@ abstract class _GroupInterface {
   void changeSelection(int index, dynamic value);
 }
 
-abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
-    with _GroupInterface {
-  late ValueNotifier<K?> selectedValue;
+abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
+    implements _GroupInterface {
+  late ValueNotifier<K?> selectedValue = ValueNotifier(null);
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
   List<Item> items = [];
@@ -69,14 +71,13 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   @protected
   void init({
     required List<K> values,
-    bool checkFirstElement = false,
+    // bool checkFirstElement = false,
     List<K> preSelection = const [],
     bool multiSelection = false,
     required List<String> itemsTitle,
-    List<String>? disableItems,
+    List<K>? disableItems,
   }) {
     this.values = values;
-    selectedValue = ValueNotifier(null);
     // if (preSelection.isNotEmpty) {
     //   final cacheSelection = preSelection.toList();
     //   cacheSelection.removeWhere((e) => values.contains(e));
@@ -85,15 +86,17 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
     //         "you want to activate selection of value doesn't exist");
     //   }
     // }
+    notifierItems.clear();
+    items.clear();
     itemsTitle.asMap().forEach((key, title) {
       bool checked = false;
-      if (key == 0) {
-        if (multiSelection && checkFirstElement) {
-          selectionsValue.value = List.from(selectionsValue.value)
-            ..add(values[0]);
-          checked = true;
-        }
-      }
+      // if (key == 0) {
+      //   if (multiSelection && checkFirstElement) {
+      //     selectionsValue.value = List.from(selectionsValue.value)
+      //       ..add(values[0]);
+      //     checked = true;
+      //   }
+      // }
       if (multiSelection && preSelection.length > 0) {
         //valueTitle.value = null;
         if (preSelection.contains(values[key])) {
@@ -105,7 +108,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
           valueTitle.value = true;
         }
       } else {
-        if (!multiSelection && !checkFirstElement && preSelection.length == 1) {
+        if (!multiSelection && preSelection.length == 1) {
           valueTitle.value = null;
           if (preSelection.contains(values[key])) {
             checked = true;
@@ -114,22 +117,86 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
         }
       }
       Item item = Item(
-          title: title,
-          checked: checked,
-          isDisabled: disableItems?.contains(title) ?? false);
+        title: title,
+        checked: checked,
+        isDisabled: disableItems?.contains(values[key]) ?? false,
+      );
       items.add(item);
       notifierItems.add(ValueNotifier(item));
     });
 
-    if (checkFirstElement) {
-      items[0].checked = true;
-      notifierItems[0].value = Item(
-        isDisabled: items[0].isDisabled,
-        checked: items[0].checked,
-        title: items[0].title,
+    // if (checkFirstElement) {
+    //   items[0].checked = true;
+    //   notifierItems[0].value = Item(
+    //     isDisabled: items[0].isDisabled,
+    //     checked: items[0].checked,
+    //     title: items[0].title,
+    //   );
+    //   //_previousActive = _items[0];
+    //   selectedValue.value = values[0];
+    // }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init(
+      values: widget.values as List<K>,
+      //checkFirstElement: widget.checkFirstElement,
+      disableItems: List.from(widget.disableItems),
+      itemsTitle: widget.itemsTitle,
+      multiSelection: widget.controller.isMultipleSelection,
+      preSelection: widget.controller.initSelectedItem?.cast<K>(),
+    );
+    widget.controller.init(this);
+  }
+
+  @override
+  void didUpdateWidget(covariant T oldWidget) {
+    final oldSelectedValues = oldWidget.controller.state.selectionsValue.value;
+    //final oldNotifierItems = oldWidget.controller.state.notifierItems;
+    final oldSelectedValue = oldWidget.controller.state.selectedValue.value;
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      selectionsValue = ValueNotifier(widget.controller.isMultipleSelection
+          ? List.from(oldSelectedValues)
+          : []);
+      selectedValue.value = oldSelectedValue;
+      notifierItems = [];
+      items = [];
+      valueTitle = ValueNotifier(false);
+      values = [];
+      //final initSelection = oldSelectedValues;
+      init(
+        values: widget.values as List<K>,
+        //checkFirstElement: false,
+        disableItems: List.from(widget.disableItems),
+        itemsTitle: widget.itemsTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        //preSelection: List.from(initSelection),
       );
-      //_previousActive = _items[0];
-      selectedValue.value = values[0];
+      widget.controller.init(this);
+    }
+    final nValues = List.from(widget.values);
+    nValues.removeWhere((value) => oldWidget.values.contains(value));
+    if (nValues.isNotEmpty) {
+      selectionsValue = ValueNotifier([]);
+      selectedValue.value = null;
+      notifierItems = [];
+      init(
+        values: widget.values as List<K>,
+        disableItems: List.from(widget.disableItems),
+        itemsTitle: widget.itemsTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        preSelection: List.from(widget.controller.initSelectedItem),
+      );
+    }
+    final nDisabledItems = List.from(widget.disableItems);
+    nDisabledItems.removeWhere(
+        (disabledItem) => oldWidget.disableItems.contains(disabledItem));
+    if (nDisabledItems.isNotEmpty) {
+      enableAll();
+      disabledItemsByValues(widget.disableItems);
     }
   }
 
@@ -182,7 +249,10 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   }
 
   List<String?> _recuperateTitleFromValues(List<K> itemsValues) {
-    return itemsValues.map((e) {
+    //final items = itemsValues.where((element) => widget.values.contains(element)).cast<K>().toList();
+    return itemsValues
+        .where((element) => widget.values.contains(element))
+        .map((e) {
       var indexOfItem = values.indexOf(e);
       return items[indexOfItem].title;
     }).toList();
@@ -218,7 +288,7 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
 
   void selectValues(List<K> values) {
     values.forEach((value) {
-      final key = values.indexOf(value);
+      final key = this.values.indexOf(value);
       notifierItems[key].value = notifierItems[key].value.copy(
             checked: true,
           );
@@ -230,13 +300,17 @@ abstract class StateGroup<K, T extends StatefulWidget> extends State<T>
   }
 
   void deselectValues(List<K> values) {
-    values.forEach((value) {
-      final key = values.indexOf(value);
-      notifierItems[key].value = notifierItems[key].value.copy(
-            checked: false,
-          );
-    });
-    selectionsValue.value = List.from(selectionsValue.value)
-      ..removeWhere((ele) => values.contains(ele));
+    if (widget.controller.isMultipleSelection) {
+      values.forEach((value) {
+        final key = this.values.indexOf(value);
+        notifierItems[key].value = notifierItems[key].value.copy(
+              checked: false,
+            );
+      });
+      selectionsValue.value = List.from(selectionsValue.value)
+        ..removeWhere((ele) => values.contains(ele));
+    } else {
+      selectedValue.value = null;
+    }
   }
 }

@@ -1,12 +1,18 @@
+import 'package:checkbox_grouped/src/common/grouped_style.dart';
+import 'package:checkbox_grouped/src/common/utilities.dart';
+import 'package:checkbox_grouped/src/controller/group_controller.dart';
+import 'package:checkbox_grouped/src/controller/list_group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_checkbox.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_chips.dart';
+import 'package:checkbox_grouped/src/widgets/simple_grouped_switch.dart';
 import 'package:flutter/material.dart';
 
-import '../../checkbox_grouped.dart';
-import '../common/utilities.dart';
-import '../controller/group_controller.dart';
-import '../controller/list_group_controller.dart';
-import 'simple_grouped_checkbox.dart';
-
-/// display  simple groupedCheckbox
+/// [ListGroupedCheckbox]
+///
+///
+/// this widget display list of simple widget of groupedCheckbox
+///
+///
 /// [controller]              :  (required) List Group Controller to recuperate selection
 ///
 /// [titles]                  :  (required) A list of strings that describes each checkbox group
@@ -38,7 +44,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final Alignment titleGroupedAlignment;
   final OnGroupChanged<T>? onSelectedGroupChanged;
   final Map<int, GroupedType>? mapItemGroupedType;
-  final ChipsStyle chipsStyle;
+  final ChipGroupStyle chipsStyle;
 
   ListGroupedCheckbox({
     required this.controller,
@@ -48,7 +54,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
     this.isScrollable = true,
     this.titleGroupedTextStyle,
     this.titleGroupedAlignment = Alignment.centerLeft,
-    this.chipsStyle = const ChipsStyle(),
+    this.chipsStyle = const ChipGroupStyle.minimize(),
     this.mapItemGroupedType,
     this.subTitles = const [],
     this.onSelectedGroupChanged,
@@ -131,74 +137,87 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
             if (widget.mapItemGroupedType != null &&
                 widget.mapItemGroupedType!.isNotEmpty) ...[
               if (widget.mapItemGroupedType!.containsKey(index)) ...[
-                if (widget.mapItemGroupedType![index] == GroupedType.Chips) ...[
-                  Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          widget.groupTitles[index],
-                          style: widget.titleGroupedTextStyle ??
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    fontSize: 16,
-                                  ),
+                switch (widget.mapItemGroupedType![index]) {
+                  (GroupedType.Chips) => Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            widget.groupTitles[index],
+                            style: widget.titleGroupedTextStyle ??
+                                Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                      fontSize: 16,
+                                    ),
+                          ),
                         ),
-                      ),
-                      SimpleGroupedChips<T>(
-                        controller: listControllers[index],
-                        itemTitle: widget.titles[index],
-                        values: widget.values[index] as List<T>,
-                        isScrolling: widget.chipsStyle.isScrolling,
-                        backgroundColorItem:
-                            widget.chipsStyle.backgroundColorItem,
-                        disabledColor: widget.chipsStyle.disabledColor,
-                        selectedColorItem: widget.chipsStyle.selectedColorItem,
-                        selectedIcon: widget.chipsStyle.selectedIcon,
-                        selectedTextColor: widget.chipsStyle.selectedTextColor,
-                        textColor: widget.chipsStyle.textColor,
-                        onItemSelected: widget.onSelectedGroupChanged != null
-                            ? (selection) async {
-                                final list = await getAllValues();
-                                widget.onSelectedGroupChanged!(list);
-                              }
-                            : null,
-                      )
-                    ],
-                  ),
-                ] else if (widget.mapItemGroupedType![index] ==
-                    GroupedType.Switch) ...[
-                  Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          widget.groupTitles[index],
-                          style: widget.titleGroupedTextStyle ??
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontSize: 16,
-                                  ),
+                        SimpleGroupedChips<T>(
+                          controller: listControllers[index],
+                          itemsTitle: widget.titles[index],
+                          values: widget.values[index] as List<T>,
+                          chipGroupStyle: widget.chipsStyle,
+                          onItemSelected: widget.onSelectedGroupChanged != null
+                              ? (selection) async {
+                                  final list = await getAllValues();
+                                  widget.onSelectedGroupChanged!(list);
+                                }
+                              : null,
+                        )
+                      ],
+                    ),
+                  (GroupedType.Switch) => Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            widget.groupTitles[index],
+                            style: widget.titleGroupedTextStyle ??
+                                Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontSize: 16,
+                                    ),
+                          ),
                         ),
-                      ),
-                      SimpleGroupedSwitch<T>(
-                        controller: listControllers[index],
-                        itemsTitle: widget.titles[index],
-                        values: widget.values[index] as List<T>,
-                        activeColor: Theme.of(context).primaryColor,
-                        onItemSelected: widget.onSelectedGroupChanged != null
-                            ? (selection) async {
-                                final list = await getAllValues();
-                                widget.onSelectedGroupChanged!(list);
-                              }
-                            : null,
-                      ),
-                    ],
-                  ),
-                ],
+                        SimpleGroupedSwitch<T>(
+                          controller: listControllers[index],
+                          itemsTitle: widget.titles[index],
+                          values: widget.values[index] as List<T>,
+                          activeColor: Theme.of(context).primaryColor,
+                          onItemSelected: widget.onSelectedGroupChanged != null
+                              ? (selection) async {
+                                  final list = await getAllValues();
+                                  widget.onSelectedGroupChanged!(list);
+                                }
+                              : null,
+                        ),
+                      ],
+                    ),
+                  _ => SimpleGroupedCheckbox<T>(
+                      controller: listControllers[index],
+                      itemsTitle: widget.titles[index],
+                      values: widget.values[index] as List<T>,
+                      disableItems: widget.disabledValues.isNotEmpty
+                          ? widget.disabledValues[index] as List<T>
+                          : [],
+                      groupTitle: widget.groupTitles[index],
+                      groupTitleAlignment: widget.titleGroupedAlignment,
+                      onItemSelected: widget.onSelectedGroupChanged != null
+                          ? (selection) async {
+                              final list = await getAllValues();
+                              widget.onSelectedGroupChanged!(list);
+                            }
+                          : null,
+                    )
+                }
               ] else ...[
                 SimpleGroupedCheckbox<T>(
                   controller: listControllers[index],
                   itemsTitle: widget.titles[index],
                   values: widget.values[index] as List<T>,
                   disableItems: widget.disabledValues.isNotEmpty
-                      ? widget.disabledValues[index] as List<String>
+                      ? widget.disabledValues[index] as List<T>
                       : [],
                   groupTitle: widget.groupTitles[index],
                   groupTitleAlignment: widget.titleGroupedAlignment,
@@ -210,6 +229,23 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                       : null,
                 ),
               ],
+            ] else ...[
+              SimpleGroupedCheckbox<T>(
+                controller: listControllers[index],
+                itemsTitle: widget.titles[index],
+                values: widget.values[index] as List<T>,
+                disableItems: widget.disabledValues.isNotEmpty
+                    ? widget.disabledValues[index] as List<T>
+                    : [],
+                groupTitle: widget.groupTitles[index],
+                groupTitleAlignment: widget.titleGroupedAlignment,
+                onItemSelected: widget.onSelectedGroupChanged != null
+                    ? (selection) async {
+                        final list = await getAllValues();
+                        widget.onSelectedGroupChanged!(list);
+                      }
+                    : null,
+              ),
             ],
           ],
         ],

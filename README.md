@@ -1,5 +1,5 @@
 # checkbox_grouped
-![pub](https://img.shields.io/badge/pub-v1.8.2-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
+![pub](https://img.shields.io/badge/pub-v2.0.0-blue) ![GitHub](https://img.shields.io/github/license/liodali/checkbox_grouped)
 
     * grouped (checkbox/radioButton)
     * customisable grouped checkbox
@@ -21,7 +21,7 @@
 Add the following to your `pubspec.yaml` file:
 
     dependencies:
-		checkbox_grouped: ^1.8.2
+		checkbox_grouped: ^2.0.0
 
 
 
@@ -222,6 +222,7 @@ controller.listen((value){
 |`groupTitle`           | `widget title for group checkbox`.              |
 |`itemBuilder`          | (required) `Called to build children.`          |
 |`values`               | (required) `Values contains in each element.`   |
+|`disableItems`         | (List) `values that will be disabled`   |
 |`itemExtent`           | ` The extent the children are forced to have in the main axis`  |
 |`isScroll`             | (bool) ` To make list of item scrollable `  |
 
@@ -301,12 +302,6 @@ controller.disabledItemsByTitles(List<String> items)
 |`disabledItems`        | `Specifies which item should be disabled. The strings passed to this must match the Titles`  |
 |`values`               | (required) Values contains in each element.   |
 |`onItemSelected`       | `Callback when users make  selection  or deselection`  |
-|`backgroundColorItem`  | (deprecated) `the background color for each item`.  |
-|`selectedColorItem`    | (deprecated) `the background color to use when item is  selected`.  |
-|`textColor`            | (deprecated) `the color to use for each text of item `.  |
-|`selectedTextColor`    | (deprecated) `the color to use for the selected text of item`.  |
-|`selectedIcon`         | (deprecated) `the icon to use when item is selected`.  |
-|`disabledColor`         | (deprecated) `the Color that uses when the item is disabled`  |
 |`isScrolling`          |`enable horizontal scrolling`.  |
 |`chipGroupStyle`       | (ChipGroupStyle) `the style that uses to customize  item chip `  |
 

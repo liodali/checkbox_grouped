@@ -11,7 +11,7 @@ class ListOfGrouped extends StatefulWidget {
 }
 
 class _ListOfGroupedState extends State<ListOfGrouped> {
-  ListGroupController controller;
+  late ListGroupController controller;
 
   @override
   void initState() {
@@ -50,8 +50,9 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
             mapItemGroupedType: {
+              //   0: GroupedType.Default,
               1: GroupedType.Chips,
-              2: GroupedType.Switch,
+              2: GroupedType.Default,
             },
             onSelectedGroupChanged: (list) {
               print(list);

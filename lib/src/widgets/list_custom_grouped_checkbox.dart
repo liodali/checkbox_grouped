@@ -1,11 +1,17 @@
+import 'package:checkbox_grouped/src/common/utilities.dart';
+import 'package:checkbox_grouped/src/controller/custom_group_controller.dart';
+import 'package:checkbox_grouped/src/controller/list_custom_group_controller.dart';
+import 'package:checkbox_grouped/src/widgets/custom_grouped_checkbox.dart';
 import 'package:flutter/material.dart';
 
-import '../../checkbox_grouped.dart';
-import '../common/item.dart';
-import '../common/utilities.dart';
-import '../controller/list_custom_group_controller.dart';
+import 'package:checkbox_grouped/src/common/item.dart';
 
-/// display  simple groupedCheckbox
+/// [ListCustomGroupedCheckbox]
+/// 
+/// this wudget display list of custom groupedCheckbox that use [ListCustomGroupController]
+/// where each [CustomGroupedCheckbox] has own widget that associated to single [groupTitle] of [groupTitles]
+/// 
+/// 
 /// [controller]              :  (required) List Group Controller to recuperate selection
 ///
 /// [children]                  : list of widget for each group
@@ -283,7 +289,7 @@ class _TitleGroup extends StatelessWidget {
             child: Text(
               title!,
               style: titleGroupedTextStyle ??
-                  Theme.of(context).textTheme.headline6,
+                  Theme.of(context).textTheme.titleLarge,
             ),
           )
         : titleWidget ?? SizedBox.fromSize();

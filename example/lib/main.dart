@@ -43,7 +43,7 @@ class MainExample extends StatefulWidget {
 
 class _MainExampleState extends State<MainExample>
     with TickerProviderStateMixin {
-  TabController tabController;
+  late TabController tabController;
   ValueNotifier<int> current = ValueNotifier(0);
   final customController = CustomGroupController(
     isMultipleSelection: false,
@@ -141,18 +141,22 @@ class _MainExampleState extends State<MainExample>
   }
 }
 
-class _SimpleGrouped extends StatelessWidget {
+class _SimpleGrouped extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _SimpleGroupedState();
+}
+
+class _SimpleGroupedState extends State<_SimpleGrouped> {
+  GroupController controller = GroupController(initSelectedItem: [2]);
+  GroupController switchController = GroupController();
+  GroupController chipsController = GroupController(isMultipleSelection: true);
+  GroupController multipleCheckController = GroupController(
+    isMultipleSelection: true,
+    initSelectedItem: List.generate(10, (index) => index),
+  );
+
   @override
   Widget build(BuildContext context) {
-    GroupController controller = GroupController(initSelectedItem: [2]);
-    GroupController switchController = GroupController();
-    GroupController chipsController =
-        GroupController(isMultipleSelection: true);
-    GroupController multipleCheckController = GroupController(
-      isMultipleSelection: true,
-      initSelectedItem: List.generate(10, (index) => index),
-    );
-
     return SingleChildScrollView(
       controller: ScrollController(),
       child: Column(
@@ -172,14 +176,15 @@ class _SimpleGrouped extends StatelessWidget {
                 controller.enabledItemsByTitles(["1"]);
               }
             },
-            disableItems: ["5"],
-            itemsTitle: ["1", "2", "4", "5"],
-            values: [1, 2, 4, 5],
+            disableItems: [5, 4],
+            itemsTitle: ["1", "2", "4", "5", "6"],
+            values: [1, 2, 4, 5, 6],
             groupStyle: GroupStyle(
-                activeColor: Colors.red,
-                itemTitleStyle: TextStyle(fontSize: 13)),
-
-            checkFirstElement: false,
+              activeColor: Colors.red,
+              itemTitleStyle: TextStyle(
+                fontSize: 13,
+              ),
+            ),
           ),
           SimpleGroupedCheckbox<int>(
             controller: multipleCheckController,
@@ -192,7 +197,6 @@ class _SimpleGrouped extends StatelessWidget {
               ),
             ),
             groupTitle: "expanded multiple checkbox selection",
-            checkFirstElement: false,
             helperGroupTitle: true,
             onItemSelected: (data) {
               print(data);
@@ -203,14 +207,27 @@ class _SimpleGrouped extends StatelessWidget {
           SimpleGroupedChips<int>(
             controller: chipsController,
             values: List.generate(7, (index) => index),
-            itemTitle: List.generate(7, (index) => "chip_text_$index"),
-            backgroundColorItem: Colors.black26,
-            isScrolling: false,
+            itemsTitle: List.generate(7, (index) => "chip_text_$index"),
             chipGroupStyle: ChipGroupStyle.minimize(
-              backgroundColorItem: Colors.red[400],
+              isScrolling: true,
+              backgroundColorItem: Colors.grey[400],
+              selectedTextColor: Colors.amber,
               itemTitleStyle: TextStyle(
                 fontSize: 14,
               ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide.none,
+              ),
+              checkedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(
+                  width: 2,
+                  color: Colors.grey,
+                ),
+              ),
+              selectedIcon: Icons.check,
+              direction: ChipsDirection.horizontal,
             ),
             onItemSelected: (values) {
               print(values);
@@ -220,9 +237,9 @@ class _SimpleGrouped extends StatelessWidget {
           Text("grouped switch"),
           SimpleGroupedSwitch<int>(
             controller: switchController,
-            itemsTitle: List.generate(10, (index) => "$index"),
-            values: List.generate(10, (index) => index),
-            disableItems: [2],
+            itemsTitle: List.generate(7, (index) => "${index}"),
+            values: List.generate(7, (index) => index),
+            disableItems: [3],
             groupStyle: SwitchGroupStyle(
               itemTitleStyle: TextStyle(
                 fontSize: 16,

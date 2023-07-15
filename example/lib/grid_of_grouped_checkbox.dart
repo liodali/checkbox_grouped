@@ -8,7 +8,7 @@ class _Permission {
   final String name;
 
   _Permission({
-    this.name,
+   required this.name,
   });
 
   @override
