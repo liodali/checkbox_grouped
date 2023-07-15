@@ -6,11 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:checkbox_grouped/src/common/item.dart';
 import 'package:checkbox_grouped/src/common/state_group.dart';
 
-enum ChipsDirection {
-  horizontal,
-  vertical,
-  wrap,
-}
+
 
 /// [SimpleGroupedChips]
 ///
@@ -23,28 +19,14 @@ enum ChipsDirection {
 ///
 ///  [values]               : (required) Values contains in each element.
 ///
-///  [itemTitle]            : (required) A list of strings that describes each chip button
-///
 ///  [onItemSelected] : callback listener when item is selected
 ///
-///  [disabledItems] : Specifies which item should be disabled
 class SimpleGroupedChips<T> extends BaseSimpleGrouped<T> {
-  final bool isScrolling;
-  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
-  final Color backgroundColorItem;
-  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
-  final Color? disabledColor;
-  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
-  final Color selectedColorItem;
-  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
-  final Color textColor;
-  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
-  final Color selectedTextColor;
-  @Deprecated("should use `chipGroupStyle`,will be remove in next version")
-  final IconData? selectedIcon;
+
   final ChipGroupStyle chipGroupStyle;
   final OnChanged? onItemSelected;
-  final ChipsDirection direction;
+
+
   SimpleGroupedChips({
     super.key,
     required super.controller,
@@ -52,15 +34,7 @@ class SimpleGroupedChips<T> extends BaseSimpleGrouped<T> {
     required super.itemsTitle,
     super.disableItems,
     this.onItemSelected,
-    this.backgroundColorItem = Colors.grey,
-    this.disabledColor = Colors.grey,
-    this.selectedColorItem = Colors.black,
-    this.selectedTextColor = Colors.white,
-    this.textColor = Colors.black,
-    this.selectedIcon = Icons.done,
     this.chipGroupStyle = const ChipGroupStyle.minimize(),
-    this.isScrolling = false,
-    this.direction = ChipsDirection.wrap,
   });
 
   static SimpleGroupedChipsState? of<T>(BuildContext context,
@@ -149,9 +123,9 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
         ),
       ],
     ];
-    final child = switch (widget.direction) {
+    final child = switch (widget.chipGroupStyle.direction) {
       (ChipsDirection.wrap) => Wrap(
-          spacing: widget.isScrolling ? 15.0 : 5.0,
+          spacing: widget.chipGroupStyle.isScrolling ? 15.0 : 5.0,
           direction: Axis.horizontal,
           children: childrens,
         ),
@@ -167,7 +141,7 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
           children: childrens,
         ),
     };
-    if (widget.isScrolling) {
+    if (widget.chipGroupStyle.isScrolling) {
       return SingleChildScrollView(
         child: child,
         scrollDirection: Axis.horizontal,

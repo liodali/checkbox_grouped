@@ -1,5 +1,4 @@
-import 'package:checkbox_grouped/src/controller/group_controller.dart';
-import 'package:checkbox_grouped/src/widgets/simple_grouped_chips.dart';
+import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,11 +12,13 @@ void main() {
           itemsTitle: ["1", "2", "4", "5"],
           values: [1, 2, 4, 5],
           disableItems: [2],
-          selectedColorItem: Colors.red,
-          backgroundColorItem: Colors.white,
-          textColor: Colors.black,
-          selectedTextColor: Colors.white,
-          disabledColor: Colors.grey[200],
+          chipGroupStyle: ChipGroupStyle.minimize(
+            selectedColorItem: Colors.red,
+            backgroundColorItem: Colors.white,
+            textColor: Colors.black,
+            selectedTextColor: Colors.white,
+            disabledColor: Colors.grey[200],
+          ),
         ),
       ),
     ));
@@ -42,11 +43,13 @@ void main() {
             controller: controller,
             itemsTitle: ["1", "2", "4", "5"],
             values: [1, 2, 4, 5],
-            selectedColorItem: Colors.red,
-            backgroundColorItem: Colors.white,
-            textColor: Colors.black,
-            selectedTextColor: Colors.white,
-            disabledColor: Colors.grey[200],
+            chipGroupStyle: ChipGroupStyle.minimize(
+              selectedColorItem: Colors.red,
+              backgroundColorItem: Colors.white,
+              textColor: Colors.black,
+              selectedTextColor: Colors.white,
+              disabledColor: Colors.grey[200],
+            ),
           ),
         ),
       ),

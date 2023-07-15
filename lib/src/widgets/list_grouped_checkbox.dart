@@ -1,3 +1,4 @@
+import 'package:checkbox_grouped/src/common/grouped_style.dart';
 import 'package:checkbox_grouped/src/common/utilities.dart';
 import 'package:checkbox_grouped/src/controller/group_controller.dart';
 import 'package:checkbox_grouped/src/controller/list_group_controller.dart';
@@ -43,7 +44,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
   final Alignment titleGroupedAlignment;
   final OnGroupChanged<T>? onSelectedGroupChanged;
   final Map<int, GroupedType>? mapItemGroupedType;
-  final ChipsStyle chipsStyle;
+  final ChipGroupStyle chipsStyle;
 
   ListGroupedCheckbox({
     required this.controller,
@@ -53,7 +54,7 @@ class ListGroupedCheckbox<T> extends StatefulWidget {
     this.isScrollable = true,
     this.titleGroupedTextStyle,
     this.titleGroupedAlignment = Alignment.centerLeft,
-    this.chipsStyle = const ChipsStyle(),
+    this.chipsStyle = const ChipGroupStyle.minimize(),
     this.mapItemGroupedType,
     this.subTitles = const [],
     this.onSelectedGroupChanged,
@@ -155,16 +156,7 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                           controller: listControllers[index],
                           itemsTitle: widget.titles[index],
                           values: widget.values[index] as List<T>,
-                          isScrolling: widget.chipsStyle.isScrolling,
-                          backgroundColorItem:
-                              widget.chipsStyle.backgroundColorItem,
-                          disabledColor: widget.chipsStyle.disabledColor,
-                          selectedColorItem:
-                              widget.chipsStyle.selectedColorItem,
-                          selectedIcon: widget.chipsStyle.selectedIcon,
-                          selectedTextColor:
-                              widget.chipsStyle.selectedTextColor,
-                          textColor: widget.chipsStyle.textColor,
+                          chipGroupStyle: widget.chipsStyle,
                           onItemSelected: widget.onSelectedGroupChanged != null
                               ? (selection) async {
                                   final list = await getAllValues();
