@@ -25,6 +25,8 @@ jobs:
         run : dart format .
       - name: Publish package
         run: flutter pub publish -f
+        working-directory: my_folder
+
       - name: release version
         uses: ncipollo/release-action@v1
         with:
