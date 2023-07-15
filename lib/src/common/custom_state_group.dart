@@ -61,7 +61,7 @@ abstract class CustomStateGroup<K, T extends BaeCustomGrouped> extends State<T>
           CustomItem(
             data: v,
             checked: widget.controller.initSelectedItem.contains(v),
-            isDisabled: false,
+            isDisabled: widget.disableItems.contains(v),
           ),
         ),
       );
@@ -83,9 +83,12 @@ abstract class CustomStateGroup<K, T extends BaeCustomGrouped> extends State<T>
   void didUpdateWidget(covariant T oldWidget) {
     final oldSelectedValues = oldWidget.controller.state.itemsSelections.value;
     final oldNotifierItems = oldWidget.controller.state.items;
+    final oldSelectedValue = oldWidget.controller.state.itemSelected.value;
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller) {
-      itemsSelections = ValueNotifier(List.from(oldSelectedValues));
+      itemsSelections = ValueNotifier(widget.controller.isMultipleSelection
+          ? List.from(oldSelectedValues)
+          : []);
       items = List.from(oldNotifierItems);
       // widget.values.forEach((v) {
       //   items.add(
@@ -101,11 +104,36 @@ abstract class CustomStateGroup<K, T extends BaeCustomGrouped> extends State<T>
       widget.controller.init(this);
 
       if (!widget.controller.isMultipleSelection) {
-        itemSelected.value = widget.controller.initSelectedItem.first;
+        itemSelected.value = oldSelectedValue;
       } else {
         itemsSelections.value =
             List.castFrom(widget.controller.initSelectedItem);
       }
+    }
+    final nValues = List.from(widget.values);
+    nValues.removeWhere((value) => oldWidget.values.contains(value));
+    if (nValues.isNotEmpty) {
+      itemsSelections = ValueNotifier([]);
+      itemSelected.value = null;
+      items = List.from([]);
+      widget.values.forEach((v) {
+        items.add(
+          ValueNotifier(
+            CustomItem(
+              data: v,
+              checked: widget.controller.initSelectedItem.contains(v),
+              isDisabled: widget.disableItems.contains(v),
+            ),
+          ),
+        );
+      });
+    }
+    final nDisabledItems = List.from(widget.disableItems);
+    nDisabledItems.removeWhere(
+        (disabledItem) => oldWidget.disableItems.contains(disabledItem));
+    if (nDisabledItems.isNotEmpty) {
+      enabledItemsByValues(List.from(widget.values));
+      disabledItemsByValues(List.from(widget.disableItems));
     }
   }
 

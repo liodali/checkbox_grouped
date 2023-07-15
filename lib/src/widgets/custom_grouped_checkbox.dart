@@ -34,6 +34,7 @@ class CustomGroupedCheckbox<T> extends BaeCustomGrouped {
     required super.values,
     this.isScroll = false,
     this.itemExtent,
+    super.disableItems,
   })  : this._isGrid = false,
         this.gridDelegate = null;
 
@@ -41,12 +42,14 @@ class CustomGroupedCheckbox<T> extends BaeCustomGrouped {
     super.key,
     required super.controller,
     this.groupTitle,
-    SliverGridDelegate gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+    SliverGridDelegate gridDelegate =
+        const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
     ),
     this.isScroll = false,
     required this.itemBuilder,
     required super.values,
+    super.disableItems,
   })  : this._isGrid = true,
         this.gridDelegate = gridDelegate,
         this.itemExtent = 0.0;
@@ -71,27 +74,16 @@ class CustomGroupedCheckbox<T> extends BaeCustomGrouped {
   }
 }
 
-class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCheckbox> {
+class CustomGroupedCheckboxState<T>
+    extends CustomStateGroup<T?, CustomGroupedCheckbox> {
   SliverChildBuilderDelegate? childrenDelegate;
-
-
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final builder = (ctx, index) {
+    final builder = (context, index) {
       return ValueListenableBuilder<CustomItem<T?>>(
         valueListenable: items[index],
-        builder: (ctx, value, child) {
+        builder: (context, value, child) {
           return ItemWidget(
             child: widget.itemBuilder(
               context,
@@ -133,8 +125,9 @@ class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCh
     return widget.groupTitle != null
         ? SingleChildScrollView(
             scrollDirection: axisScroll,
-            physics:
-                widget.isScroll ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+            physics: widget.isScroll
+                ? AlwaysScrollableScrollPhysics()
+                : NeverScrollableScrollPhysics(),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -151,21 +144,25 @@ class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCh
     if (widget.controller.isMultipleSelection) {
       if (!itemsSelections.value.contains(widget.values[index])) {
         if (value) {
-          itemsSelections.value = List.from(itemsSelections.value)..add(widget.values[index]);
+          itemsSelections.value = List.from(itemsSelections.value)
+            ..add(widget.values[index]);
         }
       } else {
         if (!value) {
-          itemsSelections.value = List.from(itemsSelections.value)..remove(widget.values[index]);
+          itemsSelections.value = List.from(itemsSelections.value)
+            ..remove(widget.values[index]);
         }
       }
       items[index].value = items[index].value.copy(checked: value);
-      if (streamListValues.hasListener) streamListValues.add(itemsSelections.value);
+      if (streamListValues.hasListener)
+        streamListValues.add(itemsSelections.value);
     } else {
       if (value) {
         if (itemSelected.value != null) {
           if (itemSelected.value != items[index].value.data) {
             int indexPrevious = widget.values.indexOf(itemSelected.value);
-            items[indexPrevious].value = items[indexPrevious].value.copy(checked: false);
+            items[indexPrevious].value =
+                items[indexPrevious].value.copy(checked: false);
           }
         }
         itemSelected.value = widget.values[index];
@@ -187,12 +184,16 @@ class CustomGroupedCheckboxState<T> extends CustomStateGroup<T?, CustomGroupedCh
   void reset() {
     items.forEach((element) {
       final item = element;
-      item.value = element.value.copy(checked: false);
+      item.value = element.value.copy(
+        checked: false,
+        isDisabled: element.value.isDisabled,
+      );
     });
     if (widget.controller.isMultipleSelection) {
       itemsSelections.value.clear();
 
-      if (streamOneValue.hasListener) streamListValues.add(itemsSelections.value);
+      if (streamOneValue.hasListener)
+        streamListValues.add(itemsSelections.value);
     } else {
       itemSelected.value = null;
       if (streamOneValue.hasListener) streamOneValue.add(itemSelected.value);
