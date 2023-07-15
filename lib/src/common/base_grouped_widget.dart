@@ -27,5 +27,3 @@ abstract class BaeCustomGrouped<T> extends StatefulWidget {
     required this.values,
   }):super(key: key);
 }
-
-abstract class BaeListGrouped extends StatefulWidget {}
