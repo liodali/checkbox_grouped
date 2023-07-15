@@ -7,9 +7,13 @@ class _User {
   final String email;
 
   _User({
-   required this.name,
-   required this.email,
+    required this.name,
+    required this.email,
   });
+  @override
+  String toString() {
+    return 'email:$email,name:$name';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -23,26 +27,36 @@ class _User {
   int get hashCode => name.hashCode ^ email.hashCode;
 }
 
-class CustomGroupedExample extends StatelessWidget {
-  final faker = Faker();
-
+class CustomGroupedExample extends StatefulWidget {
   CustomGroupedExample({
-    super. key,
+    super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final users = List<_User>.generate(
-      10,
-      (i) => _User(
-        name: faker.person.name(),
-        email: faker.internet.email(),
-      ),
-    );
-    final controller = CustomGroupController(
+  State<StatefulWidget> createState() => _CustomGroupedExampleState();
+}
+
+class _CustomGroupedExampleState extends State<CustomGroupedExample> {
+  late Faker faker = Faker();
+  late final users = List<_User>.generate(
+    10,
+    (i) => _User(
+      name: faker.person.name(),
+      email: faker.internet.email(),
+    ),
+  );
+  late CustomGroupController controller;
+  @override
+  void initState() {
+    controller = CustomGroupController(
       isMultipleSelection: false,
-      initSelectedItem: users.first,
+      initSelectedItem: users[3],
     );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -55,6 +69,7 @@ class CustomGroupedExample extends StatelessWidget {
               child: Text("Custom GroupedCheckbox"),
             ),
             isScroll: true,
+            disableItems: [users[0]],
             itemBuilder: (ctx, index, selected, isDisabled) {
               return Card(
                 margin: EdgeInsets.only(
@@ -62,7 +77,12 @@ class CustomGroupedExample extends StatelessWidget {
                   bottom: 5.0,
                 ),
                 child: ListTile(
-                  tileColor: selected ? Colors.green[300] : Colors.white,
+                  tileColor: isDisabled
+                      ? Colors.grey[400]
+                      : selected
+                          ? Colors.green[300]
+                          : Colors.white,
+                  textColor: isDisabled ? Colors.grey : null,
                   title: Text(users[index].name),
                   subtitle: Text(users[index].email),
                   trailing: Opacity(

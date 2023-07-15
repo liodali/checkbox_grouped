@@ -176,13 +176,15 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
                 controller.enabledItemsByTitles(["1"]);
               }
             },
-            disableItems: [5],
-            itemsTitle: ["1", "2", "4", "5"],
-            values: [1, 2, 4, 5],
+            disableItems: [5, 4],
+            itemsTitle: ["1", "2", "4", "5", "6"],
+            values: [1, 2, 4, 5, 6],
             groupStyle: GroupStyle(
-                activeColor: Colors.red,
-                itemTitleStyle: TextStyle(fontSize: 13)),
-
+              activeColor: Colors.red,
+              itemTitleStyle: TextStyle(
+                fontSize: 13,
+              ),
+            ),
           ),
           SimpleGroupedCheckbox<int>(
             controller: multipleCheckController,
@@ -236,9 +238,9 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
           Text("grouped switch"),
           SimpleGroupedSwitch<int>(
             controller: switchController,
-            itemsTitle: List.generate(10, (index) => "$index"),
-            values: List.generate(10, (index) => index),
-            disableItems: [2],
+            itemsTitle: List.generate(7, (index) => "${index}"),
+            values: List.generate(7, (index) => index),
+            disableItems: [3],
             groupStyle: SwitchGroupStyle(
               itemTitleStyle: TextStyle(
                 fontSize: 16,
