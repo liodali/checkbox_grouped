@@ -33,7 +33,7 @@ abstract class _GroupInterface {
 
 abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
     implements _GroupInterface {
-  late ValueNotifier<K?> selectedValue;
+  late ValueNotifier<K?> selectedValue = ValueNotifier(null);
   ValueNotifier<List<K>> selectionsValue = ValueNotifier([]);
   List<ValueNotifier<Item>> notifierItems = [];
   List<Item> items = [];
@@ -78,7 +78,6 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
     List<K>? disableItems,
   }) {
     this.values = values;
-    selectedValue = ValueNotifier(null);
     // if (preSelection.isNotEmpty) {
     //   final cacheSelection = preSelection.toList();
     //   cacheSelection.removeWhere((e) => values.contains(e));
@@ -87,6 +86,8 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
     //         "you want to activate selection of value doesn't exist");
     //   }
     // }
+    notifierItems.clear();
+    items.clear();
     itemsTitle.asMap().forEach((key, title) {
       bool checked = false;
       // if (key == 0) {
@@ -116,9 +117,10 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
         }
       }
       Item item = Item(
-          title: title,
-          checked: checked,
-          isDisabled: disableItems?.contains(values[key]) ?? false);
+        title: title,
+        checked: checked,
+        isDisabled: disableItems?.contains(values[key]) ?? false,
+      );
       items.add(item);
       notifierItems.add(ValueNotifier(item));
     });
@@ -152,24 +154,49 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
   @override
   void didUpdateWidget(covariant T oldWidget) {
     final oldSelectedValues = oldWidget.controller.state.selectionsValue.value;
-    final oldNotifierItems = oldWidget.controller.state.notifierItems;
+    //final oldNotifierItems = oldWidget.controller.state.notifierItems;
+    final oldSelectedValue = oldWidget.controller.state.selectedValue.value;
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller) {
-      selectionsValue = ValueNotifier([]);
-      notifierItems = oldNotifierItems;
+      selectionsValue = ValueNotifier(widget.controller.isMultipleSelection
+          ? List.from(oldSelectedValues)
+          : []);
+      selectedValue.value = oldSelectedValue;
+      notifierItems = [];
       items = [];
       valueTitle = ValueNotifier(false);
       values = [];
-      final initSelection = oldSelectedValues;
+      //final initSelection = oldSelectedValues;
       init(
         values: widget.values as List<K>,
         //checkFirstElement: false,
         disableItems: List.from(widget.disableItems),
         itemsTitle: widget.itemsTitle,
         multiSelection: widget.controller.isMultipleSelection,
-        preSelection: List.from(initSelection),
+        //preSelection: List.from(initSelection),
       );
       widget.controller.init(this);
+    }
+    final nValues = List.from(widget.values);
+    nValues.removeWhere((value) => oldWidget.values.contains(value));
+    if (nValues.isNotEmpty) {
+      selectionsValue = ValueNotifier([]);
+      selectedValue.value = null;
+      notifierItems = [];
+      init(
+        values: widget.values as List<K>,
+        disableItems: List.from(widget.disableItems),
+        itemsTitle: widget.itemsTitle,
+        multiSelection: widget.controller.isMultipleSelection,
+        preSelection: List.from(widget.controller.initSelectedItem),
+      );
+    }
+    final nDisabledItems = List.from(widget.disableItems);
+    nDisabledItems.removeWhere(
+        (disabledItem) => oldWidget.disableItems.contains(disabledItem));
+    if (nDisabledItems.isNotEmpty) {
+      enableAll();
+      disabledItemsByValues(widget.disableItems);
     }
   }
 
@@ -222,7 +249,10 @@ abstract class StateGroup<K, T extends BaseSimpleGrouped> extends State<T>
   }
 
   List<String?> _recuperateTitleFromValues(List<K> itemsValues) {
-    return itemsValues.map((e) {
+    //final items = itemsValues.where((element) => widget.values.contains(element)).cast<K>().toList();
+    return itemsValues
+        .where((element) => widget.values.contains(element))
+        .map((e) {
       var indexOfItem = values.indexOf(e);
       return items[indexOfItem].title;
     }).toList();
