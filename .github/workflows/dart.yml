@@ -21,14 +21,11 @@ jobs:
         uses: britannio/action-install-flutter@v1
       - run: dart --version
       - run: flutter --version
-      - name: move to root directory
-        run: |
-          cd ..
       - name: fomarting files
         run : dart format .
       - name: Publish package
         run: flutter pub publish -f
-        working-directory: ${{ github.workspace }}
+        working-directory: checkbox_grouped
 
       - name: release version
         uses: ncipollo/release-action@v1
