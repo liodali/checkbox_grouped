@@ -1,3 +1,7 @@
+## [2.0.0] - improve some internal api,fix bug #62
+* create class `BaseSimpleGrouped`,`BaeCustomGrouped` to make sure our widget will keep state reloading
+* add disableItems to `CustomGroupedCheckbox`
+* fix some bugs
 ## [1.9.0] - fix bug #53
 * migrate to latest flutter version and support only null safety
 * fix bug in base stateGroup

@@ -208,9 +208,8 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
             controller: chipsController,
             values: List.generate(7, (index) => index),
             itemsTitle: List.generate(7, (index) => "chip_text_$index"),
-            backgroundColorItem: Colors.black26,
-            isScrolling: true,
             chipGroupStyle: ChipGroupStyle.minimize(
+              isScrolling: true,
               backgroundColorItem: Colors.grey[400],
               selectedTextColor: Colors.amber,
               itemTitleStyle: TextStyle(
@@ -228,8 +227,8 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
                 ),
               ),
               selectedIcon: Icons.check,
+              direction: ChipsDirection.horizontal,
             ),
-            direction: ChipsDirection.horizontal,
             onItemSelected: (values) {
               print(values);
             },
