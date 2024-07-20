@@ -12,14 +12,13 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^3.0.0
-  collection: ^1.17.1
+  collection: ^1.8.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  faker: ^2.0.0
-
+  faker: ^2.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

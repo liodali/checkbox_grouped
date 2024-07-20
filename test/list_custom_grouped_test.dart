@@ -18,84 +18,84 @@ void main() async {
       )
     ];
     await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ListCustomGroupedCheckbox(
-              controller: controller,
-              isScrollable: true,
-              titleGroupedAlignment: Alignment.centerLeft,
-              groupTitles: ["Users", "Names"],
-              children: [
-                CustomIndexedWidgetBuilder(
+      MaterialApp(
+        home: Scaffold(
+          body: ListCustomGroupedCheckbox(
+            controller: controller,
+            isScrollable: true,
+            titleGroupedAlignment: Alignment.centerLeft,
+            groupTitles: ["Users", "Names"],
+            children: [
+              CustomIndexedWidgetBuilder(
+                itemBuilder: (ctx, index, selected, isDisabled) {
+                  return Card(
+                    margin: EdgeInsets.only(
+                      top: 5.0,
+                      bottom: 5.0,
+                    ),
+                    child: ListTile(
+                      tileColor: selected ? Colors.green[300] : Colors.white,
+                      title: Text(
+                        "${datas[0][index]}",
+                      ),
+                      trailing: Opacity(
+                        opacity: selected ? 1 : 0,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              CustomGridIndexedWidgetBuilder(
                   itemBuilder: (ctx, index, selected, isDisabled) {
                     return Card(
+                      color: selected ? Colors.green[300] : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          12.0,
+                        ),
+                      ),
                       margin: EdgeInsets.only(
                         top: 5.0,
                         bottom: 5.0,
                       ),
-                      child: ListTile(
-                        tileColor: selected ? Colors.green[300] : Colors.white,
-                        title: Text(
-                          "${datas[0][index]}",
-                        ),
-                        trailing: Opacity(
-                          opacity: selected ? 1 : 0,
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: 24,
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Text(
+                              datas[1][index] as String,
+                              maxLines: 3,
+                              overflow: TextOverflow.fade,
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 5,
+                            right: 8,
+                            child: Opacity(
+                              opacity: selected ? 1 : 0,
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
-                ),
-                CustomGridIndexedWidgetBuilder(
-                    itemBuilder: (ctx, index, selected, isDisabled) {
-                      return Card(
-                        color: selected ? Colors.green[300] : Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            12.0,
-                          ),
-                        ),
-                        margin: EdgeInsets.only(
-                          top: 5.0,
-                          bottom: 5.0,
-                        ),
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Text(
-                                datas[1][index] as String,
-                                maxLines: 3,
-                                overflow: TextOverflow.fade,
-                              ),
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 8,
-                              child: Opacity(
-                                opacity: selected ? 1 : 0,
-                                child: Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, crossAxisSpacing: 5.0)),
-              ],
-              listValuesByGroup: datas,
-            ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, crossAxisSpacing: 5.0)),
+            ],
+            listValuesByGroup: datas,
           ),
         ),
-        Duration(seconds: 30));
+      ),
+    );
 
     await tester.pump();
 
