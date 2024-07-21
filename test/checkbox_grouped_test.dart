@@ -22,7 +22,6 @@ void main() {
           onItemSelected: (data) {
             print(data);
           },
-          isExpandableTitle: false,
         ),
       ),
     ));
@@ -53,8 +52,8 @@ void main() {
           values: List.generate(10, (index) => index + 1),
           groupStyle: GroupStyle(
             activeColor: Colors.green,
+            isLeading: true,
           ),
-          isLeading: true,
         ),
       ),
     ));
@@ -78,8 +77,8 @@ void main() {
           values: List.generate(10, (index) => index + 1),
           groupStyle: GroupStyle(
             activeColor: Colors.green,
+            isLeading: true,
           ),
-          isLeading: true,
         ),
       ),
     ));
@@ -111,9 +110,8 @@ void main() {
             groupTitle: "group test",
             groupStyle: GroupStyle(
               activeColor: Colors.green,
+              helperGroupTitle: false,
             ),
-            helperGroupTitle: false,
-            isExpandableTitle: false,
           ),
         ),
       ),
@@ -143,9 +141,8 @@ void main() {
             groupTitle: "group test",
             groupStyle: GroupStyle(
               activeColor: Colors.green,
+              helperGroupTitle: true,
             ),
-            helperGroupTitle: true,
-            isExpandableTitle: false,
           ),
         ),
       ),
@@ -170,8 +167,8 @@ void main() {
           values: List.generate(10, (index) => index + 1),
           groupStyle: GroupStyle(
             activeColor: Colors.green,
+            isLeading: true,
           ),
-          isLeading: true,
         ),
       ),
     ));
@@ -196,8 +193,8 @@ void main() {
           values: List.generate(10, (index) => index + 1),
           groupStyle: GroupStyle(
             activeColor: Colors.green,
+            isLeading: true,
           ),
-          isLeading: true,
         ),
       ),
     ));
@@ -235,8 +232,8 @@ void main() {
           values: List.generate(10, (index) => index + 1),
           groupStyle: GroupStyle(
             activeColor: Colors.green,
+            isLeading: true,
           ),
-          isLeading: true,
         ),
       ),
     ));
@@ -271,8 +268,8 @@ void main() {
           values: List.generate(10, (index) => index + 1),
           groupStyle: GroupStyle(
             activeColor: Colors.green,
+            isLeading: true,
           ),
-          isLeading: true,
         ),
       ),
     ));
@@ -309,7 +306,6 @@ void main() {
           onItemSelected: (data) {
             print(data);
           },
-          isExpandableTitle: false,
         ),
       ),
     ));
@@ -341,7 +337,6 @@ void main() {
           onItemSelected: (data) {
             print(data);
           },
-          isExpandableTitle: false,
         ),
       ),
     ));
@@ -372,7 +367,6 @@ void main() {
           onItemSelected: (data) {
             print(data);
           },
-          isExpandableTitle: false,
         ),
       ),
     ));
@@ -401,7 +395,6 @@ void main() {
           onItemSelected: (data) {
             print(data);
           },
-          isExpandableTitle: false,
         ),
       ),
     ));
@@ -430,7 +423,6 @@ void main() {
           onItemSelected: (data) {
             print(data);
           },
-          isExpandableTitle: false,
         ),
       ),
     ));
