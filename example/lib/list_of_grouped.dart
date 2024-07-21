@@ -4,6 +4,8 @@ import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:flutter/material.dart';
 
 class ListOfGrouped extends StatefulWidget {
+  const ListOfGrouped({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _ListOfGroupedState();
@@ -49,7 +51,7 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               5,
               (i) => List.generate(5, (j) => "Title:$i-$j"),
             ),
-            mapItemGroupedType: {
+            mapItemGroupedType: const {
               //   0: GroupedType.Default,
               1: GroupedType.Chips,
               2: GroupedType.Default,
@@ -66,7 +68,7 @@ class _ListOfGroupedState extends State<ListOfGrouped> {
               final list = await controller.allSelectedItems;
               print(list);
             },
-            child: Text("see data"),
+            child: const Text("see data"),
           ),
         ),
       ],

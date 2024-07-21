@@ -61,8 +61,8 @@ class CustomGridGroupState extends State<CustomGridGroupedExample> {
           child: CustomGroupedCheckbox<_User>.grid(
             controller: constroller,
             groupTitle: Container(
-              padding: EdgeInsets.all(5.0),
-              child: Text("Custom GroupedCheckbox"),
+              padding: const EdgeInsets.all(5.0),
+              child: const Text("Custom GroupedCheckbox"),
             ),
             itemBuilder: (ctx, index, selected, isDisabled) {
               return Padding(
@@ -97,7 +97,7 @@ class CustomGridGroupState extends State<CustomGridGroupedExample> {
                         right: 10,
                         bottom: 0,
                         child: AnimatedContainer(
-                          duration: Duration(
+                          duration: const Duration(
                             milliseconds: 300,
                           ),
                           color: Colors.green[300],
@@ -120,7 +120,7 @@ class CustomGridGroupState extends State<CustomGridGroupedExample> {
             onPressed: () {
               print(constroller.selectedItem);
             },
-            child: Text("selection"),
+            child: const Text("selection"),
           );
         })
       ],

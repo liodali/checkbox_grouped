@@ -7,9 +7,11 @@ import 'grid_of_grouped_checkbox.dart';
 import 'list_custom_group.dart';
 import 'list_of_grouped.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _MyAppState();
@@ -29,12 +31,14 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         primaryColor: Colors.blue,
       ),
-      home: MainExample(),
+      home: const MainExample(),
     );
   }
 }
 
 class MainExample extends StatefulWidget {
+  const MainExample({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _MainExampleState();
@@ -96,7 +100,7 @@ class _MainExampleState extends State<MainExample>
           builder: (ctx, value, _) {
             return Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 56,
                 ),
                 Expanded(
@@ -122,19 +126,19 @@ class _MainExampleState extends State<MainExample>
         ),
       ),
       appBar: AppBar(
-        title: Text("examples"),
+        title: const Text("examples"),
       ),
       body: TabBarView(
         controller: tabController,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           _SimpleGrouped(),
-          CustomGroupedExample(),
+          const CustomGroupedExample(),
           CustomGridGroupedExample(),
           _DialogExample(),
-          ListOfGrouped(),
-          GridOfListGroupedCheckbox(),
-          ListCustomGroup(),
+          const ListOfGrouped(),
+          const GridOfListGroupedCheckbox(),
+          const ListCustomGroup(),
         ],
       ),
     );
@@ -161,25 +165,27 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
       controller: ScrollController(),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
+        children: [
           SimpleGroupedCheckbox<int>(
             controller: controller,
             //groupTitle:"Basic",
             onItemSelected: (data) {
-              print(data);
+              debugPrint(data);
               if (data == 1) {
-                controller.disabledItemsByTitles(["5"]);
+                controller.enabledItemsByTitles(["4"]);
               } else if (data == 4) {
                 controller.enabledItemsByTitles(["5", "2"]);
                 controller.disabledItemsByTitles(["1"]);
               } else if (data == 2) {
                 controller.enabledItemsByTitles(["1"]);
+              } else if (data == 6) {
+                controller.disabledItemsByTitles(["5", "4"]);
               }
             },
-            disableItems: [5, 4],
-            itemsTitle: ["1", "2", "4", "5", "6"],
-            values: [1, 2, 4, 5, 6],
-            groupStyle: GroupStyle(
+            disableItems: const [5, 4],
+            itemsTitle: const ["1", "2", "4", "5", "6"],
+            values: const [1, 2, 4, 5, 6],
+            groupStyle: const GroupStyle(
               activeColor: Colors.red,
               itemTitleStyle: TextStyle(
                 fontSize: 13,
@@ -190,20 +196,20 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
             controller: multipleCheckController,
             itemsTitle: List.generate(10, (index) => "$index"),
             values: List.generate(10, (index) => index),
-            groupStyle: GroupStyle(
+            groupStyle: const ExpandableGroupStyle(
               activeColor: Colors.green,
-              groupTitleStyle: TextStyle(
+              groupTitleStyle:  TextStyle(
                 color: Colors.orange,
               ),
+
+            helperGroupTitle: true,
             ),
             groupTitle: "expanded multiple checkbox selection",
-            helperGroupTitle: true,
             onItemSelected: (data) {
-              print(data);
+              debugPrint(data);
             },
-            isExpandableTitle: true,
           ),
-          Divider(),
+          const Divider(),
           SimpleGroupedChips<int>(
             controller: chipsController,
             values: List.generate(7, (index) => index),
@@ -212,7 +218,7 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
               isScrolling: true,
               backgroundColorItem: Colors.grey[400],
               selectedTextColor: Colors.amber,
-              itemTitleStyle: TextStyle(
+              itemTitleStyle: const TextStyle(
                 fontSize: 14,
               ),
               shape: RoundedRectangleBorder(
@@ -221,7 +227,7 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
               ),
               checkedShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
+                side: const BorderSide(
                   width: 2,
                   color: Colors.grey,
                 ),
@@ -230,25 +236,25 @@ class _SimpleGroupedState extends State<_SimpleGrouped> {
               direction: ChipsDirection.horizontal,
             ),
             onItemSelected: (values) {
-              print(values);
+              debugPrint(values);
             },
           ),
-          Divider(),
-          Text("grouped switch"),
+          const Divider(),
+          const Text("grouped switch"),
           SimpleGroupedSwitch<int>(
             controller: switchController,
-            itemsTitle: List.generate(7, (index) => "${index}"),
+            itemsTitle: List.generate(7, (index) => "$index"),
             values: List.generate(7, (index) => index),
-            disableItems: [3],
-            groupStyle: SwitchGroupStyle(
-              itemTitleStyle: TextStyle(
+            disableItems: const [3],
+            groupStyle: const SwitchGroupStyle(
+              itemTitleStyle:  TextStyle(
                 fontSize: 16,
                 color: Colors.blue,
               ),
               activeColor: Colors.red,
             ),
             onItemSelected: (values) {
-              print(values);
+              debugPrint(values);
             },
           ),
         ],
@@ -270,13 +276,13 @@ class _DialogExample extends StatelessWidget {
                 isMultiSelection: true,
                 itemsTitle: List.generate(15, (index) => "$index"),
                 submitDialogText: "select",
-                dialogTitle: Text("example dialog"),
+                dialogTitle: const Text("example dialog"),
                 values: List.generate(15, (index) => index));
             if (values != null) {
-              print(values);
+              debugPrint(values);
             }
           },
-          child: Text("show dialog checkbox grouped"),
+          child: const Text("show dialog checkbox grouped"),
         ),
       ],
     );

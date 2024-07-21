@@ -67,8 +67,8 @@ class ListCustomGroup extends StatelessWidget {
           child: Card(
             color: Colors.amber[700],
             elevation: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
+            child: const Padding(
+              padding: EdgeInsets.all(12),
               child: Text(
                 "Users",
                 style: TextStyle(
@@ -78,9 +78,9 @@ class ListCustomGroup extends StatelessWidget {
             ),
           ),
         ),
-        Card(
+        const Card(
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             child: Text(
               "Names",
               style: TextStyle(
@@ -94,7 +94,7 @@ class ListCustomGroup extends StatelessWidget {
         CustomIndexedWidgetBuilder(
             itemBuilder: (ctx, index, selected, isDisabled) {
           return Card(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               top: 5.0,
               bottom: 5.0,
             ),
@@ -108,7 +108,7 @@ class ListCustomGroup extends StatelessWidget {
               ),
               trailing: Opacity(
                 opacity: selected ? 1 : 0,
-                child: Icon(
+                child: const Icon(
                   Icons.check,
                   color: Colors.white,
                   size: 24,
@@ -126,7 +126,7 @@ class ListCustomGroup extends StatelessWidget {
                     12.0,
                   ),
                 ),
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 5.0,
                   bottom: 5.0,
                 ),
@@ -144,7 +144,7 @@ class ListCustomGroup extends StatelessWidget {
                       right: 8,
                       child: Opacity(
                         opacity: selected ? 1 : 0,
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 24,
@@ -155,7 +155,7 @@ class ListCustomGroup extends StatelessWidget {
                 ),
               );
             },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, crossAxisSpacing: 5.0)),
       ],
       listValuesByGroup: datas,

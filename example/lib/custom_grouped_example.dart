@@ -28,7 +28,7 @@ class _User {
 }
 
 class CustomGroupedExample extends StatefulWidget {
-  CustomGroupedExample({
+  const CustomGroupedExample({
     super.key,
   });
 
@@ -65,14 +65,14 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
           child: CustomGroupedCheckbox<_User>(
             controller: controller,
             groupTitle: Container(
-              padding: EdgeInsets.all(5.0),
-              child: Text("Custom GroupedCheckbox"),
+              padding: const EdgeInsets.all(5.0),
+              child: const Text("Custom GroupedCheckbox"),
             ),
             isScroll: true,
             disableItems: [users[0]],
             itemBuilder: (ctx, index, selected, isDisabled) {
               return Card(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 5.0,
                   bottom: 5.0,
                 ),
@@ -87,7 +87,7 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
                   subtitle: Text(users[index].email),
                   trailing: Opacity(
                     opacity: selected ? 1 : 0,
-                    child: Icon(
+                    child: const Icon(
                       Icons.check,
                       color: Colors.white,
                       size: 24,
@@ -106,7 +106,7 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
                 onPressed: () {
                   print(controller.selectedItem);
                 },
-                child: Text("selection"),
+                child: const Text("selection"),
               );
             }),
             Builder(builder: (ctx) {
@@ -114,7 +114,7 @@ class _CustomGroupedExampleState extends State<CustomGroupedExample> {
                 onPressed: () {
                   controller.clearSelection();
                 },
-                child: Text("DeselectAll"),
+                child: const Text("DeselectAll"),
               );
             })
           ],
