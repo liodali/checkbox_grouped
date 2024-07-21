@@ -14,14 +14,14 @@ typedef OnChanged = Function(dynamic selected);
 ///
 ///
 /// This widget responsible to display a simple Checkboxs grouped,where [GroupController]
-/// responsible to retrieve the selection 
+/// responsible to retrieve the selection
 /// and configure the grouped is mutliChoice ot single choice.
-/// 
-/// Using [disableItems] we can disable items from beginning 
-/// and we can use API  [GroupController.enabledItemsByValues] 
+///
+/// Using [disableItems] we can disable items from beginning
+/// and we can use API  [GroupController.enabledItemsByValues]
 /// or [GroupController.enabledItemsByTitles]
 /// to undisable them depend on the use case wanted
-/// 
+///
 ///
 /// [controller] :  (required) Group Controller to recuperate selection Items and disable or enableItems
 ///
@@ -39,51 +39,36 @@ typedef OnChanged = Function(dynamic selected);
 ///
 /// [disableItems] : specifies which item should be disabled, we use title to disable items, if items are not in [itemsTitle], will be ignored
 ///
-/// [isLeading] : (bool) put check zone on left of item
-///
-/// [isExpandableTitle] :(bool) enable group checkbox to be expandable
-///
-/// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
-///
-/// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
 class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
   final OnChanged? onItemSelected;
   final String? groupTitle;
-  final AlignmentGeometry groupTitleAlignment;
   final List<String> itemsSubTitle;
-  final GroupStyle? groupStyle;
-  final bool isLeading;
-  final bool isExpandableTitle;
-  final bool helperGroupTitle;
+  final GroupStyle groupStyle;
 
   SimpleGroupedCheckbox({
-    Key? key,
+    super.key,
     required super.controller,
     required super.itemsTitle,
     required super.values,
+    this.groupStyle = const GroupStyle(),
     this.onItemSelected,
     this.groupTitle,
-    this.groupTitleAlignment = Alignment.center,
-    this.groupStyle,
     this.itemsSubTitle = const [],
     super.disableItems = const [],
-    this.isLeading = false,
-    this.isExpandableTitle = false,
-    this.helperGroupTitle = true,
   })  : assert(values.length == itemsTitle.length),
         assert(itemsSubTitle.isNotEmpty
             ? itemsSubTitle.length == itemsTitle.length
             : true),
         assert(
-            (groupTitle == null && !isExpandableTitle) ||
+            (groupTitle == null && groupStyle is! ExpandableGroupStyle) ^
                 (groupTitle != null &&
-                        groupTitle.isNotEmpty &&
-                        isExpandableTitle ||
-                    groupTitle != null &&
-                        groupTitle.isNotEmpty &&
-                        !isExpandableTitle),
-            "you cannot make isExpandable without textTitle"),
-        super(key: key);
+                    groupTitle.isNotEmpty &&
+                    groupStyle is ExpandableGroupStyle) ^
+                (groupTitle != null &&
+                    groupTitle.isNotEmpty &&
+                    groupStyle is! ExpandableGroupStyle) ,
+               
+            "you cannot make isExpandable without textTitle");
 
   static GroupController? of<T>(BuildContext context, {bool nullOk = false}) {
     final SimpleGroupedCheckboxState<T>? result =
@@ -98,6 +83,20 @@ class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
     ]);
   }
 
+  static GroupStyle? groupStyleOf<T>(BuildContext context,
+      {bool nullOk = false}) {
+    final SimpleGroupedCheckboxState<T>? result =
+        context.findAncestorStateOfType<SimpleGroupedCheckboxState<T>>();
+    if (nullOk || result != null) return result!.widget.groupStyle;
+    throw FlutterError.fromParts(<DiagnosticsNode>[
+      ErrorSummary(
+          'SimpleGroupedCheckbox.groupStyleOf() called with a context that does not contain an SimpleGroupedCheckbox.'),
+      ErrorDescription(
+          'No SimpleGroupedCheckbox ancestor could be found starting from the context that was passed to SimpleGroupedCheckbox.groupStyleOf().'),
+      context.describeElement('The context used was')
+    ]);
+  }
+
   @override
   SimpleGroupedCheckboxState<T> createState() =>
       SimpleGroupedCheckboxState<T>();
@@ -105,31 +104,6 @@ class SimpleGroupedCheckbox<T> extends BaseSimpleGrouped<T> {
 
 class SimpleGroupedCheckboxState<T>
     extends StateGroup<T, SimpleGroupedCheckbox> {
-  // @override
-  // void didUpdateWidget(covariant SimpleGroupedCheckbox oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (oldWidget.controller != widget.controller) {
-  //     selectionsValue = ValueNotifier([]);
-  //     notifierItems = [];
-  //     items = [];
-  //     valueTitle = ValueNotifier(false);
-  //     values = [];
-  //     init(
-  //       values: widget.values as List<T>,
-  //       checkFirstElement: widget.checkFirstElement,
-  //       disableItems: widget.disableItems,
-  //       itemsTitle: widget.itemsTitle,
-  //       multiSelection: widget.controller.isMultipleSelection,
-  //       preSelection: widget.controller.initSelectedItem?.cast<T>(),
-  //     );
-  //     widget.controller.init(this);
-  //   }
-  // }
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget childListChecks = ListView.builder(
@@ -149,39 +123,40 @@ class SimpleGroupedCheckboxState<T>
               },
               selectedValue: selectedValue.value,
               value: widget.values[i],
-              activeColor: widget.groupStyle?.activeColor,
-              itemStyle: widget.groupStyle?.itemTitleStyle?.copyWith(
+              activeColor: widget.groupStyle.activeColor,
+              itemStyle: widget.groupStyle.itemTitleStyle?.copyWith(
                 color: item.checked!
-                    ? widget.groupStyle?.activeColor
-                    : widget.groupStyle?.itemTitleStyle?.color,
+                    ? widget.groupStyle.activeColor
+                    : widget.groupStyle.itemTitleStyle?.color,
               ),
-              isLeading: widget.isLeading,
+              isLeading: widget.groupStyle.isLeading,
               itemSubTitle: widget.itemsSubTitle.isNotEmpty
                   ? widget.itemsSubTitle[i]
                   : null,
-              itemSubStyle: widget.groupStyle?.subItemTitleStyle,
+              itemSubStyle: widget.groupStyle.subItemTitleStyle,
               isMultipleSelection: widget.controller.isMultipleSelection,
             );
           },
         );
       },
     );
-    if (widget.groupTitle != null && widget.isExpandableTitle) {
+    if (widget.groupTitle != null &&
+        widget.groupStyle is ExpandableGroupStyle) {
       return _ExpansionCheckBoxList(
         listChild: childListChecks,
         titleWidget: _TitleGroupedCheckbox(
           title: widget.groupTitle,
-          titleStyle: widget.groupStyle?.groupTitleStyle,
+          titleStyle: widget.groupStyle.groupTitleStyle,
           isMultiSelection: widget.controller.isMultipleSelection,
-          alignment: widget.groupTitleAlignment,
-          checkboxTitle: widget.helperGroupTitle
+          alignment: widget.groupStyle.groupTitleAlignment,
+          checkboxTitle: widget.groupStyle.helperGroupTitle
               ? ValueListenableBuilder(
                   valueListenable: valueTitle,
                   builder: (ctx, dynamic selected, _) {
                     return Checkbox(
                       tristate: true,
                       value: selected,
-                      activeColor: widget.groupStyle?.activeColor,
+                      activeColor: widget.groupStyle.activeColor,
                       onChanged: (v) {
                         setState(() {
                           if (v != null) valueTitle.value = v;
@@ -201,17 +176,17 @@ class SimpleGroupedCheckboxState<T>
         children: <Widget>[
           _TitleGroupedCheckbox(
             title: widget.groupTitle,
-            titleStyle: widget.groupStyle?.groupTitleStyle,
+            titleStyle: widget.groupStyle.groupTitleStyle,
             isMultiSelection: widget.controller.isMultipleSelection,
-            alignment: widget.groupTitleAlignment,
-            checkboxTitle: widget.helperGroupTitle
+            alignment: widget.groupStyle.groupTitleAlignment,
+            checkboxTitle: widget.groupStyle.helperGroupTitle
                 ? ValueListenableBuilder(
                     valueListenable: valueTitle,
                     builder: (ctx, dynamic selected, _) {
                       return Checkbox(
                         tristate: true,
                         value: selected,
-                        activeColor: widget.groupStyle?.activeColor,
+                        activeColor: widget.groupStyle.activeColor,
                         onChanged: (v) {
                           if (v != null) valueTitle.value = v;
                         },
@@ -508,15 +483,19 @@ class _ExpansionCheckBoxListState extends State<_ExpansionCheckBoxList> {
 
   @override
   Widget build(BuildContext context) {
+    final groupStyle = SimpleGroupedCheckbox.groupStyleOf(context);
     return ExpansionPanelList(
       expansionCallback: (index, value) {
         setState(() {
-          isExpanded = !value;
+          isExpanded = value;
         });
       },
       children: [
         ExpansionPanel(
           isExpanded: isExpanded,
+          canTapOnHeader: groupStyle != null &&
+              groupStyle is ExpandableGroupStyle &&
+              groupStyle.canTapOnHeader,
           headerBuilder: (ctx, value) {
             return widget.titleWidget!;
           },

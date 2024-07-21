@@ -15,7 +15,7 @@ enum ChipsDirection {
 /// [itemTitleStyle]     : (TextStyle) Text Style  that describe style of title of each item in  group checkbox
 ///
 /// [subItemTitleStyle]  : (TextStyle) Text Style  that describe style of subtitle of each item in  group checkbox
-class _BaseGroupStyle {
+abstract class _BaseGroupStyle {
   final Color? activeColor;
   final TextStyle? groupTitleStyle;
   final TextStyle? itemTitleStyle;
@@ -30,19 +30,55 @@ class _BaseGroupStyle {
 }
 
 ///
-/// class [GroupedStyle]   for style text in  [SimpleGroupedCheckbox]
+/// class [GroupedStyle]   for styling class for  [SimpleGroupedCheckbox]
+///
+/// [isLeading] : (bool) put check zone on left of item
+///
+/// [helperGroupTitle] : (bool) hide/show checkbox in title to help all selection or deselection,use it when you want to disable checkbox in groupTitle default:`true`
+///
+/// [groupTitleAlignment] : (Alignment) align title of checkbox group checkbox default:`Alignment.center`
+
 class GroupStyle extends _BaseGroupStyle {
-  GroupStyle({
-    Color? activeColor,
-    TextStyle? groupTitleStyle,
-    TextStyle? itemTitleStyle,
-    TextStyle? subItemTitleStyle,
-  }) : super(
-          activeColor: activeColor,
-          groupTitleStyle: groupTitleStyle,
-          itemTitleStyle: itemTitleStyle,
-          subItemTitleStyle: subItemTitleStyle,
-        );
+  final AlignmentGeometry groupTitleAlignment;
+  final bool isLeading;
+  final bool helperGroupTitle;
+  const GroupStyle({
+    super.activeColor,
+    super.groupTitleStyle,
+    super.itemTitleStyle,
+    super.subItemTitleStyle,
+    this.groupTitleAlignment = Alignment.center,
+    this.isLeading = false,
+    this.helperGroupTitle = true,
+  });
+}
+
+class ExpandableGroupStyle extends GroupStyle {
+  final bool canTapOnHeader;
+  final Duration animationDuration;
+  final EdgeInsets expandedHeaderPadding;
+  final Color? dividerColor;
+  final double elevation;
+  final Color? expandIconColor;
+  final double materialGapSize;
+  const ExpandableGroupStyle({
+    super.activeColor,
+    super.groupTitleStyle,
+    super.itemTitleStyle,
+    super.subItemTitleStyle,
+    super.groupTitleAlignment,
+    super.helperGroupTitle,
+    super.isLeading,
+    this.canTapOnHeader = false,
+    this.animationDuration = const Duration(milliseconds: 200),
+    this.expandedHeaderPadding = const EdgeInsets.symmetric(
+      vertical: 16,
+    ),
+    this.dividerColor,
+    this.elevation = 2,
+    this.expandIconColor,
+    this.materialGapSize = 16.0,
+  });
 }
 
 ///
@@ -112,7 +148,7 @@ class ChipGroupStyle extends _BaseGroupStyle {
 ///
 /// class [SwitchGroupStyle]   for style text in  [SimpleGroupedSwitch]
 class SwitchGroupStyle extends _BaseGroupStyle {
-  SwitchGroupStyle({
+  const SwitchGroupStyle({
     Color? activeColor,
     TextStyle? itemTitleStyle,
   }) : super(

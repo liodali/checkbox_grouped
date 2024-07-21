@@ -202,7 +202,9 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                           ? widget.disabledValues[index] as List<T>
                           : [],
                       groupTitle: widget.groupTitles[index],
-                      groupTitleAlignment: widget.titleGroupedAlignment,
+                      groupStyle: GroupStyle(
+                        groupTitleAlignment: widget.titleGroupedAlignment,
+                      ),
                       onItemSelected: widget.onSelectedGroupChanged != null
                           ? (selection) async {
                               final list = await getAllValues();
@@ -219,8 +221,10 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                   disableItems: widget.disabledValues.isNotEmpty
                       ? widget.disabledValues[index] as List<T>
                       : [],
+                  groupStyle: GroupStyle(
+                    groupTitleAlignment: widget.titleGroupedAlignment,
+                  ),
                   groupTitle: widget.groupTitles[index],
-                  groupTitleAlignment: widget.titleGroupedAlignment,
                   onItemSelected: widget.onSelectedGroupChanged != null
                       ? (selection) async {
                           final list = await getAllValues();
@@ -238,7 +242,9 @@ class ListGroupedCheckboxState<T> extends State<ListGroupedCheckbox> {
                     ? widget.disabledValues[index] as List<T>
                     : [],
                 groupTitle: widget.groupTitles[index],
-                groupTitleAlignment: widget.titleGroupedAlignment,
+                groupStyle: GroupStyle(
+                  groupTitleAlignment: widget.titleGroupedAlignment,
+                ),
                 onItemSelected: widget.onSelectedGroupChanged != null
                     ? (selection) async {
                         final list = await getAllValues();

@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:checkbox_grouped/src/common/item.dart';
 import 'package:checkbox_grouped/src/common/state_group.dart';
 
-
-
 /// [SimpleGroupedChips]
 ///
 ///
@@ -22,17 +20,16 @@ import 'package:checkbox_grouped/src/common/state_group.dart';
 ///  [onItemSelected] : callback listener when item is selected
 ///
 class SimpleGroupedChips<T> extends BaseSimpleGrouped<T> {
-
   final ChipGroupStyle chipGroupStyle;
   final OnChanged? onItemSelected;
-
-
+  final Widget Function(int, bool? isSelected)? avatarBuilder;
   SimpleGroupedChips({
     super.key,
     required super.controller,
     required super.values,
     required super.itemsTitle,
     super.disableItems,
+    this.avatarBuilder,
     this.onItemSelected,
     this.chipGroupStyle = const ChipGroupStyle.minimize(),
   });
@@ -81,16 +78,19 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
   @override
   Widget build(BuildContext context) {
     final childrens = [
-      for (int i = 0; i < notifierItems.length; i++) ...[
+      for (final (index, item) in notifierItems.indexed) ...[
         ValueListenableBuilder(
-          valueListenable: notifierItems[i],
-          builder: (ctx, dynamic item, child) {
+          valueListenable: item,
+          builder: (context, Item item, child) {
             return _ChoiceChipsWidget(
               isMultiChoice: widget.controller.isMultipleSelection,
               onSelection: (v) {
-                changeSelection(i, v);
+                changeSelection(index, v);
               },
-              shape: item.checked
+              avatar: widget.avatarBuilder != null
+                  ? widget.avatarBuilder!(index, item.checked)
+                  : null,
+              shape: item.checked != null && item.checked!
                   ? widget.chipGroupStyle.checkedShape
                   : widget.chipGroupStyle.shape,
               selectedIcon: widget.chipGroupStyle.selectedIcon != null
@@ -104,12 +104,12 @@ class SimpleGroupedChipsState<T> extends StateGroup<T, SimpleGroupedChips> {
               label: Text(
                 "${item.title}",
                 style: widget.chipGroupStyle.itemTitleStyle?.copyWith(
-                      color: item.checked
+                      color: item.checked != null && item.checked!
                           ? widget.chipGroupStyle.selectedTextColor
                           : widget.chipGroupStyle.textColor,
                     ) ??
                     TextStyle(
-                      color: item.checked
+                      color: item.checked != null && item.checked!
                           ? widget.chipGroupStyle.selectedTextColor
                           : widget.chipGroupStyle.textColor,
                     ),
@@ -214,10 +214,10 @@ class _ChoiceChipsWidget extends StatelessWidget {
   final Widget? avatar;
   final OutlinedBorder? shape;
   final bool isMultiChoice;
-  _ChoiceChipsWidget({
+  const _ChoiceChipsWidget({
+    super.key,
     required this.label,
     this.isMultiChoice = false,
-    this.avatar,
     this.onSelection,
     this.isSelected,
     this.backgroundColorItem,
@@ -225,8 +225,8 @@ class _ChoiceChipsWidget extends StatelessWidget {
     this.selectedColorItem,
     this.selectedIcon,
     this.shape,
-    Key? key,
-  }) : super(key: key);
+    this.avatar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -261,9 +261,9 @@ class _ChoiceChipsWidget extends StatelessWidget {
       shape: shape,
       avatarBorder: RoundedRectangleBorder(),
       side: shape?.side,
-      avatar: avatar != null
+      avatar: avatar != null && (isSelected == null || !isSelected!)
           ? avatar
-          : isSelected!
+          : isSelected != null && isSelected!
               ? selectedIcon != null
                   ? ColoredBox(
                       color: Colors.transparent,
